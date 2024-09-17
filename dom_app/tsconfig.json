@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "allowJs": true,            // Allows JavaScript files to be compiled.
+        "strict": false,             // Shorthand for the following four options:
+        // "noImplicitAny": true,
+        // "noImplicitThis": true,
+        // "alwaysStrict": true,
+        // "strictNullChecks": true,
+        "module": "commonjs",        // Use commonjs for compatibility.
+        "rootDir": "src",            // Specify the root directory.
+        "outDir": "dist",            // Specify the output directory for compiled files.
+        "removeComments": true,
+        "target": "es5", // In case TypeScript is used, this will compile to ECMAScript 3 (ExtendScript!) compatible code.
+        "esModuleInterop": true,     // Allow import of CommonJS modules.
+        "skipLibCheck": true,         // Skip type checks for libraries.
+    },
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "types/**/*.d.ts"
+    ],
+    "exclude": [
+        "dist/**/*.ts",
+        "dist/**/*.tsx"
+    ],
+}
+

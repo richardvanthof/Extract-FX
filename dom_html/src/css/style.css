@@ -1,0 +1,165 @@
+/*************************************************************************
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+* Copyright 2014 Adobe
+* All Rights Reserved.
+*
+* NOTICE: Adobe permits you to use, modify, and distribute this file in
+* accordance with the terms of the Adobe license agreement accompanying
+* it. If you have received this file from a source other than Adobe,
+* then your use, modification, or distribution of it requires the prior
+* written permission of Adobe. 
+**************************************************************************/
+
+* {
+	font-family: "LucidaGrande", sans-serif;
+	font-size: 11px;
+	-webkit-user-select: none; /* Safari */
+	-ms-user-select: none; /* IE 10 and IE 11 */
+	user-select: none; /* Standard syntax */
+}
+
+#header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 1em 0em;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	background: #232323;
+	border-top: 1px solid #303030;
+}
+
+#header > * {
+	margin: 0 1em;
+	display: block;
+}
+
+.caption {
+	display: inline;
+	margin: 0.5em 0;
+	color: rgb(174, 174, 181);
+	font-size: 0.8em;
+}
+
+
+main {
+	padding: 1.33em 1em 6em;
+	min-width: 175px;
+	
+}
+
+label, button, select, h1,h2, h3, h4, p, summary {
+	color: rgb(216, 205, 205);
+
+}
+
+html, body {
+	
+	font-size: 12px;
+	background: #232323;
+	margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+}
+
+p {
+	text-align:center;
+}
+
+a {
+        color: #8080ff;
+}
+
+button
+{
+	border:1px solid;
+	height:20px;
+}
+
+select, button
+{
+	background: #1D1D1D;
+	border: 1px solid #37373c;
+	border-radius: 3px;
+	color: white;
+}
+
+select {
+	margin: .5em 0;
+	width: 100%;
+}
+
+input['number'] {
+	color: black;
+}
+
+#progress {
+	margin: auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	height: 75vh;
+}
+
+.exclusions {
+	
+	background: #1D1D1D;
+	border: 1px solid #37373c;
+	border-radius: 3px;
+	position: relative;
+}
+
+.exclusion {
+	margin: 0.5em;
+	display: flex;
+	border-right: none;
+}
+
+.selected, .selected > * {
+	background: rgb(108, 156, 208);
+	border: none;
+}
+
+.exclusion > select {
+	margin: 0;
+}
+
+.exclusions-controls {
+	background: #272626;
+	border-radius: 3px;
+	display: flex;
+	justify-content: space-between;
+	padding: 0.5em;
+}
+
+.exclusions-control {
+	min-width: .5em 2em;
+}
+
+.exclusions-container {
+	min-height: 5rem;
+	/* padding-bottom: 2em; */
+}
+
+.exclusions-placeholder {
+	margin: 0;
+	transform: translateY(1em)
+}
+
+#remove-all-exclusions-btn {
+	background: none;
+	border:none;
+	font-size: 0.85em;
+	margin: 0 0.5em;
+}
+
+summary {
+	margin-bottom: .3em;
+}
+
