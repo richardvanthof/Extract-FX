@@ -13,6 +13,7 @@
         "target": "es5", // In case TypeScript is used, this will compile to ECMAScript 3 (ExtendScript!) compatible code.
         "esModuleInterop": true,     // Allow import of CommonJS modules.
         "skipLibCheck": true,         // Skip type checks for libraries.
+        "jsx": "preserve"
     },
     "include": [
         "src/**/*.ts",

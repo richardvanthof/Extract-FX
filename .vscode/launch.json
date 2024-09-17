@@ -10,6 +10,17 @@
             "sourceMapPathOverrides": {
                 "webpack:///*": "${workspaceRoot}/*"
             }
+        },
+        {
+            "type": "extendscript-debug",
+            "request": "attach",
+            "name": "Attach to ExtendScript Engine"
+        },
+        {
+            "type": "extendscript-debug",
+            "request": "launch",
+            "name": "Launch Script in ExtendScript Engine",
+            "script": "${workspaceFolder}/src/host/app.js" //replace for relative path
         }
     ]
 }
