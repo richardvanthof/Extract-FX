@@ -15,7 +15,7 @@
 // This was relocated from index.html because syntax highlighting for JavaScript embedded in HTML is
 //  unsupported (see: https://github.com/Microsoft/vscode/issues/15377#issuecomment-278578309).
 function testCallback(data) {
-    alert('hello');
+    alert(data);
 }
 $(document).ready(function () {
     // For functions which require interaction at the JavaScript level, we provide these JQuery-based

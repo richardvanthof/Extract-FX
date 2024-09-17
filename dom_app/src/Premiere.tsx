@@ -11,13 +11,10 @@
 * then your use, modification, or distribution of it requires the prior
 * written permission of Adobe. 
 **************************************************************************/
-const test = () => 'hello world'
-
 $._PPP_={
 
 	extractFxs : function(track) {
-		console.log(track)
-		return test()
+		return track
 	},
 
 	getVersionInfo : function() {
