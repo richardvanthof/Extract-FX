@@ -11,9 +11,7 @@
 * then your use, modification, or distribution of it requires the prior
 * written permission of Adobe. 
 **************************************************************************/
-function test() {
-	return 'test'
-}
+const test = () => 'hello world'
 
 $._PPP_={
 

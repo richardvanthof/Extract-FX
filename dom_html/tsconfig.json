@@ -7,10 +7,21 @@
             "es2015.promise"
         ],
         "strict": true,             // Shorthand for the following four options:
+        "rootDir": "src",            // Specify the root directory.
+        "outDir": "dist",            // Specify the output directory for compiled files.
         // "noImplicitAny": true,
         // "noImplicitThis": true,
         // "alwaysStrict": true,
         // "strictNullChecks": true,
         "target": "es5"             // Chrome 41 supports much of ECMAScript 5. However, this may need to be changed to ES3 to be safe.
-    }
+    },
+    "include": [
+        "src/**/*",
+        "src/**/*",
+        "types/**/*.d.ts"
+    ],
+    "exclude": [
+        "dist/**/*.ts",
+        "dist/**/*.tsx"
+    ],
 }

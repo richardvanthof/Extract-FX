@@ -1,6 +1,4 @@
-function test() {
-    return 'test';
-}
+var test = function () { return 'hello world'; };
 $._PPP_ = {
     extractFxs: function (track) {
         console.log(track);

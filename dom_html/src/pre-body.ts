@@ -16,7 +16,7 @@
 //  unsupported (see: https://github.com/Microsoft/vscode/issues/15377#issuecomment-278578309).
 
 function testCallback(data) {
-    alert(data)
+    alert('hello')
 }
 
 $( document ).ready(function() {
