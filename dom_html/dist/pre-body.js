@@ -14,6 +14,7 @@
 **************************************************************************/
 // This was relocated from index.html because syntax highlighting for JavaScript embedded in HTML is
 //  unsupported (see: https://github.com/Microsoft/vscode/issues/15377#issuecomment-278578309).
+// @ts-nocheck
 function testCallback(data) {
     alert(data);
 }
@@ -29,6 +30,16 @@ $(document).ready(function () {
         alert('button clicked');
         csInterface.evalScript("$._PPP_.extractFxs(".concat(targetTrack, ")"), testCallback);
         csInterface.evalScript('$._PPP_.getSequenceProxySetting()', myGetProxyFunction);
+    });
+    $("#help-btn").on("click", function (e) {
+        e.preventDefault();
+        var csInterface = new CSInterface();
+        var OSVersion = csInterface.getOSInformation();
+        var path = "file:///Library/Application Support/Adobe/CEP/extensions/Extract-FX/payloads/manual.html";
+        if (OSVersion.indexOf("Windows") >= 0) {
+            var path = "file:///C:/Program%20Files%20(x86)/Common%20Files/Adobe/CEP/extensions/Extract-FX/payloads/manual.html";
+        }
+        csInterface.openURLInDefaultBrowser(path);
     });
     $("#getseqname").on("click", function (e) {
         e.preventDefault();
