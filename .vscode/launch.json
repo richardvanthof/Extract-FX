@@ -1,26 +1,29 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "chrome",
-            "request": "attach",
-            "name": "Attach to Premiere",
-            "port": 7777,
-            "webRoot": "${workspaceRoot}/dom_html/dist/index.html",
-            "sourceMapPathOverrides": {
-                "webpack:///*": "${workspaceRoot}/*"
-            }
-        },
-        {
-            "type": "extendscript-debug",
-            "request": "attach",
-            "name": "Attach to ExtendScript Engine"
-        },
-        {
-            "type": "extendscript-debug",
-            "request": "launch",
-            "name": "Launch Script in ExtendScript Engine",
-            "script": "${workspaceFolder}/src/host/app.js" //replace for relative path
-        }
-    ]
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "attach",
+      "name": "Attach to Premiere",
+      "port": 7777,
+      "webRoot": "${workspaceRoot}/dom_html/dist/index.html",
+      "sourceMapPathOverrides": {
+          "webpack:///*": "${workspaceRoot}/*"
+      }
+    },
+    {
+      "type": "extendscript-debug",
+      "request": "attach",
+      "name": "Attach to ExtendScript Engine"
+    },
+    {
+      "type": "extendscript-debug",
+      "request": "launch",
+      "name": "Launch Script in ExtendScript Engine",
+      "script": "${workspaceFolder}/dom_app/dist/Premiere.jsx"
+    }
+  ]
 }

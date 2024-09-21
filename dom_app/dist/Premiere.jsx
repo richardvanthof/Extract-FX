@@ -1,7 +1,110 @@
+function updateEventPanel(msg, type) {
+    app.setSDKEventMessage(msg, type);
+}
+function message(msg) {
+    $.writeln(msg);
+}
+function searchForFileWithName(nameToFind) {
+    var numItemsAtRoot = app.project.rootItem.children.numItems;
+    var foundFile = null;
+    for (var i = 0; (numItemsAtRoot > 0) && (i < numItemsAtRoot) && (foundFile === null); i++) {
+        var currentItem = app.project.rootItem.children[i];
+        if ((currentItem) && currentItem.name == nameToFind) {
+            foundFile = currentItem;
+        }
+    }
+    return foundFile;
+}
+function findInsertedClip(track, startTime) {
+    for (var i = 0; i < track.clips.numItems; i++) {
+        var clip = track.clips[i];
+        if (clip.start.seconds === startTime.seconds) {
+            return clip;
+        }
+    }
+    return null;
+}
+function importFile(path) {
+    var file = path;
+    var suppressWarnings = true;
+    var importAsStills = false;
+    app.project.importFiles(file, suppressWarnings, app.project.getInsertionBin(), importAsStills);
+}
+;
+function getAdjustmentLayer() {
+    var fileName = 'RSFX-container';
+    var path = '/Library/Application Support/Adobe/CEP/extensions/Extract-FX/payloads/adjustment-layer.prproj';
+    var foundFile = searchForFileWithName(fileName);
+    if (foundFile === null) {
+        message("File not found. Importing...");
+        importFile(path);
+        foundFile = searchForFileWithName(fileName);
+        if (foundFile === null) {
+            message("Failed to import the file.");
+        }
+        else {
+            message("File imported successfully.");
+        }
+    }
+    else {
+        message("File found in the project.");
+    }
+    return foundFile;
+}
+function moveEffect(effect, targetClip) {
+    try {
+        message("Copying ".concat(effect.matchName, " to ").concat(targetClip.name));
+        var newEffect = targetClip.addProperty(effect.matchName);
+        for (var _i = 0, _a = effect.properties; _i < _a.length; _i++) {
+            var prop = _a[_i];
+            if (prop.isEffect && !prop.isReadOnly) {
+                newEffect.properties[prop.displayName].setValue(prop.getValue());
+            }
+        }
+    }
+    catch (e) {
+        message("Failed to copy effect: ".concat(effect.displayName));
+    }
+}
+(function copyClipEffectsToAdjustmentLayers() {
+    updateEventPanel('script connected', 'info');
+    var adjustmentLayer = getAdjustmentLayer();
+    function findVideoTrack(index) {
+        var videoTrack = app.project.activeSequence.videoTracks[index];
+        return videoTrack ? videoTrack : null;
+    }
+    var sequence = app.project.activeSequence;
+    if (!sequence) {
+        alert("No active sequence found.");
+        return;
+    }
+    var sourceTrackIndex = 1;
+    var targetTrackIndex = 2;
+    var sourceTrack = findVideoTrack(sourceTrackIndex - 1);
+    var targetTrack = findVideoTrack(targetTrackIndex - 1);
+    if (!sourceTrack || !targetTrack) {
+        alert("Please ensure the source and target tracks exist.");
+        return;
+    }
+    for (var _i = 0, _a = sourceTrack.clips; _i < _a.length; _i++) {
+        var clip = _a[_i];
+        var clipEffects = clip.components;
+        var startTime = clip.start;
+        if (clipEffects.numItems > 0) {
+            targetTrack.insertClip(adjustmentLayer, startTime);
+            var newAdjustmentLayer = findInsertedClip(targetTrack, startTime);
+            if (newAdjustmentLayer) {
+                for (var _b = 0, clipEffects_1 = clipEffects; _b < clipEffects_1.length; _b++) {
+                    var effect = clipEffects_1[_b];
+                    moveEffect(effect, newAdjustmentLayer);
+                }
+                newAdjustmentLayer.end = clip.end;
+            }
+        }
+    }
+    updateEventPanel('Finished copying effects', 'info');
+})();
 $._PPP_ = {
-    extractFxs: function (track) {
-        return track;
-    },
     getVersionInfo: function () {
         return 'PPro ' + app.version + 'x' + app.build;
     },

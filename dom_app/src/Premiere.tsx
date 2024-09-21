@@ -1,3 +1,146 @@
+function updateEventPanel(msg: string, type: 'info' | 'warning' | 'error') {
+	app.setSDKEventMessage(msg, type);
+}
+
+function message(msg) {
+	$.writeln(msg);
+}
+
+function searchForFileWithName(nameToFind) {
+	var numItemsAtRoot	= app.project.rootItem.children.numItems;
+	var foundFile 		= null;
+
+	for (var i = 0; (numItemsAtRoot > 0) && (i < numItemsAtRoot) && (foundFile === null); i++) {
+			var currentItem = app.project.rootItem.children[i];
+			if ((currentItem) && currentItem.name == nameToFind) {
+					foundFile = currentItem;
+			}
+	}
+	return foundFile;
+}
+
+function findInsertedClip(track, startTime) {
+	for (var i = 0; i < track.clips.numItems; i++) {
+			var clip = track.clips[i];
+			if (clip.start.seconds === startTime.seconds) {
+					return clip;
+			}
+	}
+	return null;
+}
+
+function importFile(path) {
+
+	// IMPORT ADJUSTMENT LAYER TEMPLATE
+	var file = path; // TODO: convert to relative path.
+	var suppressWarnings = true; //suppress errors
+	var importAsStills = false; // Import as image sequence
+
+app.project.importFiles(
+			file,
+	suppressWarnings,
+	app.project.getInsertionBin(),
+	importAsStills
+	);
+
+
+};
+
+function getAdjustmentLayer() {
+	const fileName = 'RSFX-container';
+	const path = '/Library/Application Support/Adobe/CEP/extensions/Extract-FX/payloads/adjustment-layer.prproj';
+
+	let foundFile = searchForFileWithName(fileName);
+	if (foundFile === null) {
+			message("File not found. Importing...");
+			importFile(path);
+			foundFile = searchForFileWithName(fileName);
+			if (foundFile === null) {
+					message("Failed to import the file.");
+			} else {
+					message("File imported successfully.");
+			}
+	} else {
+			message("File found in the project.");
+	}
+	return foundFile;   
+}
+
+function moveEffect(effect: object, targetClip: object) {
+	try {
+		message(`Copying ${effect.matchName} to ${targetClip.name}`);
+		// Add the effect to the new adjustment layer
+		var newEffect = targetClip.addProperty(effect.matchName);
+
+		// Copy properties from the source effect to the new effect
+		for (let prop of effect.properties) {
+			if (prop.isEffect && !prop.isReadOnly) {
+				newEffect.properties[prop.displayName].setValue(prop.getValue());
+			}
+		}
+	} catch (e) {
+			message(`Failed to copy effect: ${effect.displayName}`);
+	}
+}
+
+
+(function copyClipEffectsToAdjustmentLayers() {
+	updateEventPanel('script connected', 'info')
+	// Import adjustment layer
+	const adjustmentLayer = getAdjustmentLayer()
+
+	// Helper function to find a video track by index
+	function findVideoTrack(index) {
+			var videoTrack = app.project.activeSequence.videoTracks[index];
+			return videoTrack ? videoTrack : null;
+	}
+
+	// Get the active sequence
+	var sequence = app.project.activeSequence;
+	if (!sequence) {
+			alert("No active sequence found.");
+			return;
+	}
+
+	// Define which video track to look for clips and where to put adjustment layers
+	var sourceTrackIndex = 1; // The track from which to copy effects
+	var targetTrackIndex = 2; // The track where the adjustment layers will be placed
+
+	var sourceTrack = findVideoTrack(sourceTrackIndex - 1);
+	var targetTrack = findVideoTrack(targetTrackIndex - 1);
+
+	if (!sourceTrack || !targetTrack) {
+			alert("Please ensure the source and target tracks exist.");
+			return;
+	}
+
+	// Iterate over each clip in the source track
+	for (let clip of sourceTrack.clips) {
+			var clipEffects = clip.components; // Get the clip effects
+			const startTime = clip.start;
+			if (clipEffects.numItems > 0) {
+					// Create an adjustment layer in the target track
+					targetTrack.insertClip(adjustmentLayer, startTime);
+					var newAdjustmentLayer = findInsertedClip(targetTrack, startTime);
+
+					if (newAdjustmentLayer) {
+							// Apply the effects to the adjustment layer
+							for(let effect of clipEffects) {
+								// Duplicate the effect to the adjustment layer
+								moveEffect(effect, newAdjustmentLayer)
+							}
+
+							// Match the duration of the adjustment layer to the clip
+							newAdjustmentLayer.end = clip.end;
+					}
+			}
+	}
+
+	updateEventPanel('Finished copying effects', 'info')
+})();
+
+
+
 /*************************************************************************
 * ADOBE CONFIDENTIAL
 * ___________________
@@ -12,10 +155,6 @@
 * written permission of Adobe. 
 **************************************************************************/
 $._PPP_={
-
-	extractFxs : function(track) {
-		return track
-	},
 
 	getVersionInfo : function() {
 		return 'PPro ' + app.version + 'x' + app.build;
