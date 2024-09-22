@@ -67,28 +67,6 @@ function getAdjustmentLayer() {
 	return foundFile;   
 }
 
-function moveEffect(effect: object, targetClip: object) { //targetClips expects QE clip
-	try {
-		// Add the effect to the new adjustment layer
-		var newEffect = qe.project.getVideoEffectByName(effect);
-    const effectAdded = targetClip.addVideoEffect(newEffect);
-
-		if (effectAdded) {
-				// Copy properties from the source effect to the new effect
-				for (let prop of effect.properties) {
-						if (prop.isEffect && !prop.isReadOnly) {
-								var targetProp = newEffect.properties[prop.displayName];
-								if (targetProp) {
-										targetProp.setValue(prop.getValue());
-								}
-						}
-				}
-		}
-	} catch (e) {
-			message(`Failed to copy effect: ${effect.displayName}`);
-	}
-}
-
 
 (function copyClipEffectsToAdjustmentLayers() {
 	updateEventPanel('script connected', 'info')
@@ -121,11 +99,20 @@ function moveEffect(effect: object, targetClip: object) { //targetClips expects 
 			return;
 	}
 
+	function sanitized(effect: string) {
+		if(effect.toLowerCase() === 'motion') {
+			return 'Transform'
+		} else {
+			return effect
+		}
+	}
+
 	// Iterate over each clip in the source track
 	for (let c = 0; c <= sourceTrack.clips.numItems; c++) {
 			const clip = sourceTrack.clips[c]
 			var clipEffects = clip.components; // Get the clip effects
 			const startTime = clip.start;
+			updateEventPanel(`Moving effect from clip ${c} of ${sourceTrack.clips.numItems}.`, 'info');
 			if (clipEffects.numItems > 0) {
 					
 				// Create an adjustment layer in the target track
@@ -137,10 +124,25 @@ function moveEffect(effect: object, targetClip: object) { //targetClips expects 
 						const adjustmentLyrQE = qeTargetTrack.getItemAt(c) 
 						const adjustmentLayer = findInsertedClip(targetTrack, startTime);
 
-						// Apply the effects to the adjustment layer
+						
 						for(let effect of clipEffects) {
-								var newEffect = qe.project.getVideoEffectByName(effect.displayName);
-        				adjustmentLyrQE.addVideoEffect(newEffect);
+								
+								// Apply the effects to the adjustment layer
+								var newEffect = qe.project.getVideoEffectByName(sanitized(effect.displayName));
+        				const effectAdded = adjustmentLyrQE.addVideoEffect(newEffect);
+
+								// Apply effect settings to effect in adjustment layer.
+								if (effectAdded) {
+									// Copy properties from the source effect to the new effect
+									for (let prop of effect.properties) {
+											if (prop.isEffect && !prop.isReadOnly) {
+													var targetProp = newEffect.properties[sanitized(prop.displayName)];
+													if (targetProp) {
+															targetProp.setValue(prop.getValue());
+													}
+											}
+									}
+							}
 						}
 
 								// Match the duration of the adjustment layer to the clip

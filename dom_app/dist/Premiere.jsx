@@ -52,26 +52,6 @@ function getAdjustmentLayer() {
     }
     return foundFile;
 }
-function moveEffect(effect, targetClip) {
-    try {
-        var newEffect = qe.project.getVideoEffectByName(effect);
-        var effectAdded = targetClip.addVideoEffect(newEffect);
-        if (effectAdded) {
-            for (var _i = 0, _a = effect.properties; _i < _a.length; _i++) {
-                var prop = _a[_i];
-                if (prop.isEffect && !prop.isReadOnly) {
-                    var targetProp = newEffect.properties[prop.displayName];
-                    if (targetProp) {
-                        targetProp.setValue(prop.getValue());
-                    }
-                }
-            }
-        }
-    }
-    catch (e) {
-        message("Failed to copy effect: ".concat(effect.displayName));
-    }
-}
 (function copyClipEffectsToAdjustmentLayers() {
     updateEventPanel('script connected', 'info');
     var adjustmentLayer = getAdjustmentLayer();
@@ -93,10 +73,19 @@ function moveEffect(effect, targetClip) {
         alert("Please ensure the source and target tracks exist.");
         return;
     }
-    for (var c = 0; c < sourceTrack.clips.numItems; c++) {
+    function sanitized(effect) {
+        if (effect.toLowerCase() === 'motion') {
+            return 'Transform';
+        }
+        else {
+            return effect;
+        }
+    }
+    for (var c = 0; c <= sourceTrack.clips.numItems; c++) {
         var clip = sourceTrack.clips[c];
         var clipEffects = clip.components;
         var startTime = clip.start;
+        updateEventPanel("Moving effect from clip ".concat(c, " of ").concat(sourceTrack.clips.numItems, "."), 'info');
         if (clipEffects.numItems > 0) {
             var inserted = targetTrack.insertClip(adjustmentLayer, startTime);
             if (inserted) {
@@ -104,8 +93,19 @@ function moveEffect(effect, targetClip) {
                 var adjustmentLayer_1 = findInsertedClip(targetTrack, startTime);
                 for (var _i = 0, clipEffects_1 = clipEffects; _i < clipEffects_1.length; _i++) {
                     var effect = clipEffects_1[_i];
-                    var newEffect = qe.project.getVideoEffectByName(effect.displayName);
-                    adjustmentLyrQE.addVideoEffect(newEffect);
+                    var newEffect = qe.project.getVideoEffectByName(sanitized(effect.displayName));
+                    var effectAdded = adjustmentLyrQE.addVideoEffect(newEffect);
+                    if (effectAdded) {
+                        for (var _a = 0, _b = effect.properties; _a < _b.length; _a++) {
+                            var prop = _b[_a];
+                            if (prop.isEffect && !prop.isReadOnly) {
+                                var targetProp = newEffect.properties[sanitized(prop.displayName)];
+                                if (targetProp) {
+                                    targetProp.setValue(prop.getValue());
+                                }
+                            }
+                        }
+                    }
                 }
                 adjustmentLayer_1.end = clip.end;
             }
