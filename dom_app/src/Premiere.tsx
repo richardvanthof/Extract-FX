@@ -106,15 +106,15 @@ $._PPP_= {
 			}
 		
 			// Define which video track to look for clips and where to put adjustment layers
-			const sourceTrackIndex = 1; // The track from which to copy effects
-			const targetTrackIndex = 2; // The track where the adjustment layers will be placed
+			const sourceTrackIndex = 0; // The track from which to copy effects
+			const targetTrackIndex = 1; // The track where the adjustment layers will be placed
 		
-			const sourceTrack = findVideoTrack(sourceTrackIndex - 1);
-			const targetTrack = findVideoTrack(targetTrackIndex - 1);
+			const sourceTrack = findVideoTrack(sourceTrackIndex);
+			const targetTrack = findVideoTrack(targetTrackIndex);
 			const qeTargetTrack = qe.project.getActiveSequence().getVideoTrackAt(targetTrackIndex - 1);
 		
 			if (!sourceTrack || !targetTrack) {
-					alert("Please ensure the source and target tracks exist.");
+					throw "Please ensure the source and target tracks exist.";
 					return;
 			}
 		

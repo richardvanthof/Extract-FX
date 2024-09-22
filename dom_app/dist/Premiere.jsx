@@ -80,13 +80,13 @@ $._PPP_ = {
                 alert("No active sequence found.");
                 return;
             }
-            var sourceTrackIndex = 1;
-            var targetTrackIndex = 2;
-            var sourceTrack = findVideoTrack(sourceTrackIndex - 1);
-            var targetTrack = findVideoTrack(targetTrackIndex - 1);
+            var sourceTrackIndex = 0;
+            var targetTrackIndex = 1;
+            var sourceTrack = findVideoTrack(sourceTrackIndex);
+            var targetTrack = findVideoTrack(targetTrackIndex);
             var qeTargetTrack = qe.project.getActiveSequence().getVideoTrackAt(targetTrackIndex - 1);
             if (!sourceTrack || !targetTrack) {
-                alert("Please ensure the source and target tracks exist.");
+                throw "Please ensure the source and target tracks exist.";
                 return;
             }
             for (var c = 0; c <= sourceTrack.clips.numItems; c++) {
