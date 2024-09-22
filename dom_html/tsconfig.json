@@ -9,6 +9,7 @@
         "strict": true,             // Shorthand for the following four options:
         "rootDir": "src",            // Specify the root directory.
         "outDir": "dist",            // Specify the output directory for compiled files.
+        "removeComments": true,
         // "noImplicitAny": true,
         // "noImplicitThis": true,
         // "alwaysStrict": true,

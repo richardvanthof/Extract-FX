@@ -15,25 +15,44 @@
 // This was relocated from index.html because syntax highlighting for JavaScript embedded in HTML is
 //  unsupported (see: https://github.com/Microsoft/vscode/issues/15377#issuecomment-278578309).
 // @ts-nocheck
-function testCallback(data) {
-    alert(data)
+const debug = false
+
+function handleCallback(data) {
+    if(data) showLoadingScreen(false)
+    if(data !== true) {
+        alert(data);
+        console.error(data)
+    }
 }
 
-$( document ).ready(function() {
+function showLoadingScreen(active: boolean) {
+    if(active) {
+        document.querySelectorAll('#progress, #progress-caption, #cancel-btn').forEach(e => e.classList.remove('hide'));
+        document.querySelectorAll('.start-view, #extract-btn, #help-btn').forEach(e => e.classList.add('hide'));
+    } else {
+        document.querySelectorAll('#progress, #progress-caption, #cancel-btn').forEach(e => e.classList.add('hide'));
+        document.querySelectorAll('.start-view, #extract-btn, #help-btn').forEach(e => e.classList.remove('hide'));
+    }
+};
 
+$( document ).ready(function() {
+    document.querySelectorAll('.debug').forEach(e => {
+        debug ? e.classList.remove('hide') : e.classList.add('hide')
+    });
+    
     // For functions which require interaction at the JavaScript level, we provide these JQuery-based
     // handlers, instead of directly invoking ExtendScript .This givs the JavaScript layer a chance
     // to pass data into the ExtendScript layer, and process the results.
-
+    
     $("#extract-btn").on("click", function(e){
         e.preventDefault(); 
         // get target video track
         const targetTrack = document.querySelector('#track').value
 
         var csInterface = new CSInterface();
-        alert('button clicked')
-        csInterface.evalScript(`$._PPP_.extractFxs(${targetTrack})`, testCallback);
-        csInterface.evalScript('$._PPP_.getSequenceProxySetting()', myGetProxyFunction);
+        //alert('button clicked')
+        showLoadingScreen(true)
+        csInterface.evalScript(`$._PPP_.copyClipEffectsToAdjustmentLayers()`, handleCallback);
     });
 
     $("#help-btn").on("click", function(e){
@@ -48,7 +67,7 @@ $( document ).ready(function() {
         }
         csInterface.openURLInDefaultBrowser(path);	
     });
-
+/*
     $("#getseqname").on("click", function(e){
             e.preventDefault(); 
             var csInterface = new CSInterface();
@@ -299,4 +318,5 @@ $( document ).ready(function() {
             csInterface.evalScript(whole_megillah);
         }
     });
+    */
 });

@@ -163,3 +163,7 @@ summary {
 	margin-bottom: .3em;
 }
 
+.hide {
+	display: none !important;
+}
+

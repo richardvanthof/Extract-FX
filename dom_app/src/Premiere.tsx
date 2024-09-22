@@ -1,162 +1,185 @@
 const qe = app.enableQE();
 
-function updateEventPanel(msg: string, type: 'info' | 'warning' | 'error') {
-	app.setSDKEventMessage(msg, type);
-}
-
-function message(msg) {
-	$.writeln(msg);
-}
-
-function searchForFileWithName(nameToFind) {
-	var numItemsAtRoot	= app.project.rootItem.children.numItems;
-	var foundFile 		= null;
-
-	for (var i = 0; (numItemsAtRoot > 0) && (i < numItemsAtRoot) && (foundFile === null); i++) {
-			var currentItem = app.project.rootItem.children[i];
-			if ((currentItem) && currentItem.name == nameToFind) {
-					foundFile = currentItem;
-			}
-	}
-	return foundFile;
-}
-
-function findInsertedClip(track, startTime) {
-	for (let clip of track.clips) {
-			if (clip.start.seconds === startTime.seconds) {
-					return clip;
-			}
-	}
-	return null;
-}
-
-function importFile(path) {
-
-	// IMPORT ADJUSTMENT LAYER TEMPLATE
-	var file = path; // TODO: convert to relative path.
-	var suppressWarnings = true; //suppress errors
-	var importAsStills = false; // Import as image sequence
-
-app.project.importFiles(
-			file,
-	suppressWarnings,
-	app.project.getInsertionBin(),
-	importAsStills
-	);
 
 
-};
 
-function getAdjustmentLayer() {
-	const fileName = 'RSFX-container';
-	const path = '/Library/Application Support/Adobe/CEP/extensions/Extract-FX/payloads/adjustment-layer.prproj';
-
-	let foundFile = searchForFileWithName(fileName);
-	if (foundFile === null) {
-			message("File not found. Importing...");
-			importFile(path);
-			foundFile = searchForFileWithName(fileName);
-			if (foundFile === null) {
-					message("Failed to import the file.");
+$._PPP_= {
+	message: function(msg) {
+		$.writeln(msg);
+	},
+	
+	updateEventPanel: function(msg: string, type: 'info' | 'warning' | 'error') {
+		$._PPP_.message(msg);
+		app.setSDKEventMessage(msg, type);
+	},
+	
+	
+	searchForFileWithName: function(nameToFind) {
+		var numItemsAtRoot	= app.project.rootItem.children.numItems;
+		var foundFile 		= null;
+	
+		for (var i = 0; (numItemsAtRoot > 0) && (i < numItemsAtRoot) && (foundFile === null); i++) {
+				var currentItem = app.project.rootItem.children[i];
+				if ((currentItem) && currentItem.name == nameToFind) {
+						foundFile = currentItem;
+				}
+		}
+		return foundFile;
+	},
+	
+	findInsertedClip: function(track, startTime) {
+		for (let clip of track.clips) {
+				if (clip.start.seconds === startTime.seconds) {
+						return clip;
+				}
+		}
+		return null;
+	},
+	
+	importFile: function(path) {
+	
+		// IMPORT ADJUSTMENT LAYER TEMPLATE
+		var file = path; // TODO: convert to relative path.
+		var suppressWarnings = true; //suppress errors
+		var importAsStills = false; // Import as image sequence
+	
+	app.project.importFiles(
+				file,
+		suppressWarnings,
+		app.project.getInsertionBin(),
+		importAsStills
+		);
+	
+	
+	},
+	
+	getAdjustmentLayer: function() {
+		const fileName = 'RSFX-container';
+		let path;
+		let foundFile = $._PPP_.searchForFileWithName(fileName);
+		if (Folder.fs == 'Macintosh') {
+			path = '/Library/Application Support/Adobe/CEP/extensions/Extract-FX/payloads/adjustment-layer.prproj';							
 			} else {
-					message("File imported successfully.");
-			}
-	} else {
-			message("File found in the project.");
-	}
-	return foundFile;   
-}
-
-
-(function copyClipEffectsToAdjustmentLayers() {
-	updateEventPanel('script connected', 'info')
-	// Import adjustment layer
-	const adjustmentLayer = getAdjustmentLayer()
-
-	// Helper function to find a video track by index
-	function findVideoTrack(index) {
-			var videoTrack = app.project.activeSequence.videoTracks[index];
-			return videoTrack ? videoTrack : null;
-	}
-
-	// Get the active sequence
-	var sequence = app.project.activeSequence;
-	if (!sequence) {
-			alert("No active sequence found.");
-			return;
-	}
-
-	// Define which video track to look for clips and where to put adjustment layers
-	const sourceTrackIndex = 1; // The track from which to copy effects
-	const targetTrackIndex = 2; // The track where the adjustment layers will be placed
-
-	const sourceTrack = findVideoTrack(sourceTrackIndex - 1);
-	const targetTrack = findVideoTrack(targetTrackIndex - 1);
-	const qeTargetTrack = qe.project.getActiveSequence().getVideoTrackAt(targetTrackIndex - 1);
-
-	if (!sourceTrack || !targetTrack) {
-			alert("Please ensure the source and target tracks exist.");
-			return;
-	}
-
-	function sanitized(effect: string) {
+			path = 'file:///C:/Program%20Files%20(x86)/Common%20Files/Adobe/CEP/extensions/Extract-FX/payloads/adjustment-layer.prproj';
+		}
+		
+		if (foundFile === null) {
+				$._PPP_.message("File not found. Importing...");
+				$._PPP_.importFile(path);
+				foundFile = $._PPP_.searchForFileWithName(fileName);
+				if (foundFile === null) {
+					throw "Failed to import the file."
+				} else {
+					$._PPP_.message("File imported successfully.");
+				}
+		} else {
+			$._PPP_.message("File found in the project.");
+		}
+		return foundFile;   
+	},
+	
+	sanitized: function(effect: string) {
 		if(effect.toLowerCase() === 'motion') {
 			return 'Transform'
 		} else {
 			return effect
 		}
-	}
-
-	// Iterate over each clip in the source track
-	for (let c = 0; c <= sourceTrack.clips.numItems; c++) {
-			const clip = sourceTrack.clips[c]
-			var clipEffects = clip.components; // Get the clip effects
-			const startTime = clip.start;
-			updateEventPanel(`Moving effect from clip ${c} of ${sourceTrack.clips.numItems}.`, 'info');
-			if (clipEffects.numItems > 0) {
+	},
+	
+	copyClipEffectsToAdjustmentLayers : function(){
+		try {
+			$._PPP_.updateEventPanel('Initializing effect extraction...', 'info')
+			// Import adjustment layer
+			const adjustmentLayer = $._PPP_.getAdjustmentLayer()
+		
+			// Helper function to find a video track by index
+			function findVideoTrack(index) {
+					var videoTrack = app.project.activeSequence.videoTracks[index];
+					return videoTrack ? videoTrack : null;
+			}
+		
+			// Get the active sequence
+			var sequence = app.project.activeSequence;
+			if (!sequence) {
+					alert("No active sequence found.");
+					return;
+			}
+		
+			// Define which video track to look for clips and where to put adjustment layers
+			const sourceTrackIndex = 1; // The track from which to copy effects
+			const targetTrackIndex = 2; // The track where the adjustment layers will be placed
+		
+			const sourceTrack = findVideoTrack(sourceTrackIndex - 1);
+			const targetTrack = findVideoTrack(targetTrackIndex - 1);
+			const qeTargetTrack = qe.project.getActiveSequence().getVideoTrackAt(targetTrackIndex - 1);
+		
+			if (!sourceTrack || !targetTrack) {
+					alert("Please ensure the source and target tracks exist.");
+					return;
+			}
+		
+			// Iterate over each clip in the source track
+			for (let c = 0; c <= sourceTrack.clips.numItems; c++) {
+					const clip = sourceTrack.clips[c]
+					var clipEffects = clip.components; // Get the clip effects
+					const startTime = clip.start;
 					
-				// Create an adjustment layer in the target track
-					const inserted:boolean = targetTrack.insertClip(adjustmentLayer, startTime); //Returns true if inserted correctly
+					// Status update
+					$._PPP_.updateEventPanel(`Moving effect from clip ${c} of ${sourceTrack.clips.numItems}.`, 'info');
 					
-					if(inserted) {
-
-						// create link to newly created adjustment layer with QE API
-						const adjustmentLyrQE = qeTargetTrack.getItemAt(c) 
-						const adjustmentLayer = findInsertedClip(targetTrack, startTime);
-
-						
-						for(let effect of clipEffects) {
+					
+					if (clipEffects.numItems > 0) {
+							
+						// Create an adjustment layer in the target track
+							const inserted:boolean = targetTrack.insertClip(adjustmentLayer, startTime); //Returns true if inserted correctly
+							
+							if(inserted) {
+		
+								// create link to newly created adjustment layer with QE API
+								const adjustmentLyrQE = qeTargetTrack.getItemAt(c) 
+								const adjustmentLayer = $._PPP_.findInsertedClip(targetTrack, startTime);
+		
 								
-								// Apply the effects to the adjustment layer
-								var newEffect = qe.project.getVideoEffectByName(sanitized(effect.displayName));
-        				const effectAdded = adjustmentLyrQE.addVideoEffect(newEffect);
-
-								// Apply effect settings to effect in adjustment layer.
-								if (effectAdded) {
-									// Copy properties from the source effect to the new effect
-									for (let prop of effect.properties) {
-											if (prop.isEffect && !prop.isReadOnly) {
-													var targetProp = newEffect.properties[sanitized(prop.displayName)];
-													if (targetProp) {
-															targetProp.setValue(prop.getValue());
+								for(let effect of clipEffects) {
+										
+										// Apply the effects to the adjustment layer
+										var newEffect = qe.project.getVideoEffectByName($._PPP_.sanitized(effect.displayName));
+										const effectAdded = adjustmentLyrQE.addVideoEffect(newEffect);
+		
+										// Apply effect settings to effect in adjustment layer.
+										if (effectAdded) {
+											// Copy properties from the source effect to the new effect
+											for (let prop of effect.properties) {
+													if (prop.isEffect && !prop.isReadOnly) {
+															var targetProp = newEffect.properties[$._PPP_.sanitized(prop.displayName)];
+															if (targetProp) {
+																	targetProp.setValue(prop.getValue());
+															}
 													}
 											}
 									}
+								}
+		
+										// Match the duration of the adjustment layer to the clip
+										adjustmentLayer.end = clip.end;
+								
 							}
-						}
+							
+						}}
+		$._PPP_.updateEventPanel('Finished copying effects', 'info')
+		return true
+		} catch(err) {
+			$._PPP_.updateEventPanel(err, 'error')
+			alert(err)
+			return new Error(err)
+		}
+		
+	},
+	
+}
 
-								// Match the duration of the adjustment layer to the clip
-								adjustmentLayer.end = clip.end;
-						
-					}
-					
-			}
-	}
 
-	updateEventPanel('Finished copying effects', 'info')
-})();
-
-
+//$._PPP_.copyClipEffectsToAdjustmentLayers()
 
 // /*************************************************************************
 // * ADOBE CONFIDENTIAL

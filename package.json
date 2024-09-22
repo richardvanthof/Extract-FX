@@ -11,6 +11,7 @@
   "author": "Adobe",
   "license": "Custom",
   "dependencies": {
+    "uglify-js": "^3.19.3"
   },
   "devDependencies": {
     "@types/node": "^0.12.4",

@@ -23,14 +23,15 @@
 		<script src="../lib/Vulcan.js"></script>
 		<link href="css/style.css" rel="stylesheet" type="text/css">
 		<script src="./pre-body.js"></script>
+
 	</head>
 
 	<body onLoad="onLoaded()">
 
-	<!-- <div id="progress" class="hide">
-		<progress id="progress-indicator" value="" max="100">32%</progress> </br>
-		<p id="progress-caption" class="caption">Initializing...</p>
-	</div> -->
+	<div id="progress" class="hide">
+		<progress id="progress-indicator" ></progress> </br>
+		<p id="progress-caption" class="caption">Extracting effects...</p>
+	</div>
 	
 	<main class="start-view">
 		<form>
@@ -66,21 +67,21 @@
 	<header id="header">
 		<div>
 			<button title="start copying" id="extract-btn" >Extract</button>
-			<!--<button title="Cancel process" id="cancel-btn" onClick="abort" class="hide">Cancel</button>-->
+			<button title="Cancel process" id="cancel-btn" onClick="window.location.reload()" class="hide">Cancel</button>
 		</div>
 		
 		<div>
-			<button title="Reset app (debug)" style="font-size: 1.0em;" onClick="window.location.reload()">↩︎</button>
+			<button title="Reset app (debug)" class="debug" style="font-size: 1.0em;" onClick="window.location.reload()">↩︎ reset</button>
 			<button title="Help" id="help-btn" onClick="openHelp">?</button>
 		</div>
 	</header>
-		<details style="padding: 2em">
+	<details class="debug" style="padding: 2em; min-height: 500px">
 			<summary>Debug</summary>
 			<p id="username_pre">User name: </p>
 			<p id="username">[uninitialized]</p>
 			<p id="version_string">[uninitialized]</p>
 			<p id="active_seq">[uninitialized]</p>
-			<p id="proxies_on">Proxies enabled for sequence: </p>
+			<p id="proxies_on">Proxies enabled for sequence: </p> -->
 	
 			<!-- // These have JavaScript handlers... --> 
 	
