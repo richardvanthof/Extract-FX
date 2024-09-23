@@ -1,7 +1,4 @@
-const qe = app.enableQE();
-
-
-
+const qe = app.enableQE(); // Enable Adobe Query Engine (QE) API
 
 $._PPP_= {
 	message: function(msg) {
@@ -107,6 +104,7 @@ $._PPP_= {
 	copyClipEffectsToAdjustmentLayers : function(track: number){
 		try {
 			$._PPP_.updateEventPanel('Initializing effect extraction...', 'info')
+			
 			// Import adjustment layer
 			const adjustmentLayer = $._PPP_.getAdjustmentLayer()
 		
@@ -127,70 +125,130 @@ $._PPP_= {
 			const sourceTrackIndex = track | 1; // The track from which to copy effects
 			const targetTrackIndex = sourceTrackIndex + 1; // The track where the adjustment layers will be placed
 		
-			const sourceTrack = findVideoTrack(sourceTrackIndex - 1 );
+			// Regular extendscript API
+			const sourceTrack = findVideoTrack(sourceTrackIndex - 1 ); 
 			const targetTrack = findVideoTrack(targetTrackIndex - 1);
+
+			 // Adobe Query Engine (QE) API
 			const qeTargetTrack = qe.project.getActiveSequence().getVideoTrackAt(targetTrackIndex - 1);
 		
+
+
 			if (!sourceTrack || !targetTrack) {
 					throw "Please ensure the source and target tracks exist.";
 					return;
 			}
+
+			const copySettings = (sourceClip:object, adjustmentLyrQE: object):boolean => {
+				try {
+					$._PPP_.message('- Adding effect settings')
+
+					// Access effects from source clip
+					const sourceEffects = sourceClip.components;
+
+					// Loop over each source effect
+					for(let se = 0; se < sourceEffects; se++) {
+
+						// Access current effect lists (Component = effect)
+						const sourceEffect = sourceEffects[se] // Currect source effect
+						const targetEffect = adjustmentLyrQE.getComponentAt(se);  // Currect target effect
+
+						// Access current effect settings (aka. properties) list
+						const sourceProperties = sourceEffects.properties;
+						const targetProperties = targetEffect.properties;
+
+						// Loop over each setting (aka. property) of each effect.
+						for(let pr = 0; pr < sourceProperties.numItems; pr++) {
+
+							// Current single props
+							const sourceProp = sourceProperties[pr];
+							const targetProp = targetProperties[pr];
+
+							// Check if property is out of range
+							if (p >= sourceProperties.numItems) {
+								$._PPP_.message("Property index out of range for effect: " + sourceEffect.displayName);
+								continue; // Skip if property index is out of range
+							}
+
+							if (!sourceProp.isEffect && !sourceProp.isReadOnly) {
+								if (sourceProp.isTimeVarying()) {
+										// Copy keyframes
+										for (var k = 0; k < sourceProp.numKeys; k++) {
+												var keyTime = sourceProp.getKeyTime(k);
+												var keyValue = sourceProp.getValueAtKey(k);
+												targetProp.setValueAtKey(keyTime.seconds, keyValue);
+										}
+								} else {
+										// Copy static value
+										targetProp.setValue(sourceProp.getValue());
+								}
+							}
+						}
+					}		
+				} catch(err) {
+					throw err
+				}
+					
+				return true	
+			}
 		
+			
 			// Iterate over each clip in the source track
 			for (let c = 0; c < sourceTrack.clips.numItems; c++) {
-					const clip = sourceTrack.clips[c]
-					var clipEffects = clip.components; // Get the clip effects
-					const startTime = clip.start;
-					
-					// Status update
-					$._PPP_.updateEventPanel(`Moving effect from clip ${c} of ${sourceTrack.clips.numItems}.`, 'info');
-					
-					
-					if (clipEffects.numItems > 0) {
+				
+				const clip = sourceTrack.clips[c] //current clip
+				var clipEffects = clip.components; // curernt clip effects
+				const startTime = clip.start; //start time of clip
+				
+				// Status update
+				$._PPP_.updateEventPanel(`Moving effect from clip ${c} of ${sourceTrack.clips.numItems}.`, 'info');
+				
+				// Check if clip even has effects
+				if (clipEffects.numItems > 0) {
+						
+				// Create an adjustment layer in the target track
+				const inserted:boolean = targetTrack.insertClip(adjustmentLayer, startTime); //Returns true if inserted correctly
 							
-						// Create an adjustment layer in the target track
-							const inserted:boolean = targetTrack.insertClip(adjustmentLayer, startTime); //Returns true if inserted correctly
-							
-							if(inserted) {
-								
-								// create link to newly created adjustment layer with QE API
-								var adjustmentLyrQE = qeTargetTrack.getItemAt(c + 1) // Did +1 since QE starts counting from 1 
-								const adjustmentLayer = $._PPP_.findInsertedClip(targetTrack, startTime);
-		
-								// Apply effect settings to effect in adjustment layer.
-								for(let effect of clipEffects) {
-									let effectAdded;
-									const effectName = $._PPP_.sanitized(effect.displayName);
+				if(inserted) {
+					
+					// create link to newly created adjustment layer with QE API
+					var adjustmentLyrQE = qeTargetTrack.getItemAt(c + 1) // Did +1 since QE starts counting from 1 
+					const adjustmentLayer = $._PPP_.findInsertedClip(targetTrack, startTime);
+	
+					// Match the duration of the adjustment layer to the clip
+					adjustmentLayer.end = clip.end;
 
-									var newEffect = qe.project.getVideoEffectByName(effectName);
+					// COPY ALL EFFECTS TO ADJUSTMENT LAYER
+					
+					// Loop over each effect in the source clip 
+					for(let ce = 0; ce < clipEffects.numItems; ce++) {
+						
+						const effect = clipEffects[ce]; // Current effect
+						const effectName = $._PPP_.sanitized(effect.displayName); // Current (corrected) effect name
+						var newEffect = qe.project.getVideoEffectByName(effectName); // Fetch effect property
+						
+						let effectAdded;
 
-									if($._PPP_.notDuplicateFx('Transform', effectName, adjustmentLyrQE)) {
-										effectAdded = adjustmentLyrQE.addVideoEffect(newEffect);
-									} else {
-										$._PPP_.message('- Skipped adding duplicate effect.')
-										effectAdded = true
-									}
-									
-										
-									if(effectAdded) {
-										// Copy properties from the source effect to the new effect
-										for (let prop of effect.properties) {
-											if (prop.isEffect && !prop.isReadOnly) {
-													var targetProp = newEffect.properties[$._PPP_.sanitized(prop.displayName)];
-													if (targetProp) {
-															targetProp.setValue(prop.getValue());
-													}
-											}
-										}
-									} 
-								}
-		
-								// Match the duration of the adjustment layer to the clip
-								adjustmentLayer.end = clip.end;
-								
+						// Check if no duplicate Transform effect is added
+						if($._PPP_.notDuplicateFx('Transform', effectName, adjustmentLyrQE)) {
+							effectAdded = adjustmentLyrQE.addVideoEffect(newEffect); // Add effect to adjustment layer
+						} else {
+							$._PPP_.message('- Skipped duplicate effect.')
+							effectAdded = false
+						}
+						
+						// Check if effect was added correctly
+						if(effectAdded) {
+							// loop over each effect 
+							const settingsAdded = copySettings(clip, adjustmentLyrQE);
+							if (!settingsAdded) {
+								$._PPP_.message('- Error occured while adding effect settings.')
 							}
-							
-						}}
+						} 
+					}
+								
+				}		
+			}}
 		$._PPP_.updateEventPanel('Finished copying effects', 'info')
 		return true
 		} catch(err) {
