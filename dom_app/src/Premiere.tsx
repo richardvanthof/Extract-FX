@@ -89,12 +89,16 @@ $._PPP_= {
 		}
 	},
 
-	notDuplicateFx: function(fxName: string, QEclip: object) {
+	notDuplicateFx: function(filterName: string, currentFxName: string, QEclip: object) {
 		if(QEclip.numComponents > 0) {
 			for(let i = 0; i < QEclip.numComponents; i++) {
 				const comp = QEclip.getComponentAt(i);
 				const name = comp.name;
-				if(name.toLowerCase() === fxName.toLowerCase()) { 
+				if(
+					// Check if the the effect that currently has to be added is a duplicate.
+					name.toLowerCase() === filterName.toLowerCase() && 
+					filterName.toLowerCase() === currentFxName.toLocaleLowerCase()
+				) { 
 					return false
 				}
 			}
@@ -135,7 +139,7 @@ $._PPP_= {
 			}
 		
 			// Iterate over each clip in the source track
-			for (let c = 0; c <= sourceTrack.clips.numItems; c++) {
+			for (let c = 0; c < sourceTrack.clips.numItems; c++) {
 					const clip = sourceTrack.clips[c]
 					var clipEffects = clip.components; // Get the clip effects
 					const startTime = clip.start;
@@ -152,15 +156,17 @@ $._PPP_= {
 							if(inserted) {
 								
 								// create link to newly created adjustment layer with QE API
-								var adjustmentLyrQE = qeTargetTrack.getItemAt(c) 
+								var adjustmentLyrQE = qeTargetTrack.getItemAt(c + 1) // Did +1 since QE starts counting from 1 
 								const adjustmentLayer = $._PPP_.findInsertedClip(targetTrack, startTime);
 		
 								// Apply effect settings to effect in adjustment layer.
 								for(let effect of clipEffects) {
 									let effectAdded;
-									var newEffect = qe.project.getVideoEffectByName($._PPP_.sanitized(effect.displayName));
+									const effectName = effect.displayName;
 
-									if($._PPP_.notDuplicateFx('Transform', adjustmentLyrQE)) {
+									var newEffect = qe.project.getVideoEffectByName($._PPP_.sanitized(effectName));
+
+									if($._PPP_.notDuplicateFx('Transform', effectName, adjustmentLyrQE)) {
 										effectAdded = adjustmentLyrQE.addVideoEffect(newEffect);
 									} else {
 										$._PPP_.message('- Skipped adding duplicate effect.')
@@ -181,8 +187,8 @@ $._PPP_= {
 									} 
 								}
 		
-										// Match the duration of the adjustment layer to the clip
-										adjustmentLayer.end = clip.end;
+								// Match the duration of the adjustment layer to the clip
+								adjustmentLayer.end = clip.end;
 								
 							}
 							

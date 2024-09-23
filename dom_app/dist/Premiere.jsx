@@ -68,12 +68,13 @@ $._PPP_ = {
             return effect;
         }
     },
-    notDuplicateFx: function (fxName, QEclip) {
+    notDuplicateFx: function (filterName, currentFxName, QEclip) {
         if (QEclip.numComponents > 0) {
             for (var i = 0; i < QEclip.numComponents; i++) {
                 var comp = QEclip.getComponentAt(i);
                 var name_1 = comp.name;
-                if (name_1.toLowerCase() === fxName.toLowerCase()) {
+                if (name_1.toLowerCase() === filterName.toLowerCase() &&
+                    filterName.toLowerCase() === currentFxName.toLocaleLowerCase()) {
                     return false;
                 }
             }
@@ -102,7 +103,7 @@ $._PPP_ = {
                 throw "Please ensure the source and target tracks exist.";
                 return;
             }
-            for (var c = 0; c <= sourceTrack.clips.numItems; c++) {
+            for (var c = 0; c < sourceTrack.clips.numItems; c++) {
                 var clip = sourceTrack.clips[c];
                 var clipEffects = clip.components;
                 var startTime = clip.start;
@@ -110,13 +111,14 @@ $._PPP_ = {
                 if (clipEffects.numItems > 0) {
                     var inserted = targetTrack.insertClip(adjustmentLayer, startTime);
                     if (inserted) {
-                        var adjustmentLyrQE = qeTargetTrack.getItemAt(c);
+                        var adjustmentLyrQE = qeTargetTrack.getItemAt(c + 1);
                         var adjustmentLayer_1 = $._PPP_.findInsertedClip(targetTrack, startTime);
                         for (var _i = 0, clipEffects_1 = clipEffects; _i < clipEffects_1.length; _i++) {
                             var effect = clipEffects_1[_i];
                             var effectAdded = void 0;
-                            var newEffect = qe.project.getVideoEffectByName($._PPP_.sanitized(effect.displayName));
-                            if ($._PPP_.notDuplicateFx('Transform', adjustmentLyrQE)) {
+                            var effectName = effect.displayName;
+                            var newEffect = qe.project.getVideoEffectByName($._PPP_.sanitized(effectName));
+                            if ($._PPP_.notDuplicateFx('Transform', effectName, adjustmentLyrQE)) {
                                 effectAdded = adjustmentLyrQE.addVideoEffect(newEffect);
                             }
                             else {
