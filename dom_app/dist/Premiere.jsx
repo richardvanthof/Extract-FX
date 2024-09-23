@@ -60,12 +60,25 @@ $._PPP_ = {
         return foundFile;
     },
     sanitized: function (effect) {
-        if (effect.toLowerCase() === 'motion') {
+        if (effect.toLowerCase() === 'motion' ||
+            effect.toLowerCase() === 'opacity') {
             return 'Transform';
         }
         else {
             return effect;
         }
+    },
+    notDuplicateFx: function (fxName, QEclip) {
+        if (QEclip.numComponents > 0) {
+            for (var i = 0; i < QEclip.numComponents; i++) {
+                var comp = QEclip.getComponentAt(i);
+                var name_1 = comp.name;
+                if (name_1.toLowerCase() === fxName.toLowerCase()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     },
     copyClipEffectsToAdjustmentLayers: function (track) {
         try {
@@ -101,8 +114,15 @@ $._PPP_ = {
                         var adjustmentLayer_1 = $._PPP_.findInsertedClip(targetTrack, startTime);
                         for (var _i = 0, clipEffects_1 = clipEffects; _i < clipEffects_1.length; _i++) {
                             var effect = clipEffects_1[_i];
+                            var effectAdded = void 0;
                             var newEffect = qe.project.getVideoEffectByName($._PPP_.sanitized(effect.displayName));
-                            var effectAdded = adjustmentLyrQE.addVideoEffect(newEffect);
+                            if ($._PPP_.notDuplicateFx('Transform', adjustmentLyrQE)) {
+                                effectAdded = adjustmentLyrQE.addVideoEffect(newEffect);
+                            }
+                            else {
+                                $._PPP_.message('- Skipped adding duplicate effect.');
+                                effectAdded = true;
+                            }
                             if (effectAdded) {
                                 for (var _a = 0, _b = effect.properties; _a < _b.length; _a++) {
                                     var prop = _b[_a];
