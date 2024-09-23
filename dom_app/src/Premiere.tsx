@@ -86,7 +86,7 @@ $._PPP_= {
 		}
 	},
 	
-	copyClipEffectsToAdjustmentLayers : function(){
+	copyClipEffectsToAdjustmentLayers : function(track: number){
 		try {
 			$._PPP_.updateEventPanel('Initializing effect extraction...', 'info')
 			// Import adjustment layer
@@ -106,11 +106,11 @@ $._PPP_= {
 			}
 		
 			// Define which video track to look for clips and where to put adjustment layers
-			const sourceTrackIndex = 0; // The track from which to copy effects
-			const targetTrackIndex = 1; // The track where the adjustment layers will be placed
+			const sourceTrackIndex = track | 1; // The track from which to copy effects
+			const targetTrackIndex = sourceTrackIndex + 1; // The track where the adjustment layers will be placed
 		
-			const sourceTrack = findVideoTrack(sourceTrackIndex);
-			const targetTrack = findVideoTrack(targetTrackIndex);
+			const sourceTrack = findVideoTrack(sourceTrackIndex - 1 );
+			const targetTrack = findVideoTrack(targetTrackIndex - 1);
 			const qeTargetTrack = qe.project.getActiveSequence().getVideoTrackAt(targetTrackIndex - 1);
 		
 			if (!sourceTrack || !targetTrack) {
@@ -179,7 +179,7 @@ $._PPP_= {
 }
 
 
-//$._PPP_.copyClipEffectsToAdjustmentLayers()
+$._PPP_.copyClipEffectsToAdjustmentLayers(1)
 
 // /*************************************************************************
 // * ADOBE CONFIDENTIAL

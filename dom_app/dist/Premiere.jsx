@@ -67,7 +67,7 @@ $._PPP_ = {
             return effect;
         }
     },
-    copyClipEffectsToAdjustmentLayers: function () {
+    copyClipEffectsToAdjustmentLayers: function (track) {
         try {
             $._PPP_.updateEventPanel('Initializing effect extraction...', 'info');
             var adjustmentLayer = $._PPP_.getAdjustmentLayer();
@@ -80,10 +80,10 @@ $._PPP_ = {
                 alert("No active sequence found.");
                 return;
             }
-            var sourceTrackIndex = 0;
-            var targetTrackIndex = 1;
-            var sourceTrack = findVideoTrack(sourceTrackIndex);
-            var targetTrack = findVideoTrack(targetTrackIndex);
+            var sourceTrackIndex = track | 1;
+            var targetTrackIndex = sourceTrackIndex + 1;
+            var sourceTrack = findVideoTrack(sourceTrackIndex - 1);
+            var targetTrack = findVideoTrack(targetTrackIndex - 1);
             var qeTargetTrack = qe.project.getActiveSequence().getVideoTrackAt(targetTrackIndex - 1);
             if (!sourceTrack || !targetTrack) {
                 throw "Please ensure the source and target tracks exist.";
@@ -129,3 +129,4 @@ $._PPP_ = {
         }
     },
 };
+$._PPP_.copyClipEffectsToAdjustmentLayers(1);
