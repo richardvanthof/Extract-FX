@@ -94,11 +94,9 @@ $._PPP_= {
 			for(let i = 0; i < QEclip.numComponents; i++) {
 				const comp = QEclip.getComponentAt(i);
 				const name = comp.name;
-				if(
-					// Check if the the effect that currently has to be added is a duplicate.
-					name.toLowerCase() === filterName.toLowerCase() && 
-					filterName.toLowerCase() === currentFxName.toLocaleLowerCase()
-				) { 
+				const isDuplicate = (name.toLowerCase() === filterName.toLowerCase()) && (filterName.toLowerCase() === currentFxName.toLocaleLowerCase())
+				// $._PPP_.message(`filtername: ${filterName}; currentFxName: ${currentFxName}, comp.name: ${comp.name}; isDuplicate: ${isDuplicate}`);
+				if(isDuplicate) { 
 					return false
 				}
 			}
@@ -162,9 +160,9 @@ $._PPP_= {
 								// Apply effect settings to effect in adjustment layer.
 								for(let effect of clipEffects) {
 									let effectAdded;
-									const effectName = effect.displayName;
+									const effectName = $._PPP_.sanitized(effect.displayName);
 
-									var newEffect = qe.project.getVideoEffectByName($._PPP_.sanitized(effectName));
+									var newEffect = qe.project.getVideoEffectByName(effectName);
 
 									if($._PPP_.notDuplicateFx('Transform', effectName, adjustmentLyrQE)) {
 										effectAdded = adjustmentLyrQE.addVideoEffect(newEffect);

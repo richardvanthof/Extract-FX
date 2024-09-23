@@ -73,8 +73,8 @@ $._PPP_ = {
             for (var i = 0; i < QEclip.numComponents; i++) {
                 var comp = QEclip.getComponentAt(i);
                 var name_1 = comp.name;
-                if (name_1.toLowerCase() === filterName.toLowerCase() &&
-                    filterName.toLowerCase() === currentFxName.toLocaleLowerCase()) {
+                var isDuplicate = (name_1.toLowerCase() === filterName.toLowerCase()) && (filterName.toLowerCase() === currentFxName.toLocaleLowerCase());
+                if (isDuplicate) {
                     return false;
                 }
             }
@@ -116,8 +116,8 @@ $._PPP_ = {
                         for (var _i = 0, clipEffects_1 = clipEffects; _i < clipEffects_1.length; _i++) {
                             var effect = clipEffects_1[_i];
                             var effectAdded = void 0;
-                            var effectName = effect.displayName;
-                            var newEffect = qe.project.getVideoEffectByName($._PPP_.sanitized(effectName));
+                            var effectName = $._PPP_.sanitized(effect.displayName);
+                            var newEffect = qe.project.getVideoEffectByName(effectName);
                             if ($._PPP_.notDuplicateFx('Transform', effectName, adjustmentLyrQE)) {
                                 effectAdded = adjustmentLyrQE.addVideoEffect(newEffect);
                             }
