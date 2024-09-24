@@ -51,7 +51,7 @@ main {
 	
 }
 
-label, button, select, h1,h2, h3, h4, p, summary {
+label, button, select, h1,h2, h3, h4, h5, h6, p, summary {
 	color: rgb(216, 205, 205);
 
 }
@@ -67,7 +67,12 @@ h1, h2, h3, h4, h5, h6 {
 	margin: 0;
 }
 
-p {
+h6 {
+	font-size: 11px;
+	font-weight: normal;
+}
+
+p, h6 {
 	text-align:center;
 }
 
@@ -143,13 +148,18 @@ input['number'] {
 }
 
 .exclusions-container {
-	min-height: 5rem;
+	min-height: 10rem;
 	/* padding-bottom: 2em; */
 }
 
 .exclusions-placeholder {
 	margin: 0;
-	transform: translateY(1em)
+	transform: translateY(3em);
+	text-align: center;
+}
+
+.caption {
+	font-size: 0.8em;
 }
 
 #remove-all-exclusions-btn {
