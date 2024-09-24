@@ -177,7 +177,8 @@ $._PPP_ = {
                 const newValue = currentKeyframe[1];
                 const add = targetProp.addKey(newTime, updateUI);
                 if (add === 0) {
-                  targetProp.setValueAtKey(newTime, newValue, updateUI);
+                  const isSet = targetProp.setValueAtKey(newTime, newValue, updateUI);
+									if(isSet !== 0) continue;
                 }
               }
              
@@ -185,7 +186,8 @@ $._PPP_ = {
 							 // Set static values
               $.writeln('setting static value...');
               const newValue = sourceProp.getValue();
-              targetProp.setValue(newValue, updateUI);
+              const isSet = targetProp.setValue(newValue, updateUI);
+							if(isSet !== 0) continue;
             }
           } else {
 						$._PPP_.message(`${sourceEffect.matchName}: ${sourceProp.displayName} setting skipped.`, 'warning')
@@ -198,8 +200,7 @@ $._PPP_ = {
 
       return true;
     } catch (err) {
-      $._PPP_.message('- Error during copySettings: ' + err.message);
-      throw err;
+      $._PPP_.message('- Error during copySettings: ' + err);
     }
   },
 

@@ -130,14 +130,18 @@ $._PPP_ = {
                                 var newValue = currentKeyframe[1];
                                 var add = targetProp.addKey(newTime, updateUI);
                                 if (add === 0) {
-                                    targetProp.setValueAtKey(newTime, newValue, updateUI);
+                                    var isSet = targetProp.setValueAtKey(newTime, newValue, updateUI);
+                                    if (isSet !== 0)
+                                        continue;
                                 }
                             }
                         }
                         else {
                             $.writeln('setting static value...');
                             var newValue = sourceProp.getValue();
-                            targetProp.setValue(newValue, updateUI);
+                            var isSet = targetProp.setValue(newValue, updateUI);
+                            if (isSet !== 0)
+                                continue;
                         }
                     }
                     else {
@@ -151,8 +155,7 @@ $._PPP_ = {
             return true;
         }
         catch (err) {
-            $._PPP_.message('- Error during copySettings: ' + err.message);
-            throw err;
+            $._PPP_.message('- Error during copySettings: ' + err);
         }
     },
     copyClipEffectsToAdjustmentLayers: function (track) {
