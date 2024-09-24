@@ -1,4 +1,5 @@
 var qe = app.enableQE();
+var updateUI = 1;
 $._PPP_ = {
     message: function (msg) {
         $.writeln(msg);
@@ -64,6 +65,11 @@ $._PPP_ = {
             effect.toLowerCase() === 'opacity') {
             return 'Transform';
         }
+        else if (
+            effect.toLowerCase() === 'AE.ADBE Motion'.toLowerCase() ||
+            effect.toLowerCase() === 'AE.ADBE Opacity'.toLowerCase()) {
+            return 'AE.ADBE Transform';
+        }
         else {
             return effect;
         }
@@ -73,13 +79,66 @@ $._PPP_ = {
             for (var i = 0; i < QEclip.numComponents; i++) {
                 var comp = QEclip.getComponentAt(i);
                 var name_1 = comp.name;
-                var isDuplicate = (name_1.toLowerCase() === filterName.toLowerCase()) && (filterName.toLowerCase() === currentFxName.toLocaleLowerCase());
+                var isDuplicate = (name_1.toLowerCase() === filterName.toLowerCase()) &&
+                    (filterName.toLowerCase() === currentFxName.toLocaleLowerCase());
                 if (isDuplicate) {
                     return false;
                 }
             }
         }
         return true;
+    },
+    copySettings: function (sourceEffect, targetClip) {
+        function findByName(list, query, keyName) {
+            if (list && list.components) { // Check if list and list.components exist
+                for (var i = 0; i < list.components.numItems; i++) { // Using numItems is safer
+                    var component = list.components[i];
+                    if (component[keyName || 'displayName'] === query) {
+                        return component;
+                    }
+                }
+            } else {
+                $._PPP_.message('- Error: list or list.components is undefined.');
+            }
+            return null;
+        }
+    
+        try {
+            var sourceComp = sourceEffect;
+            var targetComponent = findByName(targetClip, $._PPP_.sanitized(sourceComp.matchName), 'matchName');
+            if (targetComponent !== null) {
+                for (var _i = 0, _a = sourceComp.properties; _i < _a.length; _i++) {
+                    var sourceProp = _a[_i];
+                    var targetProp = findByName(targetComponent, sourceProp.displayName);
+                    if (targetProp !== null) {
+                        if (targetProp.areKeyframesSupported()) {
+                            $.writeln('setting keyframes...');
+                            for (var k = 0; k < targetProp.keyframes.length; k++) {
+                                var currentKeyframe = sourceProp.keyframes[k];
+                                var newTime = currentKeyframe[0];
+                                var newValue = currentKeyframe[1];
+                                var add = targetProp.addKey(newTime, updateUI);
+                                if (add === 0) {
+                                    targetProp.setValueAtKey(newTime, newValue, updateUI);
+                                }
+                            }
+                        } else {
+                            $.writeln('setting static value...');
+                            var newValue = sourceProp.value;
+                            targetProp.setValue(newValue, updateUI);
+                        }
+                    } else {
+                        throw "Effect property of " + sourceProp.displayName + " of " + sourceComp.displayName + " not found.";
+                    }
+                }
+            } else {
+                throw "Component (aka. effect) '" + sourceComp.matchName + "' as '" + $._PPP_.sanitized(sourceComp.matchName) + "' not found.";
+            }
+            return true;
+        } catch (err) {
+            $._PPP_.message('- Error during copySettings: ' + err.message);
+            throw err;
+        }
     },
     copyClipEffectsToAdjustmentLayers: function (track) {
         try {
@@ -103,58 +162,26 @@ $._PPP_ = {
                 throw "Please ensure the source and target tracks exist.";
                 return;
             }
-            var copySettings = function (sourceClip, adjustmentLyrQE) {
-                try {
-                    $._PPP_.message('- Adding effect settings');
-                    var sourceEffects = sourceClip.components;
-                    for (var se = 0; se < sourceEffects; se++) {
-                        var sourceEffect = sourceEffects[se];
-                        var targetEffect = adjustmentLyrQE.getComponentAt(se);
-                        var sourceProperties = sourceEffects.properties;
-                        var targetProperties = targetEffect.properties;
-                        for (var pr = 0; pr < sourceProperties.numItems; pr++) {
-                            var sourceProp = sourceProperties[pr];
-                            var targetProp = targetProperties[pr];
-                            if (p >= sourceProperties.numItems) {
-                                $._PPP_.message("Property index out of range for effect: " + sourceEffect.displayName);
-                                continue;
-                            }
-                            if (!sourceProp.isEffect && !sourceProp.isReadOnly) {
-                                if (sourceProp.isTimeVarying()) {
-                                    for (var k = 0; k < sourceProp.numKeys; k++) {
-                                        var keyTime = sourceProp.getKeyTime(k);
-                                        var keyValue = sourceProp.getValueAtKey(k);
-                                        targetProp.setValueAtKey(keyTime.seconds, keyValue);
-                                    }
-                                }
-                                else {
-                                    targetProp.setValue(sourceProp.getValue());
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (err) {
-                    throw err;
-                }
-                return true;
-            };
             for (var c = 0; c < sourceTrack.clips.numItems; c++) {
-                var clip = sourceTrack.clips[c];
-                var clipEffects = clip.components;
-                var startTime = clip.start;
+                var sourceClip = sourceTrack.clips[c];
+                var targetClip = targetTrack.clips[c];
+                var clipEffects = sourceClip.components;
+                var startTime = sourceClip.start;
                 $._PPP_.updateEventPanel("Moving effect from clip " + c + " of " + sourceTrack.clips.numItems + ".", 'info');
                 if (clipEffects.numItems > 0) {
                     var inserted = targetTrack.insertClip(adjustmentLayer, startTime);
                     if (inserted) {
                         var adjustmentLyrQE = qeTargetTrack.getItemAt(c + 1);
                         var adjustmentLayer_1 = $._PPP_.findInsertedClip(targetTrack, startTime);
-                        adjustmentLayer_1.end = clip.end;
+                        adjustmentLayer_1.end = sourceClip.end;
                         for (var ce = 0; ce < clipEffects.numItems; ce++) {
                             var effect = clipEffects[ce];
                             var effectName = $._PPP_.sanitized(effect.displayName);
                             var newEffect = qe.project.getVideoEffectByName(effectName);
                             var effectAdded = void 0;
+
+                            $._PPP_.message($._PPP_.sanitized(effect.matchName))
+
                             if ($._PPP_.notDuplicateFx('Transform', effectName, adjustmentLyrQE)) {
                                 effectAdded = adjustmentLyrQE.addVideoEffect(newEffect);
                             }
@@ -163,7 +190,7 @@ $._PPP_ = {
                                 effectAdded = false;
                             }
                             if (effectAdded) {
-                                var settingsAdded = copySettings(clip, adjustmentLyrQE);
+                                var settingsAdded = $._PPP_.copySettings(effect, targetClip);
                                 if (!settingsAdded) {
                                     $._PPP_.message('- Error occured while adding effect settings.');
                                 }
