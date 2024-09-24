@@ -1,5 +1,8 @@
 var qe = app.enableQE();
 var updateUI = 1;
+var $;
+(function ($) {
+})($ || ($ = {}));
 $._PPP_ = {
     message: function (msg) {
         $.writeln(msg);
@@ -11,9 +14,9 @@ $._PPP_ = {
     searchForFileWithName: function (nameToFind) {
         var numItemsAtRoot = app.project.rootItem.children.numItems;
         var foundFile = null;
-        for (var i = 0; (numItemsAtRoot > 0) && (i < numItemsAtRoot) && (foundFile === null); i++) {
+        for (var i = 0; i < numItemsAtRoot && foundFile === null; i++) {
             var currentItem = app.project.rootItem.children[i];
-            if ((currentItem) && currentItem.name == nameToFind) {
+            if (currentItem && currentItem.name === nameToFind) {
                 foundFile = currentItem;
             }
         }
@@ -32,43 +35,37 @@ $._PPP_ = {
         var file = path;
         var suppressWarnings = true;
         var importAsStills = false;
-        app.project.importFiles(file, suppressWarnings, app.project.getInsertionBin(), importAsStills);
+        app.project.importFiles([file], suppressWarnings, importAsStills);
     },
     getAdjustmentLayer: function () {
         var fileName = 'RSFX-container';
         var path;
         var foundFile = $._PPP_.searchForFileWithName(fileName);
-        if (Folder.fs == 'Macintosh') {
+        if (Folder.fs === 'Macintosh') {
             path = '/Library/Application Support/Adobe/CEP/extensions/Extract-FX/payloads/adjustment-layer.prproj';
         }
         else {
             path = 'file:///C:/Program%20Files%20(x86)/Common%20Files/Adobe/CEP/extensions/Extract-FX/payloads/adjustment-layer.prproj';
         }
         if (foundFile === null) {
-            $._PPP_.message("File not found. Importing...");
+            $._PPP_.message('File not found. Importing...');
             $._PPP_.importFile(path);
             foundFile = $._PPP_.searchForFileWithName(fileName);
             if (foundFile === null) {
-                throw "Failed to import the file.";
+                throw 'Failed to import the file.';
             }
             else {
-                $._PPP_.message("File imported successfully.");
+                $._PPP_.message('File imported successfully.');
             }
         }
         else {
-            $._PPP_.message("File found in the project.");
+            $._PPP_.message('File found in the project.');
         }
         return foundFile;
     },
     sanitized: function (effect) {
-        if (effect.toLowerCase() === 'motion' ||
-            effect.toLowerCase() === 'opacity') {
+        if (effect.toLowerCase() === 'motion' || effect.toLowerCase() === 'opacity') {
             return 'Transform';
-        }
-        else if (
-            effect.toLowerCase() === 'AE.ADBE Motion'.toLowerCase() ||
-            effect.toLowerCase() === 'AE.ADBE Opacity'.toLowerCase()) {
-            return 'AE.ADBE Transform';
         }
         else {
             return effect;
@@ -79,8 +76,8 @@ $._PPP_ = {
             for (var i = 0; i < QEclip.numComponents; i++) {
                 var comp = QEclip.getComponentAt(i);
                 var name_1 = comp.name;
-                var isDuplicate = (name_1.toLowerCase() === filterName.toLowerCase()) &&
-                    (filterName.toLowerCase() === currentFxName.toLocaleLowerCase());
+                var isDuplicate = name_1.toLowerCase() === filterName.toLowerCase() &&
+                    filterName.toLowerCase() === currentFxName.toLowerCase();
                 if (isDuplicate) {
                     return false;
                 }
@@ -88,29 +85,24 @@ $._PPP_ = {
         }
         return true;
     },
-    copySettings: function (sourceEffect, targetClip) {
-        function findByName(list, query, keyName) {
-            if (list && list.components) { // Check if list and list.components exist
-                for (var i = 0; i < list.components.numItems; i++) { // Using numItems is safer
-                    var component = list.components[i];
-                    if (component[keyName || 'displayName'] === query) {
-                        return component;
-                    }
-                }
-            } else {
-                $._PPP_.message('- Error: list or list.components is undefined.');
+    findComponentByName: function (list, query, keyName) {
+        if (keyName === void 0) { keyName = 'displayName'; }
+        for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
+            var component = list_1[_i];
+            if (component[keyName] === query) {
+                return component;
             }
-            return null;
         }
-    
+        return null;
+    },
+    copySettings: function (sourceEffect, targetClip) {
         try {
-            var sourceComp = sourceEffect;
-            var targetComponent = findByName(targetClip, $._PPP_.sanitized(sourceComp.matchName), 'matchName');
-            if (targetComponent !== null) {
-                for (var _i = 0, _a = sourceComp.properties; _i < _a.length; _i++) {
+            var targetComponent = $._PPP_.findComponentByName(targetClip.components, sourceEffect.matchName, 'matchName');
+            if (targetComponent) {
+                for (var _i = 0, _a = sourceEffect.properties; _i < _a.length; _i++) {
                     var sourceProp = _a[_i];
-                    var targetProp = findByName(targetComponent, sourceProp.displayName);
-                    if (targetProp !== null) {
+                    var targetProp = $._PPP_.findComponentByName(targetComponent.properties, sourceProp.displayName);
+                    if (targetProp) {
                         if (targetProp.areKeyframesSupported()) {
                             $.writeln('setting keyframes...');
                             for (var k = 0; k < targetProp.keyframes.length; k++) {
@@ -122,20 +114,24 @@ $._PPP_ = {
                                     targetProp.setValueAtKey(newTime, newValue, updateUI);
                                 }
                             }
-                        } else {
+                        }
+                        else {
                             $.writeln('setting static value...');
                             var newValue = sourceProp.value;
                             targetProp.setValue(newValue, updateUI);
                         }
-                    } else {
-                        throw "Effect property of " + sourceProp.displayName + " of " + sourceComp.displayName + " not found.";
+                    }
+                    else {
+                        throw "Effect property of " + sourceProp.displayName + " of " + sourceEffect.displayName + " not found.";
                     }
                 }
-            } else {
-                throw "Component (aka. effect) '" + sourceComp.matchName + "' as '" + $._PPP_.sanitized(sourceComp.matchName) + "' not found.";
+            }
+            else {
+                throw "Component (aka. effect) " + sourceEffect.displayName + " not found.";
             }
             return true;
-        } catch (err) {
+        }
+        catch (err) {
             $._PPP_.message('- Error during copySettings: ' + err.message);
             throw err;
         }
@@ -150,26 +146,25 @@ $._PPP_ = {
             }
             var sequence = app.project.activeSequence;
             if (!sequence) {
-                alert("No active sequence found.");
-                return;
+                alert('No active sequence found.');
+                return false;
             }
-            var sourceTrackIndex = track | 1;
+            var sourceTrackIndex = track || 1;
             var targetTrackIndex = sourceTrackIndex + 1;
             var sourceTrack = findVideoTrack(sourceTrackIndex - 1);
             var targetTrack = findVideoTrack(targetTrackIndex - 1);
             var qeTargetTrack = qe.project.getActiveSequence().getVideoTrackAt(targetTrackIndex - 1);
             if (!sourceTrack || !targetTrack) {
-                throw "Please ensure the source and target tracks exist.";
-                return;
+                throw 'Please ensure the source and target tracks exist.';
             }
             for (var c = 0; c < sourceTrack.clips.numItems; c++) {
                 var sourceClip = sourceTrack.clips[c];
-                var targetClip = targetTrack.clips[c];
                 var clipEffects = sourceClip.components;
                 var startTime = sourceClip.start;
                 $._PPP_.updateEventPanel("Moving effect from clip " + c + " of " + sourceTrack.clips.numItems + ".", 'info');
                 if (clipEffects.numItems > 0) {
                     var inserted = targetTrack.insertClip(adjustmentLayer, startTime);
+                    var targetClip = targetTrack.clips[c];
                     if (inserted) {
                         var adjustmentLyrQE = qeTargetTrack.getItemAt(c + 1);
                         var adjustmentLayer_1 = $._PPP_.findInsertedClip(targetTrack, startTime);
@@ -179,9 +174,6 @@ $._PPP_ = {
                             var effectName = $._PPP_.sanitized(effect.displayName);
                             var newEffect = qe.project.getVideoEffectByName(effectName);
                             var effectAdded = void 0;
-
-                            $._PPP_.message($._PPP_.sanitized(effect.matchName))
-
                             if ($._PPP_.notDuplicateFx('Transform', effectName, adjustmentLyrQE)) {
                                 effectAdded = adjustmentLyrQE.addVideoEffect(newEffect);
                             }
@@ -192,7 +184,7 @@ $._PPP_ = {
                             if (effectAdded) {
                                 var settingsAdded = $._PPP_.copySettings(effect, targetClip);
                                 if (!settingsAdded) {
-                                    $._PPP_.message('- Error occured while adding effect settings.');
+                                    $._PPP_.message('- Error occurred while adding effect settings.');
                                 }
                             }
                         }

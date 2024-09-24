@@ -12,7 +12,7 @@ namespace $ {
     importFile: (path: string) => void;
     getAdjustmentLayer: () => ProjectItem;
     sanitized: (effect: string) => string;
-    notDuplicateFx: (filterName: string, currentFxName: string, QEclip: QEClip) => boolean;
+    notDuplicateFx: (filterName: string, currentFxName: string, QEclip: any) => boolean;
     findComponentByName: (list: ComponentCollection, query: string, keyName?: string) => Component | null;
     copySettings: (sourceEffect: Component, targetClip: TrackItem) => boolean;
     copyClipEffectsToAdjustmentLayers: (track: number) => boolean;
@@ -57,7 +57,7 @@ $._PPP_ = {
     const suppressWarnings = true; // Suppress errors
     const importAsStills = false; // Import as image sequence
 
-    app.project.importFiles([file], suppressWarnings, app.project.getInsertionBin(), importAsStills);
+    app.project.importFiles([file], suppressWarnings, importAsStills);
   },
 
   getAdjustmentLayer: function (): ProjectItem {
@@ -202,7 +202,6 @@ $._PPP_ = {
       // Iterate over each clip in the source track
       for (let c = 0; c < sourceTrack.clips.numItems; c++) {
         const sourceClip: TrackItem = sourceTrack.clips[c]; // Current clip
-        const targetClip: TrackItem = targetTrack.clips[c]; // Current clip
         const clipEffects: ComponentCollection = sourceClip.components; // Current clip effects
         const startTime: Time = sourceClip.start; // Start time of clip
 
@@ -213,6 +212,7 @@ $._PPP_ = {
         if (clipEffects.numItems > 0) {
           // Create an adjustment layer in the target track
           const inserted: boolean = targetTrack.insertClip(adjustmentLayer, startTime); // Returns true if inserted correctly
+					const targetClip: TrackItem = targetTrack.clips[c]; // Current target clip (aka. adjustmente layer)
 
           if (inserted) {
             // Create link to newly created adjustment layer with QE API
