@@ -3,20 +3,25 @@ const qe = app.enableQE();
 const updateUI = 1;
 
 // Custom namespace to avoid conflicts with other libraries
-namespace $ {
-  export let _PPP_: {
-    message: (msg: string) => void;
-    updateEventPanel: (msg: string, type: 'info' | 'warning' | 'error') => void;
-    searchForFileWithName: (nameToFind: string) => ProjectItem | null;
-    findInsertedClip: (track: Track, startTime: Time) => TrackItem | null;
-    importFile: (path: string) => void;
-    getAdjustmentLayer: () => ProjectItem;
-    sanitized: (effect: string) => string;
-    notDuplicateFx: (filterName: string, currentFxName: string, QEclip: any) => boolean;
-    findComponentByName: (list: ComponentCollection, query: string, keyName?: string) => Component | null;
-    copySettings: (sourceEffect: Component, targetClip: TrackItem) => boolean;
-    copyClipEffectsToAdjustmentLayers: (track: number) => boolean;
-  };
+// namespace $ {
+//   export let _PPP_: {
+//     message: (msg: string) => void;
+//     updateEventPanel: (msg: string, type: 'info' | 'warning' | 'error') => void;
+//     searchForFileWithName: (nameToFind: string) => ProjectItem | null;
+//     findInsertedClip: (track: Track, startTime: Time) => TrackItem | null;
+//     importFile: (path: string) => void;
+//     getAdjustmentLayer: () => ProjectItem;
+//     sanitized: (effect: string) => string;
+//     notDuplicateFx: (filterName: string, currentFxName: string, QEclip: any) => boolean;
+//     findComponentByName: (list: ComponentCollection, query: string, keyName?: string) => Component | null;
+//     copySettings: (sourceEffect: Component, targetClip: TrackItem) => boolean;
+//     copyClipEffectsToAdjustmentLayers: (track: number) => boolean;
+//   };
+// }
+
+type fxObj = {
+	name: string,
+	matchName: string
 }
 
 // Define the methods
@@ -29,6 +34,12 @@ $._PPP_ = {
     $._PPP_.message(msg);
     app.setSDKEventMessage(msg, type);
   },
+
+	getInstalledEffects: function():string[] {
+		const effects =  qe.project.getVideoEffectList();
+		$._PPP_.message(effects);
+		return effects
+	},
 
   searchForFileWithName: function (nameToFind: string): ProjectItem | null {
     const numItemsAtRoot = app.project.rootItem.children.numItems;
@@ -204,7 +215,7 @@ $._PPP_ = {
     }
   },
 
-  copyClipEffectsToAdjustmentLayers: function (track: number): boolean {
+  copyClipEffectsToAdjustmentLayers: function (track: number, exclusions: string[]): boolean {
     try {
       $._PPP_.updateEventPanel('Initializing effect extraction...', 'info');
 
@@ -304,4 +315,5 @@ $._PPP_ = {
 };
 
 // Start copying effects to adjustment layers from track 1
-$._PPP_.copyClipEffectsToAdjustmentLayers(1);
+// $._PPP_.message($._PPP_.getInstalledEffects())
+// $._PPP_.copyClipEffectsToAdjustmentLayers(1,['Lumetri Color', 'Warp Stabilizer']);
