@@ -86,9 +86,17 @@ $._PPP_ = {
   },
 
   sanitized: function (effect: string): string {
-    if (effect.toLowerCase() === 'motion' || effect.toLowerCase() === 'opacity') {
+    if (
+			effect.toLowerCase() === 'motion' || 
+			effect.toLowerCase() === 'opacity'
+		) {
       return 'Transform';
-    } else {
+    } else if(
+			effect.toLowerCase() === 'AE.ADBE Motion'.toLowerCase() || 
+			effect.toLowerCase() === 'AE.ADBE Opacity'.toLowerCase()
+		) {
+			return 'AE.ADBE Geometry' //this is the MatchName for the Transform FX
+		} else {
       return effect;
     }
   },
@@ -111,7 +119,9 @@ $._PPP_ = {
 
   findComponentByName: function (list: ComponentCollection, query: string, keyName: string = 'displayName'): Component | null {
     for (const component of list) {
+			$._PPP_.message(`-- ${component[keyName]}`)
       if (component[keyName] === query) {
+				$._PPP_.message(`-- Match found: ${component[keyName]}`);
         return component;
       }
     }
@@ -121,18 +131,45 @@ $._PPP_ = {
   copySettings: function (sourceEffect: Component, targetClip: TrackItem): boolean {
     try {
       // Find correct effect regardless of order
-      const targetComponent = $._PPP_.findComponentByName(targetClip.components, sourceEffect.matchName, 'matchName');
+			$._PPP_.message(`Finding targetEffect for sourceEffect '${sourceEffect.matchName}'`);
+
+      const targetComponent = $._PPP_.findComponentByName(
+				targetClip.components,
+				$._PPP_.sanitized(sourceEffect.matchName), 
+				'matchName'
+			);
 
       if (targetComponent) {
+
+				// Make sure that uniform scale is enables on Transform FX
+				if(targetComponent.matchName === "AE.ADBE Geometry") {
+					const uniformScaleProp = $._PPP_.findComponentByName(
+						targetComponent.properties, 
+						'Uniform Scale'
+					);
+					if (uniformScaleProp) {
+						// Ensure 'Uniform Scale' is set to true
+						if (!uniformScaleProp.getValue()) {
+							uniformScaleProp.setValue(true, updateUI);
+							$._PPP_.message(`- 'Uniform Scale' set to true for Transform effect.`);
+						}
+					}
+				}
+
         // Loop through Properties (aka. effect settings)
         for (const sourceProp of sourceEffect.properties) {
+					
+					$._PPP_.message(`- Copying setting '${sourceProp.displayName}' for effect ${sourceEffect.matchName}`);
           // Find correct setting regardless of order
           const targetProp = $._PPP_.findComponentByName(targetComponent.properties, sourceProp.displayName);
           if (targetProp) {
-            // Check if we need to use keyframes
-            if (targetProp.areKeyframesSupported()) {
-              $.writeln('setting keyframes...');
 
+            // Check if we need to use keyframes
+            if (
+							targetProp.areKeyframesSupported() && // Check if parameter support keyframes.
+							(sourceProp.numKeyframes > 0) // Check if sourceParam contains keyframes.
+						) {
+              $.writeln('setting keyframes...');
               // Setting keyframes
               for (let k = 0; k < targetProp.keyframes.length; k++) {
                 const currentKeyframe = sourceProp.keyframes[k];
@@ -143,14 +180,16 @@ $._PPP_ = {
                   targetProp.setValueAtKey(newTime, newValue, updateUI);
                 }
               }
-              // Setting static values
+             
             } else {
+							 // Set static values
               $.writeln('setting static value...');
-              const newValue = sourceProp.value;
+              const newValue = sourceProp.getValue();
               targetProp.setValue(newValue, updateUI);
             }
           } else {
-            throw `Effect property of ${sourceProp.displayName} of ${sourceEffect.displayName} not found.`;
+						$._PPP_.message(`${sourceEffect.matchName}: ${sourceProp.displayName} setting skipped.`, 'warning')
+            // throw `Effect property of ${sourceProp.displayName} of ${sourceEffect.displayName} not found.`;
           }
         }
       } else {
@@ -206,7 +245,7 @@ $._PPP_ = {
         const startTime: Time = sourceClip.start; // Start time of clip
 
         // Status update
-        $._PPP_.updateEventPanel(`Moving effect from clip ${c} of ${sourceTrack.clips.numItems}.`, 'info');
+        $._PPP_.updateEventPanel(`Moving effects from clip ${c} of ${sourceTrack.clips.numItems}.`, 'info');
 
         // Check if clip even has effects
         if (clipEffects.numItems > 0) {
@@ -216,7 +255,7 @@ $._PPP_ = {
 
           if (inserted) {
             // Create link to newly created adjustment layer with QE API
-            const adjustmentLyrQE = qeTargetTrack.getItemAt(c + 1); // Did +1 since QE starts counting from 1
+            const adjustmentLyrQE = qeTargetTrack.getItemAt(c + 1); // Did +1 since QE starts counting from 1 instead of 0.
             const adjustmentLayer = $._PPP_.findInsertedClip(targetTrack, startTime);
 
             // Match the duration of the adjustment layer to the clip

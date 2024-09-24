@@ -64,8 +64,13 @@ $._PPP_ = {
         return foundFile;
     },
     sanitized: function (effect) {
-        if (effect.toLowerCase() === 'motion' || effect.toLowerCase() === 'opacity') {
+        if (effect.toLowerCase() === 'motion' ||
+            effect.toLowerCase() === 'opacity') {
             return 'Transform';
+        }
+        else if (effect.toLowerCase() === 'AE.ADBE Motion'.toLowerCase() ||
+            effect.toLowerCase() === 'AE.ADBE Opacity'.toLowerCase()) {
+            return 'AE.ADBE Geometry';
         }
         else {
             return effect;
@@ -89,7 +94,9 @@ $._PPP_ = {
         if (keyName === void 0) { keyName = 'displayName'; }
         for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
             var component = list_1[_i];
+            $._PPP_.message("-- " + component[keyName]);
             if (component[keyName] === query) {
+                $._PPP_.message("-- Match found: " + component[keyName]);
                 return component;
             }
         }
@@ -97,13 +104,25 @@ $._PPP_ = {
     },
     copySettings: function (sourceEffect, targetClip) {
         try {
-            var targetComponent = $._PPP_.findComponentByName(targetClip.components, sourceEffect.matchName, 'matchName');
+            $._PPP_.message("Finding targetEffect for sourceEffect '" + sourceEffect.matchName + "'");
+            var targetComponent = $._PPP_.findComponentByName(targetClip.components, $._PPP_.sanitized(sourceEffect.matchName), 'matchName');
             if (targetComponent) {
+                if (targetComponent.matchName === "AE.ADBE Geometry") {
+                    var uniformScaleProp = $._PPP_.findComponentByName(targetComponent.properties, 'Uniform Scale');
+                    if (uniformScaleProp) {
+                        if (!uniformScaleProp.getValue()) {
+                            uniformScaleProp.setValue(true, updateUI);
+                            $._PPP_.message("- 'Uniform Scale' set to true for Transform effect.");
+                        }
+                    }
+                }
                 for (var _i = 0, _a = sourceEffect.properties; _i < _a.length; _i++) {
                     var sourceProp = _a[_i];
+                    $._PPP_.message("- Copying setting '" + sourceProp.displayName + "' for effect " + sourceEffect.matchName);
                     var targetProp = $._PPP_.findComponentByName(targetComponent.properties, sourceProp.displayName);
                     if (targetProp) {
-                        if (targetProp.areKeyframesSupported()) {
+                        if (targetProp.areKeyframesSupported() &&
+                            (sourceProp.numKeyframes > 0)) {
                             $.writeln('setting keyframes...');
                             for (var k = 0; k < targetProp.keyframes.length; k++) {
                                 var currentKeyframe = sourceProp.keyframes[k];
@@ -117,12 +136,12 @@ $._PPP_ = {
                         }
                         else {
                             $.writeln('setting static value...');
-                            var newValue = sourceProp.value;
+                            var newValue = sourceProp.getValue();
                             targetProp.setValue(newValue, updateUI);
                         }
                     }
                     else {
-                        throw "Effect property of " + sourceProp.displayName + " of " + sourceEffect.displayName + " not found.";
+                        $._PPP_.message(sourceEffect.matchName + ": " + sourceProp.displayName + " setting skipped.", 'warning');
                     }
                 }
             }
@@ -161,7 +180,7 @@ $._PPP_ = {
                 var sourceClip = sourceTrack.clips[c];
                 var clipEffects = sourceClip.components;
                 var startTime = sourceClip.start;
-                $._PPP_.updateEventPanel("Moving effect from clip " + c + " of " + sourceTrack.clips.numItems + ".", 'info');
+                $._PPP_.updateEventPanel("Moving effects from clip " + c + " of " + sourceTrack.clips.numItems + ".", 'info');
                 if (clipEffects.numItems > 0) {
                     var inserted = targetTrack.insertClip(adjustmentLayer, startTime);
                     var targetClip = targetTrack.clips[c];
