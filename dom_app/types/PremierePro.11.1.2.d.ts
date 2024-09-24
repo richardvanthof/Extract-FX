@@ -128,7 +128,7 @@ declare class Sequence extends PremiereObject
      */
     setOutPoint(seconds: number): void;
     /**
-     * pos is a timecode as a string.
+     * pos is a timexcode as a string.
      * Sets the CTI to the specified timecode value; '00;00;11;23'.
      */
     setPlayerPosition(pos: string): void;
@@ -159,7 +159,7 @@ declare class Track extends PremiereObject
      * @param clipToInsert The clip to insert.
      * @param timeInSeconds The time in seconds at which to insert the clip.
      */
-    insertClip(clipToInsert: ProjectItem, timeInSeconds: number): void;
+    insertClip(clipToInsert: ProjectItem, timeInSeconds: number): boolean;
     /**
      * Inserts the specified clip at the given time, shifting any pre-existing
      * clips further down behind it. If the time is specified in the middle of
@@ -169,7 +169,7 @@ declare class Track extends PremiereObject
      * @param clipToInsert The clip to insert.
      * @param timeCode The time at which to insert the clip.
      */
-    insertClip(clipToInsert: ProjectItem, timeCode: string): void;
+    insertClip(clipToInsert: ProjectItem, timeCode: Time): void;
     /**
      * Returns 1 if the track is muted, 0 if not.
      */
@@ -261,7 +261,6 @@ declare class Marker extends PremiereObject
     comments: string;
     /**
      * A Time object representing the start time of the marker. Read/Write.
-     */
     start: Time;
     /**
      * A Time object representing the end time of the marker. Read/Write.
@@ -695,7 +694,7 @@ declare class App extends PremiereObject
     /**
      * Enables the QE DOM. See: https://forums.adobe.com/message/8070757#8070757.
      */
-    enableQE(): boolean;
+    enableQE(): any;
     getEnableProxies(): NumericalBool;
     /**
      * Returns true if Premiere Pro can open the file to test.
