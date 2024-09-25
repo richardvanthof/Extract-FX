@@ -1,179 +1,55 @@
-# Create panels for Premiere Pro
-==============================
+# RS Extract-fx
 
-*Last updated April 24 2017, current released version = Premiere Pro 11.1.*
 
-## What's Possible?
 
-For the impatient, here are links to working sample code, showing what's
-possible for Premiere Pro panels:
+## What is it for?
+*RS Extract-fx* is a Premiere Pro plugin that automates mass moving video effects to 'adjustment layers' just above the clip. This is especially useful while prepping for color grading in programs like Davinci Resolve. Once reimported, the effects can be restored by placing the processed footage under the generated adjustment layers. 
 
--   [Browse and import files from the
-    OS](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L215)
+## What effects are supported?
+- `Motion`-effects (position, scale, rotation etc.)
+- Other video effects from the `effects`-panel.
 
--   [Get and set all XMP
-    metadata](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L508)
-    (including Premiere Pro's [private project
-    metadata](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L659))
-    for any projectItem.
+> While supported, it is recommended to exclude Warp Stabilizer and Lumetri Color.
 
--   [Import files via drag and
-    drop](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/ext.js#L47),
-    from a panel into Premiere Pro (Project panel, or directly onto a timeline).
+## Controls![program](payloads/program.png)
 
--   [Preview any supported media in the Source
-    monitor](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L190)
-    (without requiring that it be imported into the project).
+## ![program](./static/program.png)
 
--   Access and modify [clip
-    markers](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L629),
-    and [sequence
-    markers](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L121).
+- **Source track**: select the video track you would like to extract effects from. Make sure you've simplified your footage to one video track.
+- **Remove effects from source clips**: removes all attributes from the original video clips after the effects have been copied.
+- **Back-up original sequence:** duplicates the current sequence before processing. This enables you te revert to your original sequence in case an error occurs.
+- `Extract`-button: this button starts the copying process.
+- `?`-button: Help-button that opens the plugin's manual. 
 
--   [Create new
-    sequences](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L349)
-    either from a preset, or with user interaction.
+## Getting started
+### Requirements
+- Mac/PC 
+- Adobe Premiere Pro with a test sequence (An arbitrary image sequence with effects dragged onto them will suffice).
+- Yarn/NPM
+- Visual Studio Code with the [ExtendScript Debugger](https://marketplace.visualstudio.com/items?itemName=Adobe.extendscript-debug).
 
--   [Open different
-    projects](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L288)
-    (while the panel remains active; this behavior is new as of Premiere Pro
-    10.3).
+### Setup guide
+1. Install the [ExtendScript Debugger](https://marketplace.visualstudio.com/items?itemName=Adobe.extendscript-debug) in visual studio code
+2. Clone the repository and place the root folder into the Premiere extensions folder:
+    - **Mac**: `/Library/Application Support/Adobe/CEP/extensions`;
+    - **Win**: `C:\Users\<USERNAME>\AppData\Roaming\Adobe\CEP/extensions`
+3. Allow non signed extensions to run:
+    - **Mac**: In the terminal, type: `defaults write com.adobe.CSXS.8 PlayerDebugMode 1` 
+      (The plist is also located at `/Users/<username>/Library/Preferences/com.adobe.CSXS.8.plist`)
+    - **Win**: `regedit > HKEY_CURRENT_USER/Software/Adobe/CSXS.8`, then add a new entry `PlayerDebugMode` of type `string` with the value of `1`.
+4. Open the root folder in VS Code and open your test sequence in Premiere. Open the extension panel by going to `Window > Extension > RS Extract-fx`.
+5. run `yarn`/`npm` to download all dependencies.
+6. Start the Typescript transpile pipelines
+    1. **Extendscript backend**: `yarn dev-app`
+    2. **Frontend**: `yarn dev-html`
 
--   [Render a
-    sequence](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L412)
-    to any destination(s), based on any preset(s), including ftp upload, and
-    controlling metadata output.
+7. Attatch VS code to Premiere by going to the debug tab and clicking the play button. You have the choice between two debug modes:
+    - **Launch Script in Extendscript Engine**: works nice when trying to debug your extendscript code. With this mode you can run extendscript code directly in Premiere and also makes you able to inspect program variables and log messages, but you will only be able to execute your program via VS code.
+    - **Attatch to Premiere:** great for debugging the frontend. gives access to console.log messages and a inspector at `localhost:777` .
+      ![vs-code-screenshot](payloads/vs-code-screenshot.png)
+8. *Done* 🎉: you can find all the development files in the `src`-folders in the folders:
+    1. Frontend: `dom_html/src`*;
+    2. Backend: `dom_app/src;`
 
--   Export either a [given
-    sequence](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L164)
-    or the entire project as Final Cut Pro 7 XML.
 
--   [Save as a new
-    project](https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/Premiere.jsx#L487),
-    or create a new project containing only a specified sequence and its
-    constituent media.
-
-## 1. Obtain and install these
-
--   [Creative Cloud](http://creative.adobe.com). Use the Creative Cloud
-    application to install Premiere Pro CC and other Adobe applications with
-    which you'll be developing and testing, as well as ExtendScript Toolkit
-    (available under 'previous versions').
-
--   The [CEP Test
-    Panel](https://github.com/Adobe-CEP/Samples/tree/master/CEP_HTML_Test_Extension)
-    shows the full capabilities of CEP panels.
-
--   The [PProPanel](https://github.com/Adobe-CEP/Samples/tree/master/PProPanel)
-    sample project is exhaustive in its exercise of Premiere Pro's ExtendScript
-    API.
-
--   The
-    [ZXPSignCmd](https://github.com/Adobe-CEP/CEP-Resources/tree/master/ZXPSignCMD/4.0.7)
-    signing utility creates signed .zxp bundles for Add-Ons or direct
-    distribution.
-
--   Use the [ExManCmd](https://www.adobeexchange.com/resources/28) command line
-    utility to test .zxp installation.
-
-## 2. Enable loading of unsigned panels
- 
-*Note: Premiere Pro 11.1 has integrated CEP7, so even if you had unsigned panels
-loading before (using CEP6), you'll need to perform this step again, but for key CSXS.7 instead of CSXS.6.*
-
-On Mac, type the following into Terminal, then relaunch Finder (either via
-rebooting, or from the Force Quit dialog):
-
-```
-defaults write /Users/<username>/Library/Preferences/com.adobe.CSXS.7.plist PlayerDebugMode 1
-```
-
-On Windows, make the following registry entry (a new Key, of type String):
-
-![](payloads/csxs7.png)
-
-## 3. Put panel into extensions directory
-
-Put `/PProPanel` or your own panel's containing directory here, to have Premiere
-Pro load it:
-
-```
-Windows: 	C:\Program Files (x86)\Common Files\Adobe\CEP\extensions
-Mac: 		/Library/Application Support/Adobe/CEP/extensions
-```
-
-## 4. Write and test your panel's JavaScript using Chrome debugger
-
-To enable debugging of panels using Chrome’s developer tools, put a file named
-`.debug` into your extension’s folder (as a peer of the `/CSXS` folder). The
-contents of the file should resemble the following (and the Extension ID must
-match the one in the panel's manifest):
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-<?xml version="1.0" encoding="UTF-8"?>
-<ExtensionList>
-    <Extension Id="com.example.PProPanel">
-        <HostList>
-            <Host Name="PPRO" Port="7777"/>
-        </HostList>
-    </Extension>
-</ExtensionList>
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-When the panel is active, you can debug the panel in your web browser by
-browsing to `localhost:7777`, and selecting your panel:
-
-![](payloads/localhost.png)
-
-Optional diagnostics: Turn on CEP logging. Find CEP logs (distinct from Premiere
-Pro's logs) here. Note that Mac Library path is the system's library, not the
-user's. Also, note that logging WILL impact performance.
-
-```
-Windows: 	%\AppData\Local\Temp\csxs7-PPRO.log
-Mac: 		/Library/Logs/CSXS/csxs7-PPRO.log
-```
-
-Set logging level in Windows Registry (see above), or MacOS X .plist:
-
-```
-defaults write /Users/<username>/Library/Preferences/com.adobe.CSXS.7.plist LogLevel 6
-```
-
-## 5. Create your panel's ExtendScript using ExtendScript Toolkit (ESTK)
-
-Launch ExtendScript Toolkit, select the correct version of Premiere Pro from the
-drop-down menu, then then click the chain link to connect.
-
-![](payloads/estk.png)
-
-Once in the session, you can hit breakpoints, and use ExtendScript Toolkit's
-Data Browser to view the ExtendScript DOM.
-
-Here's a [screen video](https://www.dropbox.com/s/lwo8jg0klxkq91s/walkthru.mp4)
-showing how to debug panels at both the JavaScript and ExtendScript levels.
-
-## 6. Package and deploy your panel
-
-You can either generate a self-signed certificate (ZXPSignCmd will make them for
-you), or get one from a commercial security provider. Here's an example:
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./ZXPSignCmd -selfSignedCert US California Adobe "Bruce Bullis" password certificate.p12
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-To sign directory `/PanelDir` with `certificate.p12`, do the following:
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./ZXPSignCmd -sign panelDir/ PanelName.zxp certificate.p12 password -tsa https://timestamp.geotrust.com/tsa
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Submit your panel to the [Adobe Add-Ons
-site](https://www.adobeexchange.com/producer) for approval, and distribution.
-You can also directly supply the .zxp file enterprise customers, and those who
-do not connect their systems to the public internet, for installation using
-[ExManCmd](https://www.adobeexchange.com/resources/28), the command line version
-of Extension Manager.
-
-If you encounter any issues with the Add-Ons store or ExManCmd, please [contact
-the Add-Ons team](mailto:jferman@adobe.com).
+*Note: Typescript has no support for moving the html/css files to the dist folder. Therefore if you want to edit those kind of files you will have to edit them directly in `dom_html/dist/`. 
