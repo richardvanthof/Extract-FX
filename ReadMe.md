@@ -11,7 +11,9 @@
 
 > While supported, it is recommended to exclude Warp Stabilizer and Lumetri Color.
 
-## Controls![program](payloads/program.png)
+## Controls
+
+## ![program](payloads/program.png)
 
 - **Source track**: select the video track you would like to extract effects from. Make sure you've simplified your footage to one video track.
 - **Remove effects from source clips**: removes all attributes from the original video clips after the effects have been copied.
@@ -51,12 +53,15 @@
 
 *Note: Typescript has no support for moving the html/css files to the dist folder. Therefore if you want to edit those kind of files you will have to edit them directly in `dom_html/dist/`. 
 
-## Packaging and deploying
+## Packaging and deployment
 
 ### Requirements
 -   **The [ZXPSignCmd](https://github.com/Adobe-CEP/CEP-Resources/tree/master/ZXPSignCMD/4.0.7) signing utility**: creates signed .zxp bundles for Add-Ons or direct distribution.
     
--   **[ExManCmd](https://www.adobeexchange.com/resources/28) command lineutility**: test .zxp installation.
+-   **Utility for testing installation:**
+    -   [ExManCmd](https://www.adobeexchange.com/resources/28) (command line)
+    -   [ZXPinstaller](https://zxpinstaller.com/): (GUI)
+
 
 ### Instructions
 
