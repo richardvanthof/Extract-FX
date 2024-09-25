@@ -37,7 +37,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<DispatchInfo >
 				<Resources>
 					<MainPath>./dom_html/dist/index.html</MainPath>
-					<ScriptPath>./dom_app/dist/PProPanel.jsx</ScriptPath>
+					<ScriptPath>./dom_app/dist/Premiere.jsx</ScriptPath>
 				</Resources>
 				<Lifecycle>
 					<AutoVisible>true</AutoVisible>

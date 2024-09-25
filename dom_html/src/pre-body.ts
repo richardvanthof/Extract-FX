@@ -18,12 +18,15 @@
 const debug = false
 
 function handleCallback(data) {
-    if(data) showLoadingScreen(false)
+    if(data) showLoadingScreen(false);
     if (data !== true) {
-            alert(data.message); // Handle other types of data
-            console.error(data, data.message);
-        }
+        console.error(`Callback Error: ${data}`, data.message); // Log full error for debugging
+        alert(`handleCallback-error: ${data.message}`);
     }
+}
+
+function setLoadingCaption(message) {
+    document.querySelector('#progress-caption').innerHTML = message;
 }
 
 function showLoadingScreen(active: boolean) {
@@ -37,6 +40,12 @@ function showLoadingScreen(active: boolean) {
 };
 
 $( document ).ready(function() {
+    const csInterface = new CSInterface();
+    csInterface.evalScript('$.getVersion()', function(version) {
+        console.log('ExtendScript engine version: ' + version);
+    });
+    
+
     document.querySelectorAll('.debug').forEach(e => {
         debug ? e.classList.remove('hide') : e.classList.add('hide')
     });
@@ -48,21 +57,30 @@ $( document ).ready(function() {
     $("#extract-btn").on("click", function(e){
         e.preventDefault(); 
         try {
+            setLoadingCaption('Extracting effects...')
+            const csInterface = new CSInterface();
             // get target video track
-            const targetTrack = document.querySelector('#track').value;
+            const targetTrack:number = document.querySelector('#track').value;
             const effectExclusionsElems = document.querySelectorAll('.exclusion-dropdown');
             
-            // console.log(effectExclusionsElems)
             let effectExclusions:string[] = [];
-            for(let fx of effectExclusionsElems) effectExclusions.push(fx.value)
-            
-            var csInterface = new CSInterface();
+            for(let fx of effectExclusionsElems) {
+                if(fx.value != null) {
+                    effectExclusions.push(fx.value)
+                }
+            }
+
+            console.log(targetTrack)
+            console.log(effectExclusionsElems)
+            console.log(effectExclusions)
             
             if(!targetTrack) throw 'TargetTrack is undefined'
             if(!effectExclusions) throw 'Effect exclusions are undefined.'
             
             showLoadingScreen(true)
-            csInterface.evalScript(`$._PPP_.copyClipEffectsToAdjustmentLayers(${targetTrack}, ${effectExclusions})`, handleCallback);
+
+            const script = `$._PPP_.copyClipEffectsToAdjustmentLayers(${targetTrack}, ${JSON.stringify(effectExclusions)})`;
+            csInterface.evalScript(script, handleCallback);
         } catch(err) {
             alert(err)
             throw new Error(err)

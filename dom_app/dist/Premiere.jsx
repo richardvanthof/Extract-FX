@@ -1,8 +1,5 @@
 var qe = app.enableQE();
 var updateUI = 1;
-var $;
-(function ($) {
-})($ || ($ = {}));
 $._PPP_ = {
     message: function (msg) {
         $.writeln(msg);
@@ -10,6 +7,11 @@ $._PPP_ = {
     updateEventPanel: function (msg, type) {
         $._PPP_.message(msg);
         app.setSDKEventMessage(msg, type);
+    },
+    getInstalledEffects: function () {
+        var effects = qe.project.getVideoEffectList();
+        $._PPP_.message(effects);
+        return effects;
     },
     searchForFileWithName: function (nameToFind) {
         var numItemsAtRoot = app.project.rootItem.children.numItems;
@@ -158,9 +160,9 @@ $._PPP_ = {
             $._PPP_.message('- Error during copySettings: ' + err);
         }
     },
-    copyClipEffectsToAdjustmentLayers: function (track) {
+    copyClipEffectsToAdjustmentLayers: function (track, exclusions) {
         try {
-            $._PPP_.updateEventPanel('Initializing effect extraction...', 'info');
+            $._PPP_.updateEventPanel("Track " + track + " - Initializing effect extraction...", 'info');
             var adjustmentLayer = $._PPP_.getAdjustmentLayer();
             function findVideoTrack(index) {
                 var videoTrack = app.project.activeSequence.videoTracks[index];
@@ -214,13 +216,12 @@ $._PPP_ = {
                 }
             }
             $._PPP_.updateEventPanel('Finished copying effects', 'info');
-            return true;
         }
         catch (err) {
             $._PPP_.updateEventPanel(err, 'error');
             alert(err);
-            return new Error(err);
+            return err;
         }
+        return true;
     },
 };
-$._PPP_.copyClipEffectsToAdjustmentLayers(1);

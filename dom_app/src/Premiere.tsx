@@ -217,7 +217,7 @@ $._PPP_ = {
 
   copyClipEffectsToAdjustmentLayers: function (track: number, exclusions: string[]): boolean {
     try {
-      $._PPP_.updateEventPanel('Initializing effect extraction...', 'info');
+      $._PPP_.updateEventPanel(`Track ${track} - Initializing effect extraction...`, 'info');
 
       // Import adjustment layer
       const adjustmentLayer = $._PPP_.getAdjustmentLayer();
@@ -280,6 +280,7 @@ $._PPP_ = {
               const effectName = $._PPP_.sanitized(effect.displayName); // Current (corrected) effect name
               const newEffect = qe.project.getVideoEffectByName(effectName); // Fetch effect property
 
+
               let effectAdded;
 
               // Check if no duplicate Transform effect is added
@@ -305,12 +306,13 @@ $._PPP_ = {
       }
 
       $._PPP_.updateEventPanel('Finished copying effects', 'info');
-      return true;
+      
     } catch (err) {
       $._PPP_.updateEventPanel(err, 'error');
       alert(err);
-      return new Error(err);
+      return err;
     }
+		return true;
   },
 };
 
