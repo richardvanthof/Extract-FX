@@ -18,7 +18,7 @@
 ExtensionBundleName="Premiere Pro sample panel" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<ExtensionList>
-		<Extension Id="com.adobe.PProPanel" Version="10.3.0" />
+		<Extension Id="space.therichard.ExtractFX" Version="10.3.0" />
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>

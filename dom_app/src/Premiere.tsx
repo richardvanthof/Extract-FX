@@ -76,9 +76,9 @@ $._PPP_ = {
     let path: string;
     let foundFile = $._PPP_.searchForFileWithName(fileName);
     if (Folder.fs === 'Macintosh') {
-      path = '/Library/Application Support/Adobe/CEP/extensions/Extract-FX/payloads/adjustment-layer.prproj';
+      path = '/Library/Application Support/Adobe/CEP/extensions/space.therichard.ExtractFX/payloads/adjustment-layer.prproj';
     } else {
-      path = 'file:///C:/Program%20Files%20(x86)/Common%20Files/Adobe/CEP/extensions/Extract-FX/payloads/adjustment-layer.prproj';
+      path = 'file:///C:/Program%20Files%20(x86)/Common%20Files/Adobe/CEP/extensions/space.therichard.ExtractFX/payloads/adjustment-layer.prproj';
     }
 
     if (foundFile === null) {
