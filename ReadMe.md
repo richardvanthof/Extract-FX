@@ -22,13 +22,14 @@
 - `?`-button: Help-button that opens the plugin's manual. 
 
 ## Getting started
-### Requirements
+### Development
+#### Requirements
 - Mac/PC 
 - Adobe Premiere Pro with a test sequence (An arbitrary image sequence with effects dragged onto them will suffice).
 - Yarn/NPM
 - Visual Studio Code with the [ExtendScript Debugger](https://marketplace.visualstudio.com/items?itemName=Adobe.extendscript-debug).
 
-### Getting started
+#### Instructions
 1. Install the [ExtendScript Debugger](https://marketplace.visualstudio.com/items?itemName=Adobe.extendscript-debug) in visual studio code
 2. Clone the repository and place the root folder into the Premiere extensions folder:
     - **Mac**: `/Library/Application Support/Adobe/CEP/extensions`;
@@ -44,26 +45,24 @@
     2. **Frontend**: `yarn dev-html`
 
 7. Attatch VS code to Premiere by going to the debug tab and clicking the play button. You have the choice between two debug modes:
-    - **Launch Script in Extendscript Engine**: works nice when trying to debug your extendscript code. With this mode you can run extendscript code directly in Premiere and also makes you able to inspect program variables and log messages, but you will only be able to execute your program via VS code.
-    - **Attatch to Premiere:** great for debugging the frontend. gives access to console.log messages and a inspector at `localhost:7777` .
+    - **Launch Script in Extendscript Engine**: recommended when trying to debug your extendscript code. With this mode you can run extendscript code directly in Premiere and also makes you able to inspect program variables and log messages, but you will only be able to execute your program via VS code.
+    - **Attatch to Premiere:** great for debugging the frontend. Gives access to it's console.log messages and an inspector at `localhost:7777` .
       ![vs-code-screenshot](payloads/vs-code-screenshot.png)
 8. *Done* 🎉: you can find all the development files in the `src`-folders in the folders:
     1. Frontend: `dom_html/src`*;
     2. Backend: `dom_app/src;`
 
 *Note: Typescript has no support for moving the html/css files to the dist folder. Therefore if you want to edit those kind of files you will have to edit them directly in `dom_html/dist/`. 
+### Packaging and deployment
 
-## Packaging and deployment
-
-### Requirements
+#### Requirements
 -   **The [ZXPSignCmd](https://github.com/Adobe-CEP/CEP-Resources/tree/master/ZXPSignCMD/4.0.7) signing utility**: creates signed .zxp bundles for Add-Ons or direct distribution.
-    
 -   **Utility for testing installation:**
-    -   [ExManCmd](https://www.adobeexchange.com/resources/28) (command line)
     -   [ZXPinstaller](https://zxpinstaller.com/): (GUI)
+    -   [ExManCmd](https://www.adobeexchange.com/resources/28) (command line)
 
 
-### Instructions
+#### Instructions
 
 You can either generate a self-signed certificate (ZXPSignCmd will make them for
 you), or get one from a commercial security provider. Here's an example:
@@ -78,4 +77,4 @@ To sign directory `/PanelDir` with `certificate.p12`, do the following:
 ./ZXPSignCmd -sign panelDir/ PanelName.zxp certificate.p12 password -tsa https://timestamp.geotrust.com/tsa
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Submit your panel to the [Adobe Add-Ons site](https://www.adobeexchange.com/producer) for approval, and distribution. You can also directly supply the .zxp file enterprise customers, and those who do not connect their systems to the public internet, for installation using [ExManCmd](https://www.adobeexchange.com/resources/28), the command line version of Extension Manager.
+Submit your panel to the [Adobe Add-Ons site](https://www.adobeexchange.com/producer) for approval, and distribution. You can also directly supply the .zxp file enterprise customers, and those who do not connect their systems to the public internet, for installation using [ExManCmd](https://www.adobeexchange.com/resources/28), the command line version of Extension Manager, or [ZXPinstaller](https://zxpinstaller.com/), which provides a user friendly GUI.
