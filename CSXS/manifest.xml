@@ -14,8 +14,8 @@
 * written permission of Adobe. 
 **************************************************************************/
 -->
-<ExtensionManifest Version="4.0" ExtensionBundleId="com.adobe.PProPanel" ExtensionBundleVersion="11.1"
-ExtensionBundleName="Premiere Pro sample panel" 
+<ExtensionManifest Version="4.0" ExtensionBundleId="space.therichard.ExtractFX" ExtensionBundleVersion="11.1"
+ExtensionBundleName="RS Extract FX" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<ExtensionList>
 		<Extension Id="space.therichard.ExtractFX" Version="10.3.0" />
@@ -33,7 +33,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	</ExecutionEnvironment>
 
 	<DispatchInfoList>
-		<Extension Id="com.adobe.PProPanel">
+		<Extension Id="space.therichard.ExtractFX">
 			<DispatchInfo >
 				<Resources>
 					<MainPath>./dom_html/dist/index.html</MainPath>
