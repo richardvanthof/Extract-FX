@@ -316,6 +316,12 @@ $._PPP_ = {
   },
 };
 
-// Start copying effects to adjustment layers from track 1
+
+// CALL FUNCTIONS DIRECTLY (ONLY FOR DEBUGGING VIA 'LAUNCH SCRIPT IN EXTENDSCROPT')
+// Uncomment function and start debugger to test.
+
+// Output all installed Effects
 // $._PPP_.message($._PPP_.getInstalledEffects())
+
+// Start copying effects to adjustment layers from track 1 (we're counting from 1)
 // $._PPP_.copyClipEffectsToAdjustmentLayers(1,['Lumetri Color', 'Warp Stabilizer']);

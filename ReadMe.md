@@ -46,15 +46,17 @@
     1. **Extendscript backend**: `yarn dev-app`
     2. **Frontend**: `yarn dev-html`
 
+    <img src="payloads/vs-code-screenshot.png" alt="vs-code-screenshot" style="align-self: left; text-align: left; zoom: 100%;" />
+    
 7. Attatch VS code to Premiere by going to the debug tab and clicking the play button. You have the choice between two debug modes:
-    - **Launch Script in Extendscript Engine**: recommended when trying to debug your extendscript code. With this mode you can run extendscript code directly in Premiere and also makes you able to inspect program variables and log messages, but you will only be able to execute your program via VS code.
+    - **Launch Script in Extendscript Engine**: recommended when trying to debug your extendscript code. With this mode you can run extendscript code directly in Premiere and also makes you able to inspect program variables and log messages, but you will only be able to execute function by calling them from within your extendscript file. Some examples are given on the bottom of `Premiere.tsx`)**.
     - **Attatch to Premiere:** great for debugging the frontend. Gives access to it's console.log messages and an inspector at `localhost:7777` .
-      ![vs-code-screenshot](payloads/vs-code-screenshot.png)
 8. *Done* 🎉: you can find all the development files in the `src`-folders in the folders:
     1. Frontend: `dom_html/src`*;
     2. Backend: `dom_app/src;`
 
 *Note: Typescript has no support for moving the html/css files to the dist folder. Therefore if you want to edit those kind of files you will have to edit them directly in `dom_html/dist/`. 
+
 ### Packaging and deployment
 
 #### Requirements
