@@ -132,7 +132,7 @@ $._PPP_ = {
     for (const component of list) {
 			$._PPP_.message(`-- ${component[keyName]}`)
       if (component[keyName] === query) {
-				$._PPP_.message(`-- Match found: ${component[keyName]}`);
+				$._PPP_.message(`Match found: ${component[keyName]}`);
         return component;
       }
     }
@@ -142,7 +142,7 @@ $._PPP_ = {
   copySettings: function (sourceEffect: Component, targetClip: TrackItem): boolean {
     try {
       // Find correct effect regardless of order
-			$._PPP_.message(`Finding targetEffect for sourceEffect '${sourceEffect.matchName}'`);
+			$._PPP_.message(`\nFINDING TARGET FOR SOURCE EFFECT '${$._PPP_.sanitized(sourceEffect.matchName)}'`);
 
       const targetComponent = $._PPP_.findComponentByName(
 				targetClip.components,
@@ -169,49 +169,59 @@ $._PPP_ = {
 
         // Loop through Properties (aka. effect settings)
         for (const sourceProp of sourceEffect.properties) {
-					
-					$._PPP_.message(`- Copying setting '${sourceProp.displayName}' for effect ${sourceEffect.matchName}`);
-          // Find correct setting regardless of order
-          const targetProp = $._PPP_.findComponentByName(targetComponent.properties, sourceProp.displayName);
-          if (targetProp) {
+        $._PPP_.message(`\nCopying setting '${sourceProp.displayName}' for effect ${sourceEffect.matchName}`);
 
-            // Check if we need to use keyframes
-            if (
-							targetProp.areKeyframesSupported() && // Check if parameter support keyframes.
-							(sourceProp.numKeyframes > 0) // Check if sourceParam contains keyframes.
-						) {
-              $.writeln('setting keyframes...');
-              // Setting keyframes
-              for (let k = 0; k < targetProp.keyframes.length; k++) {
-                const currentKeyframe = sourceProp.keyframes[k];
-                const newTime = currentKeyframe[0];
-                const newValue = currentKeyframe[1];
-                const add = targetProp.addKey(newTime, updateUI);
-                if (add === 0) {
-                  const isSet = targetProp.setValueAtKey(newTime, newValue, updateUI);
-									if(isSet !== 0) continue;
-                }
+        // Find the correct setting regardless of order
+        const targetProp = $._PPP_.findComponentByName(targetComponent.properties, sourceProp.displayName);
+        
+        if (
+          targetProp && // Targetprop is defined
+          sourceProp.displayName.length > 1 // Sourceprop name has a name.
+        ) {
+          const keyTimes = sourceProp.getKeys(); // Get the keyframe times
+          
+          // Check if we need to use keyframes
+          if (
+            sourceProp.areKeyframesSupported() && // Check if keyframes are supported
+            keyTimes && keyTimes.length > 0       // Check if keyframes are defined
+          ) {
+            $.writeln('setting keyframes...');
+            // Set keyframes
+            for (let keyTime of keyTimes) { // Use for...of to iterate over array
+              const keyValue = sourceProp.getValueAtKey(keyTime);
+              const add = targetProp.addKey(keyTime, updateUI);
+              if (add) {
+                const isSet = targetProp.setValueAtKey(keyTime, keyValue, updateUI);
+                if (isSet !== 0) continue;
+              } else {
+                throw 'Something went wrong while adding a keyframe.';
               }
-             
-            } else {
-							 // Set static values
-              $.writeln('setting static value...');
-              const newValue = sourceProp.getValue();
-              const isSet = targetProp.setValue(newValue, updateUI);
-							if(isSet !== 0) continue;
             }
           } else {
-						$._PPP_.message(`${sourceEffect.matchName}: ${sourceProp.displayName} setting skipped.`, 'warning')
-            // throw `Effect property of ${sourceProp.displayName} of ${sourceEffect.displayName} not found.`;
+            // Set static value
+            $.writeln('setting static value...');
+            const newValue = sourceProp.getValue();
+            const isSet = targetProp.setValue(newValue, updateUI);
+            if (isSet !== 0) {
+              continue;
+            } else {
+              throw 'something went wrong while adding a static value';
+            }
           }
+        } else {
+          $._PPP_.message(`${sourceEffect.matchName}: ${sourceProp.displayName} setting skipped.`, 'warning');
+          // throw `Effect property of ${sourceProp.displayName} of ${sourceEffect.displayName} not found.`;
         }
+      }
+
       } else {
         throw `Component (aka. effect) ${sourceEffect.displayName} not found.`;
       }
 
       return true;
     } catch (err) {
-      $._PPP_.message('- Error during copySettings: ' + err);
+      $._PPP_.message(`CopySetting() - ${err}`);
+      alert(err)
     }
   },
 
@@ -257,7 +267,7 @@ $._PPP_ = {
         const startTime: Time = sourceClip.start; // Start time of clip
 
         // Status update
-        $._PPP_.updateEventPanel(`Moving effects from clip ${c} of ${sourceTrack.clips.numItems}.`, 'info');
+        $._PPP_.updateEventPanel(`--------------------------------\nMOVING EFFECTS FROM CLIP ${c} OF ${sourceTrack.clips.numItems}.`, 'info');
 
         // Check if clip even has effects
         if (clipEffects.numItems > 0) {
@@ -324,4 +334,4 @@ $._PPP_ = {
 // $._PPP_.message($._PPP_.getInstalledEffects())
 
 // Start copying effects to adjustment layers from track 1 (we're counting from 1)
-// $._PPP_.copyClipEffectsToAdjustmentLayers(1,['Lumetri Color', 'Warp Stabilizer']);
+$._PPP_.copyClipEffectsToAdjustmentLayers(1,['Lumetri Color', 'Warp Stabilizer']);

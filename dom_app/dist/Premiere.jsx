@@ -44,10 +44,10 @@ $._PPP_ = {
         var path;
         var foundFile = $._PPP_.searchForFileWithName(fileName);
         if (Folder.fs === 'Macintosh') {
-            path = '/Library/Application Support/Adobe/CEP/extensions/Extract-FX/payloads/adjustment-layer.prproj';
+            path = '/Library/Application Support/Adobe/CEP/extensions/space.therichard.ExtractFX/payloads/adjustment-layer.prproj';
         }
         else {
-            path = 'file:///C:/Program%20Files%20(x86)/Common%20Files/Adobe/CEP/extensions/Extract-FX/payloads/adjustment-layer.prproj';
+            path = 'file:///C:/Program%20Files%20(x86)/Common%20Files/Adobe/CEP/extensions/space.therichard.ExtractFX/payloads/adjustment-layer.prproj';
         }
         if (foundFile === null) {
             $._PPP_.message('File not found. Importing...');
@@ -98,7 +98,7 @@ $._PPP_ = {
             var component = list_1[_i];
             $._PPP_.message("-- " + component[keyName]);
             if (component[keyName] === query) {
-                $._PPP_.message("-- Match found: " + component[keyName]);
+                $._PPP_.message("Match found: " + component[keyName]);
                 return component;
             }
         }
@@ -106,7 +106,7 @@ $._PPP_ = {
     },
     copySettings: function (sourceEffect, targetClip) {
         try {
-            $._PPP_.message("Finding targetEffect for sourceEffect '" + sourceEffect.matchName + "'");
+            $._PPP_.message("\nFINDING TARGET FOR SOURCE EFFECT '" + $._PPP_.sanitized(sourceEffect.matchName) + "'");
             var targetComponent = $._PPP_.findComponentByName(targetClip.components, $._PPP_.sanitized(sourceEffect.matchName), 'matchName');
             if (targetComponent) {
                 if (targetComponent.matchName === "AE.ADBE Geometry") {
@@ -120,21 +120,25 @@ $._PPP_ = {
                 }
                 for (var _i = 0, _a = sourceEffect.properties; _i < _a.length; _i++) {
                     var sourceProp = _a[_i];
-                    $._PPP_.message("- Copying setting '" + sourceProp.displayName + "' for effect " + sourceEffect.matchName);
+                    $._PPP_.message("\nCopying setting '" + sourceProp.displayName + "' for effect " + sourceEffect.matchName);
                     var targetProp = $._PPP_.findComponentByName(targetComponent.properties, sourceProp.displayName);
-                    if (targetProp) {
-                        if (targetProp.areKeyframesSupported() &&
-                            (sourceProp.numKeyframes > 0)) {
+                    if (targetProp &&
+                        sourceProp.displayName.length > 1) {
+                        var keyTimes = sourceProp.getKeys();
+                        if (sourceProp.areKeyframesSupported() &&
+                            keyTimes && keyTimes.length > 0) {
                             $.writeln('setting keyframes...');
-                            for (var k = 0; k < targetProp.keyframes.length; k++) {
-                                var currentKeyframe = sourceProp.keyframes[k];
-                                var newTime = currentKeyframe[0];
-                                var newValue = currentKeyframe[1];
-                                var add = targetProp.addKey(newTime, updateUI);
-                                if (add === 0) {
-                                    var isSet = targetProp.setValueAtKey(newTime, newValue, updateUI);
+                            for (var _b = 0, keyTimes_1 = keyTimes; _b < keyTimes_1.length; _b++) {
+                                var keyTime = keyTimes_1[_b];
+                                var keyValue = sourceProp.getValueAtKey(keyTime);
+                                var add = targetProp.addKey(keyTime, updateUI);
+                                if (add) {
+                                    var isSet = targetProp.setValueAtKey(keyTime, keyValue, updateUI);
                                     if (isSet !== 0)
                                         continue;
+                                }
+                                else {
+                                    throw 'Something went wrong while adding a keyframe.';
                                 }
                             }
                         }
@@ -142,8 +146,12 @@ $._PPP_ = {
                             $.writeln('setting static value...');
                             var newValue = sourceProp.getValue();
                             var isSet = targetProp.setValue(newValue, updateUI);
-                            if (isSet !== 0)
+                            if (isSet !== 0) {
                                 continue;
+                            }
+                            else {
+                                throw 'something went wrong while adding a static value';
+                            }
                         }
                     }
                     else {
@@ -157,7 +165,8 @@ $._PPP_ = {
             return true;
         }
         catch (err) {
-            $._PPP_.message('- Error during copySettings: ' + err);
+            $._PPP_.message("CopySetting() - " + err);
+            alert(err);
         }
     },
     copyClipEffectsToAdjustmentLayers: function (track, exclusions) {
@@ -185,7 +194,7 @@ $._PPP_ = {
                 var sourceClip = sourceTrack.clips[c];
                 var clipEffects = sourceClip.components;
                 var startTime = sourceClip.start;
-                $._PPP_.updateEventPanel("Moving effects from clip " + c + " of " + sourceTrack.clips.numItems + ".", 'info');
+                $._PPP_.updateEventPanel("--------------------------------\nMOVING EFFECTS FROM CLIP " + c + " OF " + sourceTrack.clips.numItems + ".", 'info');
                 if (clipEffects.numItems > 0) {
                     var inserted = targetTrack.insertClip(adjustmentLayer, startTime);
                     var targetClip = targetTrack.clips[c];
@@ -225,3 +234,4 @@ $._PPP_ = {
         return true;
     },
 };
+$._PPP_.copyClipEffectsToAdjustmentLayers(1, ['Lumetri Color', 'Warp Stabilizer']);
