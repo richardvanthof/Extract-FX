@@ -144,8 +144,8 @@ $._PPP_ = {
     return false;
   },
 
-  copySetting: function(sourceProp:ComponentParam, targetProp:ComponentParam): 0|undefined{
-    let isSet;
+  copySetting: function(sourceProp:ComponentParam, targetProp:ComponentParam):0|null{
+    let isSet = null;
     // Check if we need to use keyframes
     if (
       targetProp.areKeyframesSupported() && // Check if parameter support keyframes.
@@ -172,7 +172,7 @@ $._PPP_ = {
     return isSet;
   },
 
-  copySettings: function (sourceEffect: Component, targetClip: TrackItem): boolean {
+  copySettings: function (sourceEffect: Component, targetClip: TrackItem): void {
     try {
       const sourceFxName = $._PPP_.sanitized(sourceEffect.matchName)
       // Find correct effect regardless of order
@@ -203,7 +203,7 @@ $._PPP_ = {
 
         // Loop through Properties (aka. effect settings)
         for (const sourceProp of sourceEffect.properties) {
-					
+					if(sourceProp.displayName.length <= 1) {continue; }; // skip effect setting if it has no name.
 					$._PPP_.message(`\n- Copying setting '${sourceProp.displayName}' for effect ${$._PPP_.sanitized(sourceEffect.matchName)}`);
           
           if(
@@ -211,15 +211,23 @@ $._PPP_ = {
             targetComponent.matchName === "AE.ADBE Geometry" // Check if this setting is for the Transform effect.
           ) {
             // Copy scale property twice from Motion to 'scale width' and 'scale height' in Transform-effect.
+            // BUG: this condition makes everything go out of sync for some reason.
             const scaleProps:string[] = ['Scale Width', 'Scale Height']
             for(let scaleProp of scaleProps) {
               const targetProp = $._PPP_.findComponentByName(targetComponent.properties, scaleProp);
               if(targetProp){$._PPP_.copySetting(sourceProp, targetProp)}
             }
+            continue;
+          } else if (
+            targetComponent.matchName === "AE.ADBE Geometry" &&
+            sourceProp.displayName.toLowerCase() === 'opacity'
+          ) {
+            continue;
           } else {
             // If not: continue normally
-            const targetProp = $._PPP_.findComponentByName(targetComponent.properties, scaleProp);
+            const targetProp = $._PPP_.findComponentByName(targetComponent.properties, sourceProp.displayName);
             if(targetProp) {$._PPP_.copySetting(sourceProp, targetProp)}
+            continue;
           }
         }
       } else {
@@ -278,8 +286,9 @@ $._PPP_ = {
         // Status update
         $._PPP_.updateEventPanel(`\n\nMoving effects from clip ${c} of ${sourceTrack.clips.numItems}.`, 'info');
 
-        // Check if clip even has effects
+        // CHECK IF CLIP EVEN HAS EFFECTS
         if (clipEffects.numItems > 0) {
+          
           // Create an adjustment layer in the target track
           const inserted: boolean = targetTrack.insertClip(adjustmentLayer, startTime); // Returns true if inserted correctly
 					const targetClip: TrackItem = targetTrack.clips[c]; // Current target clip (aka. adjustmente layer)
@@ -303,7 +312,6 @@ $._PPP_ = {
               $._PPP_.message(`Exlusions list: ${exclusions}`)
               const skipEffect:boolean = $._PPP_.listContains(effect.displayName, exclusions);
               if(skipEffect === false) {
-
 
                 const effectName = $._PPP_.sanitized(effect.displayName); // Current (corrected) effect name
                 const newEffect = qe.project.getVideoEffectByName(effectName); // Fetch effect property
