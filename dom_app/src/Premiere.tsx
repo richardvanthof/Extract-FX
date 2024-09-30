@@ -129,20 +129,54 @@ $._PPP_ = {
   },
 
   findComponentByName: function (list: ComponentCollection, query: string, keyName: string = 'displayName'): Component | null {
+    // Loop through component collection list and search for a specified item.
     for (const component of list) {
 			$._PPP_.message(`-- ${component[keyName]}`)
       if (component[keyName] === query) {
-				$._PPP_.message(`Match found: ${component[keyName]}`);
+				$._PPP_.message(`-- Match found: ${component[keyName]}`);
         return component;
       }
     }
     return null;
   },
+  listContains: function(query: string, filter: string[]):boolean {
+    for(let filterItem of filter) if(filterItem.toLowerCase() === query.toLowerCase()) {return true}
+    return false;
+  },
+
+  copySetting: function(sourceProp:ComponentParam, targetProp:ComponentParam): 0|undefined{
+    let isSet;
+    // Check if we need to use keyframes
+    if (
+      targetProp.areKeyframesSupported() && // Check if parameter support keyframes.
+      (sourceProp.numKeyframes > 0) // Check if sourceParam contains keyframes.
+    ) {
+      $.writeln('setting keyframes...');
+      // Setting keyframes
+      for (let k = 0; k < targetProp.keyframes.length; k++) {
+        const currentKeyframe = sourceProp.keyframes[k];
+        const newTime = currentKeyframe[0];
+        const newValue = currentKeyframe[1];
+        const add = targetProp.addKey(newTime, updateUI);
+        if (add === 0) {
+          isSet = targetProp.setValueAtKey(newTime, newValue, updateUI);
+        }
+      }
+    
+    } else {
+      // Set static values
+      $.writeln('setting static value...');
+      const newValue = sourceProp.getValue();
+      isSet = targetProp.setValue(newValue, updateUI);
+    }
+    return isSet;
+  },
 
   copySettings: function (sourceEffect: Component, targetClip: TrackItem): boolean {
     try {
+      const sourceFxName = $._PPP_.sanitized(sourceEffect.matchName)
       // Find correct effect regardless of order
-			$._PPP_.message(`\nFINDING TARGET FOR SOURCE EFFECT '${$._PPP_.sanitized(sourceEffect.matchName)}'`);
+			$._PPP_.message(`Finding targetEffect for sourceEffect '${sourceFxName}' (${sourceEffect.matchName})`);
 
       const targetComponent = $._PPP_.findComponentByName(
 				targetClip.components,
@@ -152,80 +186,55 @@ $._PPP_ = {
 
       if (targetComponent) {
 
-				// Make sure that uniform scale is enables on Transform FX
-				if(targetComponent.matchName === "AE.ADBE Geometry") {
-					const uniformScaleProp = $._PPP_.findComponentByName(
-						targetComponent.properties, 
-						'Uniform Scale'
-					);
-					if (uniformScaleProp) {
-						// Ensure 'Uniform Scale' is set to true
-						if (!uniformScaleProp.getValue()) {
-							uniformScaleProp.setValue(true, updateUI);
-							$._PPP_.message(`- 'Uniform Scale' set to true for Transform effect.`);
-						}
-					}
-				}
+				// //Make sure that uniform scale is enables on Transform FX
+				// if(targetComponent.matchName === "AE.ADBE Geometry") {
+				// 	const uniformScaleProp = $._PPP_.findComponentByName(
+				// 		targetComponent.properties, 
+				// 		'Uniform Scale'
+				// 	);
+				// 	if (uniformScaleProp) {
+				// 		// Ensure 'Uniform Scale' is set to true
+				// 		if (!uniformScaleProp.getValue()) {
+				// 			uniformScaleProp.setValue(true, updateUI);
+				// 			$._PPP_.message(`- 'Uniform Scale' set to true for Transform effect.`);
+				// 		}
+				// 	}
+				// }
 
         // Loop through Properties (aka. effect settings)
         for (const sourceProp of sourceEffect.properties) {
-        $._PPP_.message(`\nCopying setting '${sourceProp.displayName}' for effect ${sourceEffect.matchName}`);
-
-        // Find the correct setting regardless of order
-        const targetProp = $._PPP_.findComponentByName(targetComponent.properties, sourceProp.displayName);
-        
-        if (
-          targetProp && // Targetprop is defined
-          sourceProp.displayName.length > 1 // Sourceprop name has a name.
-        ) {
-          const keyTimes = sourceProp.getKeys(); // Get the keyframe times
+					
+					$._PPP_.message(`\n- Copying setting '${sourceProp.displayName}' for effect ${$._PPP_.sanitized(sourceEffect.matchName)}`);
           
-          // Check if we need to use keyframes
-          if (
-            sourceProp.areKeyframesSupported() && // Check if keyframes are supported
-            keyTimes && keyTimes.length > 0       // Check if keyframes are defined
+          if(
+            sourceProp.displayName.toLowerCase() === 'scale' &&  // Check if we're reading the scale setting from source
+            targetComponent.matchName === "AE.ADBE Geometry" // Check if this setting is for the Transform effect.
           ) {
-            $.writeln('setting keyframes...');
-            // Set keyframes
-            for (let keyTime of keyTimes) { // Use for...of to iterate over array
-              const keyValue = sourceProp.getValueAtKey(keyTime);
-              const add = targetProp.addKey(keyTime, updateUI);
-              if (add) {
-                const isSet = targetProp.setValueAtKey(keyTime, keyValue, updateUI);
-                if (isSet !== 0) continue;
-              } else {
-                throw 'Something went wrong while adding a keyframe.';
-              }
+            // Copy scale property twice from Motion to 'scale width' and 'scale height' in Transform-effect.
+            const scaleProps:string[] = ['Scale Width', 'Scale Height']
+            for(let scaleProp of scaleProps) {
+              const targetProp = $._PPP_.findComponentByName(targetComponent.properties, scaleProp);
+              if(targetProp){$._PPP_.copySetting(sourceProp, targetProp)}
             }
           } else {
-            // Set static value
-            $.writeln('setting static value...');
-            const newValue = sourceProp.getValue();
-            const isSet = targetProp.setValue(newValue, updateUI);
-            if (isSet !== 0) {
-              continue;
-            } else {
-              throw 'something went wrong while adding a static value';
-            }
+            // If not: continue normally
+            const targetProp = $._PPP_.findComponentByName(targetComponent.properties, scaleProp);
+            if(targetProp) {$._PPP_.copySetting(sourceProp, targetProp)}
           }
-        } else {
-          $._PPP_.message(`${sourceEffect.matchName}: ${sourceProp.displayName} setting skipped.`, 'warning');
-          // throw `Effect property of ${sourceProp.displayName} of ${sourceEffect.displayName} not found.`;
         }
-      }
-
       } else {
-        throw `Component (aka. effect) ${sourceEffect.displayName} not found.`;
+        throw `Component (aka. effect) ${sourceEffect.displayName} as ${$._PPP_.sanitized(sourceEffect.displayName)} not found.`;
       }
 
       return true;
     } catch (err) {
-      $._PPP_.message(`CopySetting() - ${err}`);
-      alert(err)
+      $._PPP_.message('- Error during copySettings: ' + err);
     }
   },
 
-  copyClipEffectsToAdjustmentLayers: function (track: number, exclusions: string[]): boolean {
+  
+
+  copyClipEffectsToAdjustmentLayers: function (track: number, userExclusions: string[]): boolean {
     try {
       $._PPP_.updateEventPanel(`Track ${track} - Initializing effect extraction...`, 'info');
 
@@ -267,7 +276,7 @@ $._PPP_ = {
         const startTime: Time = sourceClip.start; // Start time of clip
 
         // Status update
-        $._PPP_.updateEventPanel(`--------------------------------\nMOVING EFFECTS FROM CLIP ${c} OF ${sourceTrack.clips.numItems}.`, 'info');
+        $._PPP_.updateEventPanel(`\n\nMoving effects from clip ${c} of ${sourceTrack.clips.numItems}.`, 'info');
 
         // Check if clip even has effects
         if (clipEffects.numItems > 0) {
@@ -287,27 +296,37 @@ $._PPP_ = {
             // Loop over each effect in the source clip
             for (let ce = 0; ce < clipEffects.numItems; ce++) {
               const effect = clipEffects[ce]; // Current effect
-              const effectName = $._PPP_.sanitized(effect.displayName); // Current (corrected) effect name
-              const newEffect = qe.project.getVideoEffectByName(effectName); // Fetch effect property
+              
+              // SKIP EXCLUDED EFFECTS
+              let exclusions:string[] = ['Opacity'] // default exclusions.
+              if(userExclusions) {exclusions.concat(userExclusions); };
+              $._PPP_.message(`Exlusions list: ${exclusions}`)
+              const skipEffect:boolean = $._PPP_.listContains(effect.displayName, exclusions);
+              if(skipEffect === false) {
 
 
-              let effectAdded;
+                const effectName = $._PPP_.sanitized(effect.displayName); // Current (corrected) effect name
+                const newEffect = qe.project.getVideoEffectByName(effectName); // Fetch effect property
 
-              // Check if no duplicate Transform effect is added
-              if ($._PPP_.notDuplicateFx('Transform', effectName, adjustmentLyrQE)) {
-                effectAdded = adjustmentLyrQE.addVideoEffect(newEffect); // Add effect to adjustment layer
-              } else {
-                $._PPP_.message('- Skipped duplicate effect.');
-                effectAdded = false;
-              }
 
-              // Check if effect was added correctly
-              if (effectAdded) {
-                // Loop over each effect
-                const settingsAdded = $._PPP_.copySettings(effect, targetClip);
+                let effectAdded;
 
-                if (!settingsAdded) {
-                  $._PPP_.message('- Error occurred while adding effect settings.');
+                // Check if no duplicate Transform effect is added
+                if ($._PPP_.notDuplicateFx('Transform', effectName, adjustmentLyrQE)) {
+                  effectAdded = adjustmentLyrQE.addVideoEffect(newEffect); // Add effect to adjustment layer
+                } else {
+                  $._PPP_.message('- Skipped duplicate effect.');
+                  effectAdded = false;
+                }
+
+                // Check if effect was added correctly
+                if (effectAdded) {
+                  // Loop over each effect
+                  const settingsAdded = $._PPP_.copySettings(effect, targetClip);
+
+                  if (!settingsAdded) {
+                    $._PPP_.message('- Error occurred while adding effect settings.');
+                  }
                 }
               }
             }
@@ -334,4 +353,4 @@ $._PPP_ = {
 // $._PPP_.message($._PPP_.getInstalledEffects())
 
 // Start copying effects to adjustment layers from track 1 (we're counting from 1)
-$._PPP_.copyClipEffectsToAdjustmentLayers(1,['Lumetri Color', 'Warp Stabilizer']);
+ $._PPP_.copyClipEffectsToAdjustmentLayers(1,['Lumetri Color', 'Warp Stabilizer']);
