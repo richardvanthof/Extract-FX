@@ -97,6 +97,7 @@ $._PPP_ = {
   },
 
   sanitized: function (effect: string): string {
+    // Replace Opacity and Motion effect with Transform FX
     if (
 			effect.toLowerCase() === 'motion' || 
 			effect.toLowerCase() === 'opacity'
@@ -106,7 +107,7 @@ $._PPP_ = {
 			effect.toLowerCase() === 'AE.ADBE Motion'.toLowerCase() || 
 			effect.toLowerCase() === 'AE.ADBE Opacity'.toLowerCase()
 		) {
-			return 'AE.ADBE Geometry' //this is the MatchName for the Transform FX
+			return 'AE.ADBE Geometry' // this is the MatchName (aka. internal effect ID) for the Transform FX
 		} else {
       return effect;
     }
@@ -146,24 +147,24 @@ $._PPP_ = {
 
   copySetting: function(sourceProp:ComponentParam, targetProp:ComponentParam):0|null{
     let isSet = null;
+    
     // Check if we need to use keyframes
     if (
-      targetProp.areKeyframesSupported() && // Check if parameter support keyframes.
-      (sourceProp.numKeyframes > 0) // Check if sourceParam contains keyframes.
+      targetProp.areKeyframesSupported() &&   // Check if parameter supports keyframes.
+      sourceProp.getKeys()                   // Check if sourceParam contains keyframes.
     ) {
+      const keyframes = sourceProp.getKeys()
       $.writeln('setting keyframes...');
+      targetProp.setTimeVarying(true);
       // Setting keyframes
-      for (let k = 0; k < targetProp.keyframes.length; k++) {
-        const currentKeyframe = sourceProp.keyframes[k];
-        const newTime = currentKeyframe[0];
-        const newValue = currentKeyframe[1];
-        const add = targetProp.addKey(newTime, updateUI);
-        if (add === 0) {
-          isSet = targetProp.setValueAtKey(newTime, newValue, updateUI);
-        }
+      for (let keyframeTime of keyframes ) {
+        const keyframeValue = sourceProp.getValueAtKey(keyframeTime);
+        targetProp.addKey(keyframeTime);
+        targetProp.setValueAtKey(keyframeTime, keyframeValue, updateUI);
       }
     
     } else {
+
       // Set static values
       $.writeln('setting static value...');
       const newValue = sourceProp.getValue();
@@ -172,7 +173,7 @@ $._PPP_ = {
     return isSet;
   },
 
-  copySettings: function (sourceEffect: Component, targetClip: TrackItem): void {
+  copySettings: function (sourceEffect: Component, targetClip: TrackItem): boolean {
     try {
       const sourceFxName = $._PPP_.sanitized(sourceEffect.matchName)
       // Find correct effect regardless of order
@@ -239,7 +240,6 @@ $._PPP_ = {
       $._PPP_.message('- Error during copySettings: ' + err);
     }
   },
-
   
 
   copyClipEffectsToAdjustmentLayers: function (track: number, userExclusions: string[]): boolean {
