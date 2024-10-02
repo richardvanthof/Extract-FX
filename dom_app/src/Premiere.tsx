@@ -146,31 +146,36 @@ $._PPP_ = {
   },
 
   copySetting: function(sourceProp:ComponentParam, targetProp:ComponentParam):0|null{
-    let isSet = null;
+    try {
+      let isSet = null;
     
-    // Check if we need to use keyframes
-    if (
-      targetProp.areKeyframesSupported() &&   // Check if parameter supports keyframes.
-      sourceProp.getKeys()                   // Check if sourceParam contains keyframes.
-    ) {
-      const keyframes = sourceProp.getKeys()
-      $.writeln('setting keyframes...');
-      targetProp.setTimeVarying(true);
-      // Setting keyframes
-      for (let keyframeTime of keyframes ) {
-        const keyframeValue = sourceProp.getValueAtKey(keyframeTime);
-        targetProp.addKey(keyframeTime);
-        targetProp.setValueAtKey(keyframeTime, keyframeValue, updateUI);
-      }
-    
-    } else {
+      // Check if we need to use keyframes
+      if (
+        targetProp.areKeyframesSupported() &&   // Check if parameter supports keyframes.
+        sourceProp.getKeys()                   // Check if sourceParam contains keyframes.
+      ) {
+        const keyframes = sourceProp.getKeys()
+        $.writeln('setting keyframes...');
+        targetProp.setTimeVarying(true);
+        // Setting keyframes
+        for (let keyframeTime of keyframes ) {
+          const keyframeValue = sourceProp.getValueAtKey(keyframeTime);
+          targetProp.addKey(keyframeTime);
+          targetProp.setValueAtKey(keyframeTime, keyframeValue, updateUI);
+        }
+      
+      } else {
 
-      // Set static values
-      $.writeln('setting static value...');
-      const newValue = sourceProp.getValue();
-      isSet = targetProp.setValue(newValue, updateUI);
+        // Set static values
+        $.writeln('setting static value...');
+        const newValue = sourceProp.getValue();
+        isSet = targetProp.setValue(newValue, updateUI);
+      }
+      return isSet;
+    } catch(err){
+      $._PPP_.message('ERROR Copysetting(): ' + err);
+      return err
     }
-    return isSet;
   },
 
   copySettings: function (sourceEffect: Component, targetClip: TrackItem): boolean {
@@ -220,6 +225,7 @@ $._PPP_ = {
             }
             continue;
           } else if (
+            // Skip Opacity setting in Transform effect
             targetComponent.matchName === "AE.ADBE Geometry" &&
             sourceProp.displayName.toLowerCase() === 'opacity'
           ) {
@@ -237,7 +243,8 @@ $._PPP_ = {
 
       return true;
     } catch (err) {
-      $._PPP_.message('- Error during copySettings: ' + err);
+      alert(err)
+      $._PPP_.message('ERROR copySettings(): ' + err);
     }
   },
   
