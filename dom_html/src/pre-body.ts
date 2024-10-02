@@ -21,7 +21,7 @@ function handleCallback(data) {
     if(data) showLoadingScreen(false);
     if (data !== true) {
         console.error(`Callback Error: ${data}`, data.message); // Log full error for debugging
-        alert(`handleCallback-error: ${data.message}`);
+        // alert(`handleCallback-error: ${data.message}`);
     }
 }
 
