@@ -1,6 +1,6 @@
 # RS Extract-fx
 
-*RS Extract-fx* is a Premiere Pro plugin that automates mass moving video effects to  'adjustment layers' just above the clip. This is especially useful while prepping for color grading in programs like Davinci Resolve. Once reimported, the effects can be restored by placing the processed footage under the generated adjustment layers.
+s*RS Extract-fx* is a Premiere Pro plugin that automates mass moving video effects to  'adjustment layers' just above the clip. This is especially useful while prepping your sequennce for color grading in programs like Davinci Resolve. Once reimported, the effects can be restored by placing the processed footage under the generated adjustment layers. This makes sure that no effect data is lost due to translation errors during the roundtrip.
 
 <video src="preview.webm" loop autoplay></video>
 
@@ -26,10 +26,29 @@
 
 ## Troubleshooting
 
-- **The adjustment layer does not have the correct properties for my sequence.**
-  Manually create an adjustment layer called `RSFX-container` in the root of your project with your custom specs. Make sure to delete all pre-existing files using this name.
-- **The created adjustment layers overlap clips on the track above the source track.**
-  Manually append a video track to the source track.
+<style>
+  .faq-item {
+    white-space: normal !important;
+    margin-bottom: 1em;
+  }
+</style>
+<ul >
+	<li class="faq-item" id="custom-container">
+    <b>Can I create an adjustmennt layer template using custom properties? (resolution, framerate etc.)</b></br>
+    Yes, manually create a new adjustment layer called <code>RSFX-container</code> at the root of your project with the specs of your choosing. Make sure to also delete or rename all other files using this name.
+	</li>  
+  <li class="faq-item">
+    <b>The created adjustment layers overlap clips on the track above the source track.</b></br>
+    Manually append a video track to the source track and rerun the program.
+	</li>  
+  <li class="faq-item">
+    <b>My keyframes are not placed at the correct timecode.</b></br>
+		<ul>
+      <li>Make sure that your sequence's start time is the timecode <code>00:00:00:00</code>.</li>
+      <li>Make sure that the <code>RSFX-container</code> has the same framerate as your sequence. <a href="#custom-container">Create a custom RSFX-container</a> if this is not the case.</li>
+		</ul>
+	</li>  
+</ul>
 
 
 
