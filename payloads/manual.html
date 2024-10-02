@@ -3,7 +3,7 @@
 <head>
 <meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
 
-<link href='https://fonts.googleapis.com/css?family=Inconsolata:400,700|Roboto:300,300i,400,400i,700,700i&subset=latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color: #ffffff; --text-color: #333333; --select-text-bg-color: #B5D6FC; --select-text-font-color: auto; --monospace: "Lucida Console",Consolas,"Courier",monospace; --title-bar-height: 20px; }
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color: #ffffff; --text-color: #333333; --select-text-bg-color: #B5D6FC; --select-text-font-color: auto; --monospace: "Lucida Console",Consolas,"Courier",monospace; --title-bar-height: 20px; }
 .mac-os-11 { --title-bar-height: 28px; }
 html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 h1, h2, h3, h4, h5 { white-space: pre-wrap; }
@@ -219,150 +219,76 @@ mjx-container { break-inside: avoid; }
 .md-alert-text-container::after { content: attr(data-text); text-transform: capitalize; pointer-events: none; margin-right: 1ch; }
 
 
-@include-when-export url('https://fonts.googleapis.com/css?family=Inconsolata:400,700|Roboto:300,300i,400,400i,700,700i&subset=latin-ext');
-
 :root {
-  --accent-color: #aeb1b5;
-  --dark-accent-color: #787a7c; /* #'s before H1-3 */
-  --background-color: white;
-  --border-color: #ddd; 
-  --code-bg-color: #f8f8f8; 
-  --font-color: #42464c;
-  --header-color: #222324;
-  --link-color: #2077b2;
-  --control-text-color: #667176;
-  --side-bar-bg-color: #fafafa;
-  --body-font: "Iosevka", "Fira Mono", "Source Code Pro", Courier, monospace;
-  --header-font: "Fira Sans", "Roboto", "Source Sans Pro", sans-serif;
-  --border-radius: 2px;
-  --document-horizontal-margin: 80px;
-  --document-padding-x: 10ch;
-  --font-size: 16px;
-  --h1-fontsize: 2rem;   /* 1,5   rem = 24px */
-  --h2-fontsize: 1.375rem; /* 1,375 rem = 22px */
-  --h3-fontsize: 1.25rem;  /* 1,25  rem = 20px */
-  --h4-fontsize: 1.125rem; /* 1,125 rem = 18px */
-  --line-height: 1.4;
-  --main-content-margin: 0 auto;
-  --main-content-max-width: 100ch;
-  --monospace-font-size: 15px;
-  --monospace-font: "Iosevka", "Fira Mono", "Source Code Pro", Courier, monospace;
-  --monospace-line-height: 1.4;
-  --monospace: var(--monospace-font); /* Fixes source code mode */
-  --nav-width: 200px;
-  --vertical-padding: 40px;
+    --side-bar-bg-color: #fafafa;
+    --control-text-color: #777;
 }
 
-/* Narrow layout styles */
-@media (max-width: 640px) {
-  :root {
-    --document-padding-x: 4ch;
-  }
+@include-when-export url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext);
+
+/* open-sans-regular - latin-ext_latin */
+  /* open-sans-italic - latin-ext_latin */
+    /* open-sans-700 - latin-ext_latin */
+    /* open-sans-700italic - latin-ext_latin */
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
 }
 
-html {
-  font-size: var(--font-size);
-  background-color: var(--background-color);
-}
-
-html,
 body {
-  color: var(--font-color);
-  font-family: var(--body-font);
-  line-height: var(--line-height);
+    font-family: "Open Sans","Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Segoe UI Emoji', sans-serif;
+    color: rgb(51, 51, 51);
+    line-height: 1.6;
 }
 
 #write {
-	/* size of writing area: */
-  padding-left: var(--document-padding-x);
-  padding-right: var(--document-padding-x);
-  max-width: var(--main-content-max-width);
-  box-sizing: border-box;
+    max-width: 860px;
+  	margin: 0 auto;
+  	padding: 30px;
+    padding-bottom: 100px;
 }
 
-/**
- * ---------------------
- * Block Elements
- */
-
-/* yaml */
-pre.md-meta-block {
-  background-color: var(--background-color);
-  padding-bottom: .5rem;
-  color: var(--accent-color);
-  border-bottom: 2px solid var(--border-color);
-  font-family: var(--monospace-font);
+@media only screen and (min-width: 1400px) {
+	#write {
+		max-width: 1024px;
+	}
 }
 
-/* headings */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--header-font);
-  font-weight: bold;
-  color: var(--header-color);  
+@media only screen and (min-width: 1800px) {
+	#write {
+		max-width: 1200px;
+	}
 }
 
-h1 {
-  margin-top: 3rem;
-  margin-bottom: 1.5rem;
-  font-size: var(--h1-fontsize);
+#write > ul:first-child,
+#write > ol:first-child{
+    margin-top: 30px;
 }
 
-h1:not(:first-child) {
-  margin-top: 3rem;
+a {
+    color: #4183C4;
 }
-
-h2 {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  font-size: var(--h2-fontsize);
-}
-
-h3 {
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
-  font-size: var(--h3-fontsize);
-}
-
-h4, h5, h6 {
-  color: var(--header-color);  
-  margin-top: 1rem;
-  margin-bottom: 0rem;
-  font-size: 1rem;
-}
-
-h4 {
-  font-size: var(--h4-fontsize);
-}
-
+h1,
+h2,
+h3,
+h4,
+h5,
 h6 {
-  color: var(--control-text-color);	
+    position: relative;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    line-height: 1.4;
+    cursor: text;
 }
-
-/*  We do not need this crap. This will be removed eventually
-h1::before,
-h2::before,
-h3::before {
-  font-weight: 400;
-  text-align: right;
-  width: 5ch;
-  padding-right: 1ch;
-  margin-left: -5ch;
-  color: var(--dark-accent-color);
-  display: inline-block;
+h1:hover a.anchor,
+h2:hover a.anchor,
+h3:hover a.anchor,
+h4:hover a.anchor,
+h5:hover a.anchor,
+h6:hover a.anchor {
+    text-decoration: none;
 }
-
-h1::before {
-  content: '#';
-}
-
-h2::before {
-  content: '##';
-}
-
-h3::before {
-  content: '###';
-} */
-
 h1 tt,
 h1 code {
     font-size: inherit;
@@ -387,152 +313,298 @@ h6 tt,
 h6 code {
     font-size: inherit;
 }
-
-/* table */
-table {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+h1 {
+    font-size: 2.25em;
+    line-height: 1.2;
+    border-bottom: 1px solid #eee;
+}
+h2 {
+    font-size: 1.75em;
+    line-height: 1.225;
+    border-bottom: 1px solid #eee;
 }
 
+/*@media print {
+    .typora-export h1,
+    .typora-export h2 {
+        border-bottom: none;
+        padding-bottom: initial;
+    }
+
+    .typora-export h1::after,
+    .typora-export h2::after {
+        content: "";
+        display: block;
+        height: 100px;
+        margin-top: -96px;
+        border-top: 1px solid #eee;
+    }
+}*/
+
+h3 {
+    font-size: 1.5em;
+    line-height: 1.43;
+}
+h4 {
+    font-size: 1.25em;
+}
+h5 {
+    font-size: 1em;
+}
+h6 {
+   font-size: 1em;
+    color: #777;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table{
+    margin: 0.8em 0;
+}
+li>ol,
+li>ul {
+    margin: 0 0;
+}
+hr {
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+    overflow: hidden;
+    box-sizing: content-box;
+}
+
+li p.first {
+    display: inline-block;
+}
+ul,
+ol {
+    padding-left: 30px;
+}
+ul:first-child,
+ol:first-child {
+    margin-top: 0;
+}
+ul:last-child,
+ol:last-child {
+    margin-bottom: 0;
+}
+blockquote {
+    border-left: 4px solid #dfe2e5;
+    padding: 0 15px;
+    color: #777777;
+}
+blockquote blockquote {
+    padding-right: 0;
+}
+table {
+    padding: 0;
+    word-break: initial;
+}
+table tr {
+    border: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 0;
+}
 table tr:nth-child(2n),
 thead {
-    background-color: var(--side-bar-bg-color);
+    background-color: #f8f8f8;
+}
+table th {
+    font-weight: bold;
+    border: 1px solid #dfe2e5;
+    border-bottom: 0;
+    margin: 0;
+    padding: 6px 13px;
+}
+table td {
+    border: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 6px 13px;
+}
+table th:first-child,
+table td:first-child {
+    margin-top: 0;
+}
+table th:last-child,
+table td:last-child {
+    margin-bottom: 0;
 }
 
-td,
-th {
-  border-style: solid;
-  border-color: var(--border-color);
-  border-width: 1px;
-  padding: .35rem .7rem
-}
-
-li p {
-  margin: 0;
-}
-
-.task-list {
-  padding-left: 0;
-}
-
-.task-list-item {
-  padding-left: 1.5em;
-  margin-bottom: 0rem;
-}
-
-#write input[type='checkbox'] {
-  margin-top: 5px;
-}
-
-blockquote {
-  margin: 1rem 0;
-  padding-left: 2ch;
-  margin-left: .5ch;
-  position: relative;
-  overflow: hidden;
-  border-left: 2px solid var(--border-color);
-  color: var(--accent-color);
-}
-
-/* horizontal line */
-hr {
-  border: none;
-  border-bottom: 2px solid var(--border-color);
-  margin-top: 1.4rem;
-  margin-bottom: 1.4rem;
-}
-
-p {
-  margin: 1rem 0;
-}
-
-/**
- * Code Fences
- * see http:/*support.typora.io/Code-Block-Styles
- */
-
-.cm-s-inner .CodeMirror-gutters {
-   background: var(--code-bg-color);
+.CodeMirror-lines {
+    padding-left: 4px;
 }
 
 .code-tooltip {
-  box-shadow: none;
-  border-radius: var(--border-radius);
-  background-color: var(--code-bg-color);
-  border-color: var(--border-color);
-  border-style: solid;
-  border-width: 1px;
+    box-shadow: 0 1px 1px 0 rgba(0,28,36,.3);
+    border-top: 1px solid #eef2f2;
 }
-
-.code-tooltip input {
-  outline: none;
-  width: 20ch;
-}
-
-.md-fences .code-tooltip {
-  bottom: -1.8rem;
-  padding: none;
-}
-
-.md-fences.md-focus .cm-s-inner {
-  /* Remove bottom right border radius when tooltip is shown */
-  border-bottom-right-radius: 0;
-}
-
-/* code tooltip autocomplete list */
-
-.autoComplt-hint {
-  background-color: transparent !important;
-  margin: 0 !important;
-  padding: 0.125rem 0.375rem !important;
-  color: var(--text-color) !important;
-  line-height: var(--line-height) !important;
-  height: 1.4rem !important;
-}
-
-.autoComplt-hint-selected {
-  background-color: var(--link-color) !important;
-  color: var(--background-color) !important;
-}
-
-/* basic styles */
 
 .md-fences,
 code,
 tt {
-  border: 1px solid var(--border-color);
-  background-color: var(--code-bg-color);
-  font-family: var(--monospace-font);
-  font-size: var(--monospace-font-size);
-  border-radius: .25rem;
-  padding: 0 .125rem;
-  line-height: var(--monospace-line-height);
+    border: 1px solid #e7eaed;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    padding: 0;
+    padding: 2px 4px 0px 4px;
+    font-size: 0.9em;
+}
+
+code {
+    background-color: #f3f4f4;
+    padding: 0 2px 0 2px;
 }
 
 .md-fences {
-  margin-bottom: 18px;
-  margin-top: 15px;
-  padding: 0.2em 1em;
-  padding-top: 8px;
-  padding-bottom: 6px;
-}
-
-a {
-  color:  var(--link-color);
-  text-decoration: none;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    padding-top: 8px;
+    padding-bottom: 6px;
 }
 
 
-/**
- * Control UI (optional)
- */
-
-.outline-item:hover {
-  color: var(--header-color);
+.md-task-list-item > input {
+  margin-left: -1.3em;
 }
 
-#write div.md-toc-tooltip {
-	background-color: var(--background-color);
+@media print {
+    html {
+        font-size: 13px;
+    }
+    pre {
+        page-break-inside: avoid;
+        word-wrap: break-word;
+    }
+}
+
+.md-fences {
+	background-color: #f8f8f8;
+}
+#write pre.md-meta-block {
+	padding: 1rem;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f7f7f7;
+    border: 0;
+    border-radius: 3px;
+    color: #777777;
+    margin-top: 0 !important;
+}
+
+.mathjax-block>.code-tooltip {
+	bottom: .375rem;
+}
+
+.md-mathjax-midline {
+    background: #fafafa;
+}
+
+#write>h3.md-focus:before{
+	left: -1.5625rem;
+	top: .375rem;
+}
+#write>h4.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h5.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h6.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+.md-image>.md-meta {
+    /*border: 1px solid #ddd;*/
+    border-radius: 3px;
+    padding: 2px 0px 0px 4px;
+    font-size: 0.9em;
+    color: inherit;
+}
+
+.md-tag {
+    color: #a7a7a7;
+    opacity: 1;
+}
+
+.md-toc { 
+    margin-top:20px;
+    padding-bottom:20px;
+}
+
+.sidebar-tabs {
+    border-bottom: none;
+}
+
+#typora-quick-open {
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+}
+
+#typora-quick-open-item {
+    background-color: #FAFAFA;
+    border-color: #FEFEFE #e5e5e5 #e5e5e5 #eee;
+    border-style: solid;
+    border-width: 1px;
+}
+
+/** focus mode */
+.on-focus-mode blockquote {
+    border-left-color: rgba(85, 85, 85, 0.12);
+}
+
+header, .context-menu, .megamenu-content, footer{
+    font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+.file-node-content:hover .file-node-icon,
+.file-node-content:hover .file-node-open-state{
+    visibility: visible;
+}
+
+.mac-seamless-mode #typora-sidebar {
+    background-color: #fafafa;
+    background-color: var(--side-bar-bg-color);
+}
+
+.mac-os #write{
+    caret-color: AccentColor;
+}
+
+.md-lang {
+    color: #b4654d;
+}
+
+/*.html-for-mac {
+    --item-hover-bg-color: #E6F0FE;
+}*/
+
+#md-notification .btn {
+    border: 0;
+}
+
+.dropdown-menu .divider {
+    border-color: #e5e5e5;
+    opacity: 0.4;
+}
+
+.ty-preferences .window-content {
+    background-color: #fafafa;
+}
+
+.ty-preferences .nav-group-item.active {
+    color: white;
+    background: #999;
+}
+
+.menu-item-container a.menu-style-btn {
+    background-color: #f5f8fa;
+    background-image: linear-gradient( 180deg , hsla(0, 0%, 100%, 0.8), hsla(0, 0%, 100%, 0)); 
 }
 
 
@@ -540,6 +612,8 @@ a {
 </style><title>manual</title>
 </head>
 <body class='typora-export'><div class='typora-export-content'>
-<div id='write'  class=''><h1 id='rs-extract-fx'><span>RS Extract-fx</span></h1><p><span>A project by </span><a href='https://therichard.space'><span>Richard van &#39;t Hof</span></a></p><h2><img src="program.png" referrerpolicy="no-referrer" alt="program"></h2><h2 id='what-is-it-for'><span>What is it for?</span></h2><p><em><span>RS Extract-fx</span></em><span> is a Premiere Pro plugin that automates mass moving video effects to &#39;adjustment layers&#39; just above the clip. This is especially useful while prepping for color grading in programs like Davinci Resolve. Once reimported, the effects can be restored by placing the processed footage under the generated adjustment layers. </span></p><h2 id='what-effects-are-supported'><span>What effects are supported?</span></h2><blockquote><p><strong><span>Transitions, opacity and audio effects are not supported</span></strong></p></blockquote><ul><li><p><code>Motion</code><span>-effects (position, scale, rotation etc.)</span></p></li><li><p><span>Other video effects from the </span><code>effects</code><span>-panel</span></p></li></ul><h2 id='controls'><span>Controls</span></h2><ul><li><p><strong><span>Source track</span></strong><span>: select the video track you would like to extract effects from. Make sure you&#39;ve simplified your footage to one video track.</span></p></li><li><p><strong><span>Remove effects from source clips</span></strong><span>: removes all attributes from the original video clips after the effects have been copied.</span></p></li><li><p><strong><span>Back-up original sequence:</span></strong><span> duplicates the current sequence before processing. This enables you te revert to your original sequence in case an error occurs.</span></p></li><li><p><code>Extract</code><span>-button: this button starts the copying process.</span></p></li><li><p><code>?</code><span>-button: Help-button that opens the plugin&#39;s manual. </span></p></li></ul><h2 id='troubleshooting'><span>Troubleshooting</span></h2><p>&nbsp;</p></div></div>
+<div id='write'  class=''><h1 id='rs-extract-fx'><span>RS Extract-fx</span></h1><p><em><span>RS Extract-fx</span></em><span> is a Premiere Pro plugin that automates mass moving video effects to  &#39;adjustment layers&#39; just above the clip. This is especially useful while prepping for color grading in programs like Davinci Resolve. Once reimported, the effects can be restored by placing the processed footage under the generated adjustment layers.</span></p><video src="preview.webm" loop autoplay></video><div class='md-toc' mdtype='toc'><p class="md-toc-content" role="list"><span role="listitem" class="md-toc-item md-toc-h1" data-ref="n613"><a class="md-toc-inner" href="#rs-extract-fx">RS Extract-fx</a></span><span role="listitem" class="md-toc-item md-toc-h2" data-ref="n619"><a class="md-toc-inner" href="#what-effects-are-supported">What effects are supported?</a></span><span role="listitem" class="md-toc-item md-toc-h2" data-ref="n624"><a class="md-toc-inner" href="#not-supported">Not supported</a></span><span role="listitem" class="md-toc-item md-toc-h2" data-ref="n630"><a class="md-toc-inner" href="#controls">Controls</a></span><span role="listitem" class="md-toc-item md-toc-h2" data-ref="n644"><a class="md-toc-inner" href="#troubleshooting">Troubleshooting</a></span></p></div><h2 id='what-effects-are-supported'><span>What effects are supported?</span></h2><ul><li><p><span>Other video effects from the </span><code>effects</code><span>-panel</span></p></li><li><p><code>Motion</code><span>-effects (position, scale, rotation etc.)</span></p></li></ul><h2 id='not-supported'><span>Not supported</span></h2><ul><li><p><span>Transitions, opacity and audio effects are not supported.</span></p></li><li><p><span>Lumetri Color and Warp Stabiliser are not recommended due to performance reasons and majorly reduced usability due to the nature of adjustment layers.</span></p></li></ul><h2 id='controls'><span>Controls</span></h2><p><img style="margin:0" src="program.png" alt="program"  /></p><ul><li><p><strong><span>Source track</span></strong><span>: select the video track you would like to extract effects from. Make sure you&#39;ve simplified your footage to one video track.</span></p></li><li><p><strong><span>Remove effects from source clips</span></strong><span>: removes all attributes from the original video clips after the effects have been copied.</span></p></li><li><p><strong><span>Back-up original sequence:</span></strong><span> duplicates the current sequence before processing. This enables you te revert to your original sequence in case an error occurs.</span></p></li><li><p><code>Extract</code><span>-button: this button starts the copying process.</span></p></li><li><p><code>?</code><span>-button: Help-button that opens the plugin&#39;s manual. </span></p></li></ul><h2 id='troubleshooting'><span>Troubleshooting</span></h2><ul><li><p><strong><span>The adjustment layer does not have the correct properties for my sequence.</span></strong>
+<span>Manually create an adjustment layer called </span><code>RSFX-container</code><span> in the root of your project with your custom specs. Make sure to delete all pre-existing files using this name.</span></p></li><li><p><strong><span>The created adjustment layers overlap clips on the track above the source track.</span></strong>
+<span>Manually append a video track to the source track.</span></p></li></ul><p>&nbsp;</p><p><span>A project by </span><a href='https://therichard.space'><span>Richard van &#39;t Hof</span></a></p></div></div>
 </body>
 </html>
