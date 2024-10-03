@@ -1,6 +1,7 @@
 // Enable Adobe Query Engine (QE) API
 const qe = app.enableQE();
 const updateUI = 1;
+const debug = true // Set to false when deploying for production.
 
 // Custom namespace to avoid conflicts with other libraries
 // namespace $ {
@@ -24,10 +25,17 @@ type fxObj = {
 	matchName: string
 }
 
+type CopySettingsConfig = {
+  sourceIn: Time,
+  sourceOut: Time,
+  targetIn: Time
+  targetOut: Time
+}
+
 // Define the methods
 $._PPP_ = {
   message: function (msg: string): void {
-    $.writeln(msg);
+    if(debug) {$.writeln(msg)};
   },
 
   updateEventPanel: function (msg: string, type: 'info' | 'warning' | 'error'): void {
@@ -145,31 +153,42 @@ $._PPP_ = {
     return false;
   },
 
-  copySetting: function(sourceProp:ComponentParam, targetProp:ComponentParam):0|null{
+  copySetting: function(sourceProp:ComponentParam, targetProp:ComponentParam, config: CopySettingsConfig):0|null{
     try {
       let isSet = null;
-    
+      const {sourceIn, sourceOut, targetIn, targetOut } = config;
       // Check if we need to use keyframes
       if (
         targetProp.areKeyframesSupported() &&   // Check if parameter supports keyframes.
-        sourceProp.getKeys()                   // Check if sourceParam contains keyframes.
+        sourceProp.getKeys()                    // Check if sourceParam contains keyframes.
       ) {
         const keyframes = sourceProp.getKeys()
-        $.writeln('setting keyframes...');
+        $._PPP_.message('setting keyframes...');
         targetProp.setTimeVarying(true);
+        
         // Setting keyframes
         for (let keyframeTime of keyframes ) {
           const keyframeValue = sourceProp.getValueAtKey(keyframeTime);
-          targetProp.addKey(keyframeTime);
-          targetProp.setValueAtKey(keyframeTime, keyframeValue, updateUI);
+
+          // Adjust keyframe time to match the target adjustment layer's timeline position
+          const adjustedKeyframeTime = new Time();
+          adjustedKeyframeTime.seconds = keyframeTime.seconds - sourceIn.seconds + targetIn.seconds;
+
+          //Add keyframe and value;
+          targetProp.addKey(adjustedKeyframeTime);
+          targetProp.setValueAtKey(adjustedKeyframeTime, keyframeValue, updateUI);
+          //$._PPP_.message(`${keyframeTime.ticks / 254016000000}; ${keyframeValue}`); // 1 sec = 254016000000 ticks
         }
       
       } else {
 
         // Set static values
-        $.writeln('setting static value...');
+        $._PPP_.message('setting static value...');
         const newValue = sourceProp.getValue();
-        isSet = targetProp.setValue(newValue, updateUI);
+        if(targetProp && newValue) {
+          isSet = targetProp.setValue(newValue, updateUI);
+        };
+        
       }
       return isSet;
     } catch(err){
@@ -178,7 +197,7 @@ $._PPP_ = {
     }
   },
 
-  copySettings: function (sourceEffect: Component, targetClip: TrackItem): boolean {
+  copySettings: function (sourceEffect: Component, targetClip: TrackItem, config: CopySettingsConfig ): boolean {
     try {
       const sourceFxName = $._PPP_.sanitized(sourceEffect.matchName)
       // Find correct effect regardless of order
@@ -221,7 +240,7 @@ $._PPP_ = {
             const scaleProps:string[] = ['Scale Width', 'Scale Height']
             for(let scaleProp of scaleProps) {
               const targetProp = $._PPP_.findComponentByName(targetComponent.properties, scaleProp);
-              if(targetProp){$._PPP_.copySetting(sourceProp, targetProp)}
+              if(targetProp){$._PPP_.copySetting(sourceProp, targetProp, config)}
             }
             continue;
           } else if (
@@ -233,7 +252,7 @@ $._PPP_ = {
           } else {
             // If not: continue normally
             const targetProp = $._PPP_.findComponentByName(targetComponent.properties, sourceProp.displayName);
-            if(targetProp) {$._PPP_.copySetting(sourceProp, targetProp)}
+            if(targetProp) {$._PPP_.copySetting(sourceProp, targetProp, config)}
             continue;
           }
         }
@@ -299,7 +318,13 @@ $._PPP_ = {
           // Create an adjustment layer in the target track
           const inserted: boolean = targetTrack.insertClip(adjustmentLayer, startTime); // Returns true if inserted correctly
 					const targetClip: TrackItem = targetTrack.clips[c]; // Current target clip (aka. adjustmente layer)
-
+          const config:CopySettingsConfig = { // Get the source clip inPoint on the timeline
+            sourceIn: sourceClip.inPoint,
+            sourceOut: sourceClip.outPoint,
+            targetIn: targetClip.inPoint,
+            targetOut: targetClip.outPoint
+          }
+         
           if (inserted) {
             // Create link to newly created adjustment layer with QE API
             const adjustmentLyrQE = qeTargetTrack.getItemAt(c + 1); // Did +1 since QE starts counting from 1 instead of 0.
@@ -337,7 +362,7 @@ $._PPP_ = {
                 // Check if effect was added correctly
                 if (effectAdded) {
                   // Loop over each effect
-                  const settingsAdded = $._PPP_.copySettings(effect, targetClip);
+                  const settingsAdded = $._PPP_.copySettings(effect, targetClip, config);
 
                   if (!settingsAdded) {
                     $._PPP_.message('- Error occurred while adding effect settings.');
