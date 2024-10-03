@@ -1,6 +1,6 @@
 # RS Extract-fx
 
-s*RS Extract-fx* is a Premiere Pro plugin that automates mass moving video effects to  'adjustment layers' just above the clip. This is especially useful while prepping your sequennce for color grading in programs like Davinci Resolve. Once reimported, the effects can be restored by placing the processed footage under the generated adjustment layers. This makes sure that no effect data is lost due to translation errors during the roundtrip.
+*RS Extract-fx* is a Premiere Pro plugin that automates mass moving video effects to  'adjustment layers' just above the clip. This is especially useful while prepping your sequennce for color grading in programs like Davinci Resolve. Once reimported, the effects can be restored by placing the processed footage under the generated adjustment layers. This makes sure that no effect data is lost due to translation errors during the roundtrip.
 
 <video src="preview.webm" loop autoplay></video>
 
