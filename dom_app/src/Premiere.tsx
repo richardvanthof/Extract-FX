@@ -1,7 +1,7 @@
 // Enable Adobe Query Engine (QE) API
 const qe = app.enableQE();
 const updateUI = 1;
-const debug = true // Set to false when deploying for production.
+const debug = false // Set to false when deploying for production.
 
 // Custom namespace to avoid conflicts with other libraries
 // namespace $ {
@@ -25,12 +25,18 @@ type fxObj = {
 	matchName: string
 }
 
+type Resolution = {
+  w: number,
+  h: number
+}
+
 type CopySettingsConfig = {
   sourceIn: Time,
-  sourceOut: Time,
-  targetIn: Time
-  targetOut: Time
+  targetIn: Time,
+  sourceRes: Resolution
 }
+
+
 
 // Define the methods
 $._PPP_ = {
@@ -38,7 +44,7 @@ $._PPP_ = {
     if(debug) {$.writeln(msg)};
   },
 
-  updateEventPanel: function (msg: string, type: 'info' | 'warning' | 'error'): void {
+  updateEventPanel: function (msg: string, type: 'info' | 'warning' | 'error' = 'info'): void {
     $._PPP_.message(msg);
     app.setSDKEventMessage(msg, type);
   },
@@ -153,47 +159,83 @@ $._PPP_ = {
     return false;
   },
 
-  copySetting: function(sourceProp:ComponentParam, targetProp:ComponentParam, config: CopySettingsConfig):0|null{
+  copySetting: function(sourceProp: ComponentParam, targetProp: ComponentParam, config: CopySettingsConfig): 0 | null {
     try {
       let isSet = null;
-      const {sourceIn, sourceOut, targetIn, targetOut } = config;
-      // Check if we need to use keyframes
-      if (
-        targetProp.areKeyframesSupported() &&   // Check if parameter supports keyframes.
-        sourceProp.getKeys()                    // Check if sourceParam contains keyframes.
+      const { sourceIn, targetIn, sourceRes } = config;
+  
+      const targetRes:Resolution = {
+        w: app.project.activeSequence.frameSizeHorizontal, // Width of the sequence,
+        h: app.project.activeSequence.frameSizeVertical // Height of the sequence
+      }
+  
+      function translatePosCoordinates(
+        value: any, 
+        currentEffectName: string, 
+        sourceRes: Resolution, 
+        targetRes: Resolution
       ) {
-        const keyframes = sourceProp.getKeys()
-        $._PPP_.message('setting keyframes...');
-        targetProp.setTimeVarying(true);
-        
-        // Setting keyframes
-        for (let keyframeTime of keyframes ) {
-          const keyframeValue = sourceProp.getValueAtKey(keyframeTime);
+        if (currentEffectName.toLowerCase() === 'position') {
+          return [value[0] * (sourceRes.w / targetRes.w), value[1] * (sourceRes.h / sourceRes.h]);
+        }
+        return value; // Non-position properties remain unchanged
+      }
 
-          // Adjust keyframe time to match the target adjustment layer's timeline position
+      if (targetProp.displayName.toLowerCase() === 'position') {
+        $._PPP_.message(`orginele transform pos: ${targetProp.getValue()}`); //DEBUG
+      }
+     
+  
+      // Check if the property supports keyframes
+      if (targetProp.areKeyframesSupported() && sourceProp.getKeys()) {
+        const keyframes = sourceProp.getKeys();
+        $._PPP_.message('Setting keyframes...');
+  
+        targetProp.setTimeVarying(true); // Enable keyframes
+  
+        // Set each keyframe value by converting it to absolute coordinates
+        for (let keyframeTime of keyframes) {
+          const keyframeValue = sourceProp.getValueAtKey(keyframeTime);
+  7
+          // Adjust the keyframe time for the target clip
           const adjustedKeyframeTime = new Time();
           adjustedKeyframeTime.seconds = keyframeTime.seconds - sourceIn.seconds + targetIn.seconds;
 
-          //Add keyframe and value;
-          targetProp.addKey(adjustedKeyframeTime);
-          targetProp.setValueAtKey(adjustedKeyframeTime, keyframeValue, updateUI);
-          //$._PPP_.message(`${keyframeTime.ticks / 254016000000}; ${keyframeValue}`); // 1 sec = 254016000000 ticks
-        }
-      
-      } else {
+          const adjustedKeyframeValue = translatePosCoordinates(
+            keyframeValue, 
+            sourceProp.displayName, 
+            sourceRes,
+            targetRes
+          );
 
-        // Set static values
-        $._PPP_.message('setting static value...');
-        const newValue = sourceProp.getValue();
-        if(targetProp && newValue) {
-          isSet = targetProp.setValue(newValue, updateUI);
-        };
-        
+          // Add keyframe to the target and set the converted value
+          targetProp.addKey(adjustedKeyframeTime);
+          targetProp.setValueAtKey(adjustedKeyframeTime, adjustedKeyframeValue, updateUI);
+  
+          $._PPP_.message(`---- Time: ${adjustedKeyframeTime.seconds} sec; Value: ${keyframeValue}`);
+        }
+      } else {
+        // Handle the case for static values (no keyframes)
+        $._PPP_.message('Setting static value...');
+        const staticValue = sourceProp.getValue();
+
+        const adjustedValue = translatePosCoordinates(
+          staticValue, 
+          sourceProp.displayName, 
+          sourceRes,
+          targetRes
+        );
+
+        if (targetProp && staticValue) {
+          isSet = targetProp.setValue(adjustedValue, updateUI);
+        }
+        $._PPP_.message(`---- Value: ${staticValue}`);
       }
+  
       return isSet;
-    } catch(err){
-      $._PPP_.message('ERROR Copysetting(): ' + err);
-      return err
+    } catch (err) {
+      $._PPP_.message('ERROR copySetting(): ' + err);
+      return null;
     }
   },
 
@@ -210,21 +252,6 @@ $._PPP_ = {
 			);
 
       if (targetComponent) {
-
-				// //Make sure that uniform scale is enables on Transform FX
-				// if(targetComponent.matchName === "AE.ADBE Geometry") {
-				// 	const uniformScaleProp = $._PPP_.findComponentByName(
-				// 		targetComponent.properties, 
-				// 		'Uniform Scale'
-				// 	);
-				// 	if (uniformScaleProp) {
-				// 		// Ensure 'Uniform Scale' is set to true
-				// 		if (!uniformScaleProp.getValue()) {
-				// 			uniformScaleProp.setValue(true, updateUI);
-				// 			$._PPP_.message(`- 'Uniform Scale' set to true for Transform effect.`);
-				// 		}
-				// 	}
-				// }
 
         // Loop through Properties (aka. effect settings)
         for (const sourceProp of sourceEffect.properties) {
@@ -267,8 +294,41 @@ $._PPP_ = {
     }
   },
   
+  getClipResolution: function(clip:TrackItem):Resolution {
+    // Get the associated project item
+    var projectItem = clip.projectItem;
 
-  copyClipEffectsToAdjustmentLayers: function (track: number, userExclusions: string[]): boolean {
+    // Get the project columns metadata
+    var columnsMetadata = projectItem.getProjectColumnsMetadata();
+
+    // Check if we have the metadata and print it out
+    if (columnsMetadata.length > 0) {
+        // You might need to inspect the keys for your specific version
+        var videoInfo = columnsMetadata[0]['premierePrivateProjectMetaData:Column.Intrinsic.VideoInfo'];
+
+        if (videoInfo) {
+            // Extract the width and height from the videoInfo string
+            var resolutionParts = videoInfo.split(" x ");
+            var width = resolutionParts[0];
+            var height = resolutionParts[1].split(" ")[0];  // Extract only the height, ignoring any extra info
+
+            // Output the width and height
+            $.writeln("Clip width: " + width);
+            $.writeln("Clip height: " + height);
+            
+            return {
+              w: width,
+              h: height
+            }
+        } else {
+            $.writeln("Video info not found in metadata.");
+        }
+    } else {
+        $.writeln("No columns metadata available.");
+    }
+  },
+
+  copyClipEffectsToAdjustmentLayers: function (track: number, userExclusions: string[] = []): boolean {
     try {
       $._PPP_.updateEventPanel(`Track ${track} - Initializing effect extraction...`, 'info');
 
@@ -318,11 +378,13 @@ $._PPP_ = {
           // Create an adjustment layer in the target track
           const inserted: boolean = targetTrack.insertClip(adjustmentLayer, startTime); // Returns true if inserted correctly
 					const targetClip: TrackItem = targetTrack.clips[c]; // Current target clip (aka. adjustmente layer)
-          const config:CopySettingsConfig = { // Get the source clip inPoint on the timeline
+          
+          const sourceRes:Resolution = {w: sequence.frameSizeHorizontal, h:sequence.frameSizeVertical }
+
+          let config:CopySettingsConfig = { // Get the source clip inPoint on the timeline
             sourceIn: sourceClip.inPoint,
-            sourceOut: sourceClip.outPoint,
             targetIn: targetClip.inPoint,
-            targetOut: targetClip.outPoint
+            sourceRes: sourceRes
           }
          
           if (inserted) {
@@ -339,8 +401,7 @@ $._PPP_ = {
               const effect = clipEffects[ce]; // Current effect
               
               // SKIP EXCLUDED EFFECTS
-              let exclusions:string[] = ['Opacity'] // default exclusions.
-              if(userExclusions) {exclusions.concat(userExclusions); };
+              let exclusions:string[] = ['Opacity', ...userExclusions] // exclusions.
               $._PPP_.message(`Exlusions list: ${exclusions}`)
               const skipEffect:boolean = $._PPP_.listContains(effect.displayName, exclusions);
               if(skipEffect === false) {
@@ -368,6 +429,8 @@ $._PPP_ = {
                     $._PPP_.message('- Error occurred while adding effect settings.');
                   }
                 }
+              } else {
+                $._PPP_.message(`Skipped: ${effect.displayName}`)
               }
             }
           }
@@ -393,4 +456,5 @@ $._PPP_ = {
 // $._PPP_.message($._PPP_.getInstalledEffects())
 
 // Start copying effects to adjustment layers from track 1 (we're counting from 1)
- $._PPP_.copyClipEffectsToAdjustmentLayers(1,['Lumetri Color', 'Warp Stabilizer']);
+const excl = ['Lumetri Color', 'Warp Stabilizer'];
+$._PPP_.copyClipEffectsToAdjustmentLayers(1);
