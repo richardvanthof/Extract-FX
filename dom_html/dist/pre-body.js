@@ -5,7 +5,6 @@ function handleCallback(data) {
         showLoadingScreen(false);
     if (data !== true) {
         console.error("Callback Error: " + data, data.message);
-        alert("handleCallback-error: " + data.message);
     }
 }
 function setLoadingCaption(message) {
