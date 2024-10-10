@@ -1,7 +1,7 @@
 // Enable Adobe Query Engine (QE) API
 const qe = app.enableQE();
 const updateUI = 1;
-const debug = false // Set to false when deploying for production.
+const debug = true // Set to false when deploying for production.
 
 // Custom namespace to avoid conflicts with other libraries
 // namespace $ {
@@ -328,7 +328,83 @@ $._PPP_ = {
     }
   },
 
+  getEffects: function(clip: TrackItem) {
+    var effects = {};
+    for (let effect of clip.components) {
+        
+        // GET EFFECT NAME
+        var effectName = effect.displayName;
+        var fxContainer = effects[effectName]= {};
+        
+        // GET SETTING NAMES
+        for (let setting of effect.properties){
+
+            // Get FX setting name
+            var settingName = setting.displayName;
+            fxContainer[settingName] = {};
+            
+            // GET SETTING VALUE (keyframes or static)
+            if (
+                setting.areKeyframesSupported() && 
+                setting.getKeys()
+                ){
+                
+                // Get Keyframes
+                var keyFrames = [];
+
+                for (let keyTime of setting.getKeys()) {
+                    var keyValue = setting.getValueAtKey(keyTime);
+                    keyFrames.push([keyTime, keyValue])
+                };
+                fxContainer[settingName].keyframes = keyFrames;
+
+            } else {
+                // Get static value (if keyframes are not available);
+                var value = setting.getValue();
+                fxContainer[settingName].value = value;
+            }
+        }
+    }
+    return effects;
+  },
+
+  saveEffectstoFile: function(track: number = 1, userExclusions: string[] = []): boolean {
+    try {
+      // Get the active sequence
+      const sequence = app.project.activeSequence;
+      if (!sequence) {
+        alert('No active sequence found.');
+        return false;
+      }
+
+      const effectsList = [];
+
+      // Define which video track to look for clips and where to put adjustment layers
+      const sourceTrackIndex = track - 1; // The track from which to copy effects
+      const sourceTrack: Track = sequence.videoTracks[sourceTrackIndex]
+
+      if (!sourceTrack) {
+        throw 'Please ensure the sourcetracks exist.';
+      }
+
+      for(let clip of sourceTrack.clips) {
+        const clipEffects = $._PPP_.getEffects(clip)
+        effectsList.push(clipEffects)
+        $._PPP_.message(clipEffects)
+      }
+
+      $._PPP_.message(effectsList)
+      return true;
+    } catch(err) {
+      throw err;
+      alert(err);
+    }
+   
+  },
+
   copyClipEffectsToAdjustmentLayers: function (track: number, userExclusions: string[] = []): boolean {
+    const saveType: 'file' | 'layer' = 'file';
+
     try {
       $._PPP_.updateEventPanel(`Track ${track} - Initializing effect extraction...`, 'info');
 
@@ -366,6 +442,7 @@ $._PPP_ = {
       // Iterate over each clip in the source track
       for (let c = 0; c < sourceTrack.clips.numItems; c++) {
         const sourceClip: TrackItem = sourceTrack.clips[c]; // Current clip
+        
         const clipEffects: ComponentCollection = sourceClip.components; // Current clip effects
         const startTime: Time = sourceClip.start; // Start time of clip
 
@@ -375,17 +452,17 @@ $._PPP_ = {
         // CHECK IF CLIP EVEN HAS EFFECTS
         if (clipEffects.numItems > 0) {
           
-          // Create an adjustment layer in the target track
-          const inserted: boolean = targetTrack.insertClip(adjustmentLayer, startTime); // Returns true if inserted correctly
-					const targetClip: TrackItem = targetTrack.clips[c]; // Current target clip (aka. adjustmente layer)
-          
-          const sourceRes:Resolution = {w: sequence.frameSizeHorizontal, h:sequence.frameSizeVertical }
+        // Create an adjustment layer in the target track
+        const inserted: boolean = targetTrack.insertClip(adjustmentLayer, startTime); // Returns true if inserted correctly
+        const targetClip: TrackItem = targetTrack.clips[c]; // Current target clip (aka. adjustmente layer)
+        
+        const sourceRes:Resolution = {w: sequence.frameSizeHorizontal, h:sequence.frameSizeVertical }
 
-          let config:CopySettingsConfig = { // Get the source clip inPoint on the timeline
-            sourceIn: sourceClip.inPoint,
-            targetIn: targetClip.inPoint,
-            sourceRes: sourceRes
-          }
+        let config:CopySettingsConfig = { // Get the source clip inPoint on the timeline
+          sourceIn: sourceClip.inPoint,
+          targetIn: targetClip.inPoint,
+          sourceRes: sourceRes
+        }
          
           if (inserted) {
             // Create link to newly created adjustment layer with QE API
@@ -456,5 +533,7 @@ $._PPP_ = {
 // $._PPP_.message($._PPP_.getInstalledEffects())
 
 // Start copying effects to adjustment layers from track 1 (we're counting from 1)
-const excl = ['Lumetri Color', 'Warp Stabilizer'];
-$._PPP_.copyClipEffectsToAdjustmentLayers(1);
+// const excl = ['Lumetri Color', 'Warp Stabilizer'];
+//$._PPP_.copyClipEffectsToAdjustmentLayers(1);
+
+$._PPP_.saveEffectstoFile(1);
