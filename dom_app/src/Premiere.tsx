@@ -368,10 +368,23 @@ $._PPP_ = {
     return effects;
   },
 
+  getSep : function () {
+		if (Folder.fs === 'Macintosh') {
+			return '/';
+		} else {
+			return '\\';
+		}
+	},
+
   saveEffectstoFile: function(track: number = 1, userExclusions: string[] = []): boolean {
+    
     try {
-      // Get the active sequence
       const sequence = app.project.activeSequence;
+      let sessionCounter	= 1;
+      const originalPath	= app.project.path;
+      const seqName = sequence.name
+      // Get the active sequence
+      
       if (!sequence) {
         alert('No active sequence found.');
         return false;
@@ -393,7 +406,33 @@ $._PPP_ = {
         $._PPP_.message(clipEffects)
       }
 
-      $._PPP_.message(effectsList)
+      const outputFile = {
+        type: 'RS-FX-EXCHANGE',
+        track: track,
+        sequence: seqName,
+        exclusions: userExclusions,
+        clips: effectsList
+      }
+
+      // Convert JSON object to string
+      var jsonString = JSON.stringify(outputFile);
+
+      // Open a Save Dialog
+      var file = File.saveDialog("Save effects list", "*.json"); // Open dialog to save file with .json extension
+      file.type = 'rsfx';
+
+      if (file) {
+          // If the user chooses a file
+          if (file.open("w")) {
+              file.write(jsonString); // Write the JSON string to the selected file
+              file.close();           // Close the file to save changes
+          } else {
+              alert("Failed to open the file for writing.");
+          }
+      } else {
+          alert("No file selected.");
+      }
+
       return true;
     } catch(err) {
       throw err;
