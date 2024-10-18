@@ -145,6 +145,7 @@ $._PPP_ = {
 
   findComponentByName: function (list: ComponentCollection, query: string, keyName: string = 'displayName'): Component | null {
     // Loop through component collection list and search for a specified item.
+    $._PPP_.message(`Finding match for ${query}`)
     for (const component of list) {
 			$._PPP_.message(`-- ${component[keyName]}`)
       if (component[keyName] === query) {
@@ -442,6 +443,7 @@ $._PPP_ = {
   },
 
   copyClipEffectsToAdjustmentLayers: function (track: number, userExclusions: string[] = []): boolean {
+    
     const saveType: 'file' | 'layer' = 'file';
 
     try {
@@ -562,6 +564,108 @@ $._PPP_ = {
     }
 		return true;
   },
+  restoreEffectsToClips: function(options:{exclusions: string[], sourceData: Object, targetTrack: number = 1 }) {
+    const {
+      exclusions,
+      sourceData
+    } = options;
+    
+    //Get track
+    try {
+       // Helper function to find a video track by index
+       function findVideoTrack(index: number): Track | null {
+        const videoTrack = app.project.activeSequence.videoTracks[index];
+        return videoTrack ? videoTrack : null;
+      }
+
+
+      //Get variables
+      const sequence = app.project.activeSequence;
+      if (!sequence) {
+        alert('No active sequence found.');
+        return false;
+      }
+
+      // Define which video track to look for clips and where to put adjustment layers
+      const targetTrackIndex = options.targetTrack - 1; // The track where the adjustment layers will be placed
+
+      // Target track vars
+      const targetTrack: Track = findVideoTrack(targetTrackIndex)!;
+      const qeTargetTrack = qe.project.getActiveSequence().getVideoTrackAt(targetTrackIndex); //QE starts counting from 1.
+
+      if(!targetTrack) { throw 'Target track undefined.'}
+      if(!targetTrack.clips) {throw 'Target track has no clips'};
+
+      const sourceClips = sourceData.clips;
+      const targetClips = targetTrack.clips;
+
+      //Loop through clips
+      for(let c = 0; c <= sourceClips.length && c <= targetClips.numItems; c++) {
+        $._PPP_.message(`Restoring efffect for clip ${c} of ${sourceClips.length}`);
+        const indexQE = c + 1;
+        const sourceClip = sourceClips[c];
+        const targetClip = targetClips[c];
+        const targetClipQE = qeTargetTrack.getItemAt(indexQE); // Did +1 since QE starts counting from 1 instead of 0.
+        
+        if(!targetClip) {throw 'Target clip not found.'};
+        if(!targetClipQE) {throw 'QE target clip not found.'};
+
+        // Loop through clip effects 
+        for(let effectName in sourceClip) {
+          
+          // SKIP EXCLUDED EFFECTS
+          $._PPP_.message(`Exlusions list: ${exclusions}`)
+          const skipEffect:boolean = $._PPP_.listContains(effectName, exclusions);
+          
+          if (skipEffect === false) {
+            //Loop through effect settings
+
+            // Skip duplicate effects.
+            if(
+              effectName.toLowerCase() !== 'motion' && 
+              effectName.toLowerCase() !== 'opacity'
+            ) {
+              // Add video effect
+              const newEffect = qe.project.getVideoEffectByName(effectName); // Fetch effect property
+              targetClipQE.addVideoEffect(newEffect);
+            }
+            
+
+            // Vars
+            const sourceEffect = sourceClip[effectName];
+            const targetEffect = $._PPP_.findComponentByName(targetClip.components, effectName);
+
+            for(let settingName in sourceEffect) {
+              const sourceSetting = sourceEffect[settingName];
+              const targetSetting = $._PPP_.findComponentByName(targetEffect.properties, settingName)
+              //Add effect to targetclip
+              if(sourceSetting && targetSetting) {
+                if(sourceSetting.keyframes) {
+                  targetSetting.setTimeVarying(true); // Enable keyframes
+  
+                  const {keyframes} = sourceSetting
+                  for(let [keyTime, keyValue] of keyframes) {
+                    targetSetting.addKey(keyTime.seconds);
+                    targetSetting.setValueAtKey(keyTime.seconds, keyValue, updateUI);
+                  }
+                } else {
+                  targetSetting.setValue(sourceSetting.value, updateUI)
+                }
+              } else {
+                throw 'Target or source setting required but not found.'
+              }
+            }
+          }
+          
+        }
+      }
+
+    } catch(err) {
+      throw err;
+      alert(err);
+    }
+  }
+
 };
 
 
@@ -573,6 +677,13 @@ $._PPP_ = {
 
 // Start copying effects to adjustment layers from track 1 (we're counting from 1)
 // const excl = ['Lumetri Color', 'Warp Stabilizer'];
-//$._PPP_.copyClipEffectsToAdjustmentLayers(1);
+// const data = JSON.parse('{"type":"RS-FX-EXCHANGE","track":1,"sequence":"My video","exclusions":[],"clips":[{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":152},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"keyframes":[[{"seconds":21.1592955,"ticks":"5374799605728"},[0.5,0.5]],[{"seconds":27.683712,"ticks":"7032105787392"},[0.54560631513596,0.46042093634605]]]},"Scale":{"keyframes":[[{"seconds":21.1592955,"ticks":"5374799605728"},109],[{"seconds":27.683712,"ticks":"7032105787392"},124.3671875]]},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":2},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"keyframes":[[{"seconds":3599.819769,"ticks":"914411818442304"},100],[{"seconds":3608.759301,"ticks":"916682602602816"},120]]},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"keyframes":[[{"seconds":3598.4860485,"ticks":"914073032095776"},110],[{"seconds":3605.2627905,"ticks":"915794432991648"},100]]},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}},"Mosaic":{"Horizontal Blocks":{"keyframes":[[{"seconds":10.4644668333333,"ticks":"2658142007136"},600],[{"seconds":10.4978335,"ticks":"2666617674336"},200],[{"seconds":11.4988334999961,"ticks":"2920887690335"},1]]},"Vertical Blocks":{"keyframes":[[{"seconds":10.4644668333333,"ticks":"2658142007136"},600],[{"seconds":10.4978335,"ticks":"2666617674336"},200],[{"seconds":11.4988334999961,"ticks":"2920887690335"},1]]},"Sharp Colors":{"value":true}}}]}');
+// $._PPP_.copyClipEffectsToAdjustmentLayers(1, []);
 
-$._PPP_.saveEffectstoFile(1);
+// $._PPP_.restoreEffectsToClips({
+//   exclusions: [],
+//   sourceData: data,
+//   targetTrack: 1
+// })
+
+// $._PPP_.saveEffectstoFile(1);
