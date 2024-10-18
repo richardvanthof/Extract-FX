@@ -43,7 +43,7 @@
 		<form class="grid-container">
 			<div class="grid-column">
 				<label>Source track </label><br/>
-				<select id="track"> <!--TODO: make dynamic-->
+				<select id="sourceTrack"> <!--TODO: make dynamic-->
 					<option value="1">V1 - Video 1</option>
 					<option value="2">V2 - video 2</option>
 					<option value="3">V3 - Video 3</option>
@@ -51,8 +51,8 @@
 				</select><br/><br/>
 				<label>Destination</label><br/>
 				<ul class="switch-input">
-					<li class="switch-option active">File</li>
-					<li class="switch-option">Track</li>
+					<li data-destination="file" class="switch-option active">File</li>
+					<li data-destination="track" class="switch-option">Track</li>
 				</ul>
 			</div>
 			<div class="grid-column">
