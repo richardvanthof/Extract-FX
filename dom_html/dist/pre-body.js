@@ -130,5 +130,18 @@ $(document).ready(function () {
         node.appendChild(rmBtn);
         exclusionsContainer.appendChild(node);
     });
+    var switchSelection = function (event, parentElem) {
+        var allOptions = Array.from(parentElem.children);
+        allOptions.forEach(function (option) { return option.classList.remove('active'); });
+        var target = event.currentTarget;
+        target.classList.add('active');
+    };
+    var switchInput = document.querySelector('.switch-input');
+    if (switchInput) {
+        var switchOptions = Array.from(switchInput.children);
+        switchOptions.forEach(function (option) {
+            option.addEventListener('click', function (e) { return switchSelection(e, switchInput); });
+        });
+    }
     togglePlaceholder();
 });

@@ -182,7 +182,27 @@ $( document ).ready(function() {
         exclusionsContainer.appendChild(node);
     })
 
-
+    const switchSelection = (event: Event, parentElem: HTMLElement) => {
+        const allOptions = Array.from(parentElem.children) as HTMLElement[];  // Convert HTMLCollection to Array
+        
+        // Remove 'active' class from all options
+        allOptions.forEach(option => option.classList.remove('active'));
+        
+        // Add 'active' class to the clicked element
+        const target = event.currentTarget as HTMLElement;
+        target.classList.add('active');
+    };
+    
+    const switchInput = document.querySelector('.switch-input') as HTMLElement; // Assuming this is a container for options
+    
+    if (switchInput) {
+        const switchOptions = Array.from(switchInput.children) as HTMLElement[];  // Convert HTMLCollection to Array
+    
+        // Add event listeners to each switch option
+        switchOptions.forEach(option => {
+            option.addEventListener('click', e => switchSelection(e, switchInput));
+        });
+    }
 
 
     togglePlaceholder()
