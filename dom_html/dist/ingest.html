@@ -42,7 +42,7 @@
 	<main class="start-view">
 		<form>
 	<label>Source file </label><br/>
-	<input id="source-file" accept="application/json, .rsfx" type="file"><br/>
+	<input id="source-file" onChange="handleSourceData(this.files)" accept="application/json, .rsfx" type="file"><br/>
 	<label>Target track </label><br/>
 	<select id="targetTrack"> <!--TODO: make dynamic-->
 		<option value="1">V1 - Video 1</option>
@@ -54,7 +54,7 @@
 		<summary id='exclusion-header'>Exclude effects</summary>
 		<div class="exclusions">
 			<div class='exclusions-controls'>
-					<button class='exclusion-control' id='add-exclusion-btn'>+ Add Exclusion</button>
+					<button class='exclusion-control' id='add-filtered-exclusion-btn'>+ Add Exclusion</button>
 					<button class='exclusion-control' id='remove-all-exclusions-btn'>Clear all</button>
 
 				</div>

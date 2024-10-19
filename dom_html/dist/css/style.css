@@ -143,6 +143,7 @@ input['number'] {
 	border: var(--border-width) solid var(--border-color);
 	border-radius: 3px;
 	position: relative;
+	margin-top: 1em;
 }
 
 .exclusion {
