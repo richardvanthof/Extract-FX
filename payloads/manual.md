@@ -39,7 +39,7 @@ Use this panel to back-up you clip effects
 
 Use this panel to restore your clip effects using the file that you created on the Extract-panel when destination is set to 'File.'
 
-![ingest](payloads/ingest.png)
+![ingest](ingest.png)
 
 - **Source file**: select the file you created on the extract-page to back up your clip effects to.
 - **Target track**: choose the track that the clips live on that you want to restore your effects to.
