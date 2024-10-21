@@ -45,6 +45,7 @@ const handleSourceData = (file: File): void => {
               if (Array.isArray(sourceData.exclusions)) {
                 const exclusions = sourceData.exclusions;
                 setExclusionOptions(exclusionOptions);
+                removeAllExclusions();
                 exclusions.forEach((exclusion: any): void => {
                   console.log(exclusion)
                   addExclusion(exclusionOptions, exclusion);

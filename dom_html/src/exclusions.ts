@@ -20,6 +20,12 @@ const updateCounter = (amount) => {
   }
 }
 
+const removeAllExclusions = () => {
+  exclusionsContainer.innerHTML = '';
+  updateCounter(-exclCounter);
+  togglePlaceholder();
+}
+
 const addExclusion = (list: string[], value?: string) => {
   let effectsList = list.filter(e => e !== value) // Select duplicate effect when it's already pres-selected
   updateCounter(1)
@@ -64,19 +70,16 @@ const addExclusion = (list: string[], value?: string) => {
   exclusionsContainer.appendChild(node);
 };
 
+
   
 const removeExclusionBtn = document.querySelectorAll('.remove-exclusion')
-const removeAllExclusions = document.querySelector('#remove-all-exclusions-btn');
+const removeAllExclusionsBtn = document.querySelector('#remove-all-exclusions-btn');
 
 const setExclusionOptions = (options: string[]) => effectsList = options; //set effect exclusion options.
 
-removeAllExclusions.addEventListener('click', e => {
-
+removeAllExclusionsBtn.addEventListener('click', e => {
   e.preventDefault();
-  exclusionsContainer.innerHTML = '';
-  updateCounter(-exclCounter);
-  togglePlaceholder();
-
+  removeAllExclusions();
 })
 
 addExclusionBtn.addEventListener("click", e => {
