@@ -52,8 +52,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 					<Menu>Extract FX</Menu>
 					<Geometry>
 						<Size>
-							<Height>350</Height>
-							<Width>350</Width>
+							<Height>800</Height>
+							<Width>800</Width>
 						</Size>
 					</Geometry>
 				</UI>
