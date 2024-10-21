@@ -1,0 +1,92 @@
+<!doctype html>
+<!--
+/*************************************************************************
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+* Copyright 2014 Adobe Inc.
+* All Rights Reserved.
+*
+* NOTICE: Adobe permits you to use, modify, and distribute this file in
+* accordance with the terms of the Adobe license agreement accompanying
+* it. If you have received this file from a source other than Adobe,
+* then your use, modification, or distribution of it requires the prior
+* written permission of Adobe. 
+**************************************************************************/
+-->
+<html>
+	<head>
+		<meta charset="utf-8">
+		<script src="./ext.js"></script>
+		<script src="../lib/CSInterface.js"></script>
+		<script src="../lib/jquery-1.9.1.js"></script>
+		<script src="../lib/Vulcan.js"></script>
+		<link href="css/style.css" rel="stylesheet" type="text/css">
+		<script src="./pre-body.js"></script>
+		
+	</head>
+
+	<body>
+
+	<div id="progress" class="hide">
+		<progress id="progress-indicator" ></progress> </br>
+		<p id="progress-caption" class="caption">Loading...</p>
+	</div>
+	<nav class="navbar">
+		<ul class="nav-links">
+			<li class="navlink "><a href="./index.html">Extract</a></li>
+			<li class="navlink active"><a href="./ingest.html">Ingest</a></li>
+		</ul>
+		<button title="Help" id="help-btn" onClick="openHelp">?</button>
+	</nav>
+	<main class="start-view">
+		<form>
+	<label>Source file </label>
+	<input id="source-file" accept="application/json, .rsfx" type="file">
+	<label>Target track </label>
+	<select id="target-track"> <!--TODO: make dynamic-->
+		<option value="1">V1 - Video 1</option>
+		<option value="2">V2 - video 2</option>
+		<option value="3">V3 - Video 3</option>
+		<option value="4">V4 - Video 4</option>
+	</select>
+	<details open>
+		<summary class="exclusion-header" id='exclusion-header'>Exclude effects</summary>
+		<div class="exclusions">
+			<div class='exclusions-controls'>
+					<button class='exclusion-toolbar-button exclusion-control' id='add-exclusion-btn'>+ Add Exclusion</button>
+					<button class='exclusion-control' id='remove-all-exclusions-btn'>Clear all</button>
+				</div>
+			<div class="exclusions-container">
+			</div>
+		</div>
+	</details>
+	
+	
+	<!-- <input id="remove-source-fx" type="checkbox"/>
+	<label>Remove effects from source clips</label> -->
+	
+</form>
+	</main>
+
+	<header id="header">
+		<div>
+			<button title="start copying" id="ingest-btn" >Ingest</button>
+			<button title="Cancel process" id="cancel-btn" onClick="window.location.reload()" class="hide">Cancel</button>
+		</div>
+		
+		<div>
+			<button title="Reset app (debug)" class="debug" style="font-size: 1.0em;" onClick="window.location.reload()">↩︎ reset</button>
+
+		</div>
+	</header>
+
+		
+	
+	</body>
+	<script src="./commons.js"></script>
+	<script src="./post-body.js"></script>
+	<script src="./exclusions.js"></script>
+	<script src="./handleButtons.js"></script>
+	<script src="./handleIngest.js"></script>
+</html>

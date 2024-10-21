@@ -1,8 +1,8 @@
 # RS Extract-fx
 
-*RS Extract-fx* is a Premiere Pro plugin that automates mass moving video effects to  'adjustment layers' just above the clip. This is especially useful while prepping your sequennce for color grading in programs like Davinci Resolve. Once reimported, the effects can be restored by placing the processed footage under the generated adjustment layers. This makes sure that no effect data is lost due to translation errors during the roundtrip.
+*RS Extract-fx* is a Premiere Pro plugin that automates backing up clip effects using adjustment layers or an external file. This is especially useful when prepping your sequence for color grading in programs like Davinci Resolve to make sure that effects don't change during the roundtrip. 
 
-<video src="preview.webm" loop autoplay></video>
+<video style="width: 100%" playsinline autoplay muted loop src="track.webm"></video>
 
 [TOC]
 
@@ -11,16 +11,41 @@
 
 - Other video effects from the `effects`-panel
 - `Motion`-effects (position, scale, rotation etc.)
-## Not supported
-- Transitions, opacity and audio effects are not supported.
--  Lumetri Color and Warp Stabiliser are not recommended due to performance reasons and majorly reduced usability due to the nature of adjustment layers.
+## Limitations.
+- Transition and audio effects are not supported
+- Transitions, opacity and audio effects are not supported in the 'track'-mode. Warp stabilizer is supported in this mode but not recommended.
 ## Controls
 
-<img style="margin:0" src="program.png" alt="program"  />
+#### Extract-panel
 
-- **Source track**: select the video track you would like to extract effects from. Make sure you've simplified your footage to one video track.
-- **Remove effects from source clips**: removes all attributes from the original video clips after the effects have been copied.
-- **Back-up original sequence:** duplicates the current sequence before processing. This enables you te revert to your original sequence in case an error occurs.
+Use this panel to back-up you clip effects
+
+![extract](extract.png)
+
+- **Source track**: select the video track you would like to extract effects from. Make sure you've simplified your footage to one video track. Make sure you flattened your timeline before extracting clip effects.
+- **Destination**: choose the backup method
+  - **File**: save all video effects of a track to an external json-file. Choose this option for the greatest compactibility.
+  - **Track**: save all effects to your sequence by copying all clip effects to adjustment layers just above the clips. Choose this option if you want the ability to visually check if the effect were saved correctly.  This option does not support opacity.
+- **Exclude effects**: Exclude certain effects from being backed up.
+  - **Add exclusion**: Add a new effect you'd like to exclude.
+  - **Clear All**: delete all exclusions.
+  - **Select effect**: select the effect you'd like to exclude.
+  - **X**: delete exclusion.
+
+- `Extract`-button: this button starts the copying process.
+- `?`-button: Help-button that opens the plugin's manual. 
+
+#### Ingest-panel
+
+Use this panel to restore your clip effects using the file that you created on the Extract-panel when destination is set to 'File.'
+
+![ingest](/Library/Application Support/Adobe/CEP/extensions/space.therichard.ExtractFX/payloads/ingest.png)
+
+- **Source file**: select the file you created on the extract-page to back up your clip effects to.
+- **Target track**: choose the track that the clips live on that you want to restore your effects to.
+
+- **Exclude effects**: Exclude certain effects from being backed up. Controls are the same as on the extract-panel with the difference that you can only add exclusions for effects that are really in use for this timeline.
+
 - `Extract`-button: this button starts the copying process.
 - `?`-button: Help-button that opens the plugin's manual. 
 
@@ -34,21 +59,15 @@
 </style>
 <ul >
 	<li class="faq-item" id="custom-container">
-    <b>Can I create an adjustmennt layer template using custom properties? (resolution, framerate etc.)</b></br>
+    <b>How can I manually create a custom adjustmennt layer template? (resolution, framerate etc.)</b></br>
     Yes, manually create a new adjustment layer called <code>RSFX-container</code> at the root of your project with the specs of your choosing. Make sure to also delete or rename all other files using this name.
 	</li>  
   <li class="faq-item">
     <b>The created adjustment layers overlap clips on the track above the source track.</b></br>
-    Manually append a video track to the source track and rerun the program.
-	</li>  
-  <li class="faq-item">
-    <b>My keyframes are not placed at the correct timecode.</b></br>
-		<ul>
-      <li>Make sure that your sequence's start time is the timecode <code>00:00:00:00</code>.</li>
-      <li>Make sure that the <code>RSFX-container</code> has the same framerate as your sequence. <a href="#custom-container">Create a custom RSFX-container</a> if this is not the case.</li>
-		</ul>
+    Manually append a video track to the source track and run the program again.
 	</li>  
 </ul>
+
 
 
 

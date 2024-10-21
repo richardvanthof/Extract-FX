@@ -5,7 +5,8 @@
   "main": "dom_html/dist/index.html",
   "scripts": {
     "dev-html": "tsc --watch -p dom_html/",
-    "dev-app": "tsc --watch -p dom_app/"
+    "dev-app": "tsc --watch -p dom_app/",
+    "dev": "tsc --watch -p dom_html/ && tsc --watch -p dom_app/"
   },
   "keywords": [],
   "author": "Adobe",

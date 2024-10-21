@@ -18,6 +18,22 @@
 	-webkit-user-select: none; /* Safari */
 	-ms-user-select: none; /* IE 10 and IE 11 */
 	user-select: none; /* Standard syntax */
+	box-sizing: border-box;
+}
+
+:root {
+	--text: rgb(216, 205, 205);
+	--nav-bg: #232323;
+	--bg-light: #262525;
+	--bg-dark: #1D1D1D;
+	--bg: #232323;
+	--border-color: #37373c;
+	--border-width: 1px;
+	--selected-bg: #2a2a31;
+	--selected-bg-light: #373740;
+	--border-radius: 3px;
+	--border-radius-outer: 5px;
+	--border: var(--border-color) var(--border-width) solid;
 }
 
 #header {
@@ -28,7 +44,7 @@
 	position: fixed;
 	bottom: 0;
 	width: 100%;
-	background: #232323;
+	background: var(--bg);
 	border-top: 1px solid #303030;
 }
 
@@ -52,14 +68,24 @@ main {
 }
 
 label, button, select, h1,h2, h3, h4, h5, h6, p, summary {
-	color: rgb(216, 205, 205);
+	color: var(--text);
 
+}
+
+#help-btn {
+	padding: 0 .66em
+}
+
+label {
+	display: block;
+	margin: 0;
+	margin-bottom: .6em;
 }
 
 html, body {
 	
 	font-size: 12px;
-	background: #232323;
+	background: var(--bg);
 	margin: 0;
 }
 
@@ -83,20 +109,21 @@ a {
 button
 {
 	border:1px solid;
-	height:20px;
+	min-height:20px;
 }
 
-select, button
+select, button, input
 {
-	background: #1D1D1D;
+	background: var(--bg-dark);
 	border: 1px solid #37373c;
 	border-radius: 3px;
 	color: white;
+	padding: .3em;
 }
 
-select {
-	margin: .5em 0;
+select, input {
 	width: 100%;
+	margin-bottom: 1.33em;
 }
 
 input['number'] {
@@ -114,10 +141,11 @@ input['number'] {
 
 .exclusions {
 	
-	background: #1D1D1D;
-	border: 1px solid #37373c;
+	background: var(--bg-dark);
+	border: var(--border-width) solid var(--border-color);
 	border-radius: 3px;
 	position: relative;
+	margin-top: 1em;
 }
 
 .exclusion {
@@ -137,14 +165,22 @@ input['number'] {
 
 .exclusions-controls {
 	background: #272626;
-	border-radius: 3px;
+	border-radius: var(--border-radius);
 	display: flex;
 	justify-content: space-between;
-	padding: 0.5em;
+	padding: 0.1em;
 }
 
 .exclusions-control {
 	min-width: .5em 2em;
+}
+
+.exclusion-toolbar-button {
+	padding: .66em 1.5em .66em 1em;
+	border: none;
+	background: none;
+	border-right: var(--border);
+	border-radius: 0;
 }
 
 .exclusions-container {
@@ -162,6 +198,10 @@ input['number'] {
 	font-size: 0.8em;
 }
 
+.remove-exclusion {
+	padding: 0 .66em;
+}
+
 #remove-all-exclusions-btn {
 	background: none;
 	border:none;
@@ -177,3 +217,93 @@ summary {
 	display: none !important;
 }
 
+.switch-input {
+	margin: 0;
+	padding: 0;
+	display: flex;
+	padding: 0.4em;
+	background: var(--bg-dark);
+	justify-content: space-evenly;
+	margin-bottom: 1em;
+	column-gap: .5em;
+	border-radius: var(--border-radius-outer)
+}
+
+.switch-option {
+	padding: .8em 1.5em;
+	background: var(--bg-light);
+	list-style:none;
+	width: 100%;
+	text-align: center;
+	justify-content: space-evenly; 
+  border: var(--border-width) solid transparent;
+	color: var(--text);
+	cursor: pointer;
+	border-radius: var(--border-radius)
+}
+
+.switch-option.active {
+	background: var(--selected-bg);
+	border: var(--border-width) solid var(--border-color);
+}
+
+.navbar {
+	display: flex;
+	justify-content: space-between;
+	background: var(--nav-bg);
+	margin: 0;
+	padding: .5em 1em .5em 1em;
+}
+
+.navlink, .navlink > a {
+	color: var(--text);
+	text-decoration: none;
+	margin-right: .1em;
+	padding: .5em;
+	cursor: pointer;
+	/* border-radius: var(--border-radius); */
+	border: var(--border-width) solid transparent;
+}
+
+.navlink:last-of-type {
+	border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+
+.navlink:first-of-type {
+	border-radius: var(--border-radius)  0 0 var(--border-radius);
+}
+
+.navlink.active, .navlink.active > a {
+	background: var(--selected-bg-light);
+	border-radius: var(--border-radius);
+	border: var(--border-width) solid var(--border-color);
+}
+
+.nav-links {
+	display: flex;
+	text-decoration: none;
+	list-style: none;
+	margin: 0;
+	padding:0;
+	background: var(--bg-dark);
+	
+}
+
+.grid-container {
+	display: flex;
+	justify-content: space-around;
+  align-items: stretch;
+	flex-direction: column;
+}
+
+@media only screen and (max-width: 800px) {
+	.grid-container {
+		flex-direction: column;
+	}
+}
+
+
+
+.grid-column {
+	width: 100%;
+}

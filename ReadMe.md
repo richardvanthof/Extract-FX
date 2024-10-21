@@ -43,9 +43,10 @@
 4. Open the root folder in VS Code and open your test sequence in Premiere. Open the extension panel by going to `Window > Extension > RS Extract-fx`.
 5. run `yarn`/`npm` to download all dependencies.
 6. Start the Typescript transpile pipelines
-    1. **Extendscript backend**: `yarn dev-app`
-    2. **Frontend**: `yarn dev-html`
-
+    1. **Combined**: `yarn dev`
+    2. **Extendscript backend**: `yarn dev-app`
+    3. **Frontend**: `yarn dev-html`
+    
     <img src="payloads/vs-code-screenshot.png" alt="vs-code-screenshot" style="align-self: left; text-align: left; zoom: 100%;" />
     
 7. Attatch VS code to Premiere by going to the debug tab and clicking the play button. You have the choice between two debug modes:

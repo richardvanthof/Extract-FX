@@ -5,16 +5,6 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "chrome",
-      "request": "attach",
-      "name": "Attach to Premiere",
-      "port": 7777,
-      "webRoot": "${workspaceRoot}/dom_html/dist/index.html",
-      "sourceMapPathOverrides": {
-          "webpack:///*": "${workspaceRoot}/*"
-      }
-    },
-    {
       "type": "extendscript-debug",
       "request": "attach",
       "name": "Attach to ExtendScript Engine"
