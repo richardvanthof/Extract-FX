@@ -173,8 +173,8 @@ input['number'] {
 	min-width: .5em 2em;
 }
 
-#add-exclusion-btn {
-	padding: .66em 1em;
+.exclusion-toolbar-button {
+	padding: .66em 1.5em .66em 1em;
 	border: none;
 	background: none;
 	border-right: var(--border);
