@@ -23,7 +23,7 @@
 		<script src="../lib/Vulcan.js"></script>
 		<link href="css/style.css" rel="stylesheet" type="text/css">
 		<script src="./pre-body.js"></script>
-
+		
 	</head>
 
 	<body onLoad="onLoaded()">
@@ -51,12 +51,11 @@
 		<option value="4">V4 - Video 4</option>
 	</select><br/><br/>
 	<details open>
-		<summary id='exclusion-header'>Exclude effects</summary>
+		<summary class="exclusion-header" id='exclusion-header'>Exclude effects</summary>
 		<div class="exclusions">
 			<div class='exclusions-controls'>
-					<button class='exclusion-control exclusion-toolbar-button' id='add-filtered-exclusion-btn'>+ Add Exclusion</button>
+					<button class='exclusion-toolbar-button exclusion-control' id='add-exclusion-btn'>+ Add Exclusion</button>
 					<button class='exclusion-control' id='remove-all-exclusions-btn'>Clear all</button>
-
 				</div>
 			<div class="exclusions-container">
 			</div>
@@ -86,4 +85,7 @@
 	
 	</body>
 	<script src="./post-body.js"></script>
+	<script src="./exclusions.js"></script>
+	<script src="./handleExtractions.js"></script>
+	<script src="./handleButtons.js"></script>
 </html>
