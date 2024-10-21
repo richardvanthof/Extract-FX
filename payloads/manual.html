@@ -3,7 +3,7 @@
 <head>
 <meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
 
-<style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color: #ffffff; --text-color: #333333; --select-text-bg-color: #B5D6FC; --select-text-font-color: auto; --monospace: "Lucida Console",Consolas,"Courier",monospace; --title-bar-height: 20px; }
+<link href='https://fonts.googleapis.com/css?family=Inconsolata:400,700|Roboto:300,300i,400,400i,700,700i&subset=latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color: #ffffff; --text-color: #333333; --select-text-bg-color: #B5D6FC; --select-text-font-color: auto; --monospace: "Lucida Console",Consolas,"Courier",monospace; --title-bar-height: 20px; }
 .mac-os-11 { --title-bar-height: 28px; }
 html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 h1, h2, h3, h4, h5 { white-space: pre-wrap; }
@@ -219,107 +219,150 @@ mjx-container { break-inside: avoid; }
 .md-alert-text-container::after { content: attr(data-text); text-transform: capitalize; pointer-events: none; margin-right: 1ch; }
 
 
+@include-when-export url('https://fonts.googleapis.com/css?family=Inconsolata:400,700|Roboto:300,300i,400,400i,700,700i&subset=latin-ext');
 
-
-/* Webfont: HKGrotesk-Light *//* Webfont: HKGrotesk-LightItalic *//* Webfont: HKGrotesk-Regular *//* Webfont: HKGrotesk-Italic *//* Webfont: HKGrotesk-Medium *//* Webfont: HKGrotesk-MediumItalic *//* Webfont: HKGrotesk-Bold *//* Webfont: HKGrotesk-BoldItalic *//* Webfont: OfficeCodePro-Light *//* Webfont: OfficeCodePro-LightItalic *//* Webfont: OfficeCodePro-Regular *//* Webfont: OfficeCodePro-Italic *//* Webfont: OfficeCodePro-Bold *//* Webfont: OfficeCodePro-BoldItalic */html {
-    background: #FFFFFF;
-    /* or
-    text-shadow: #fff 0px 1px 1px;*/
-    text-rendering: geometricPrecision; 
+:root {
+  --accent-color: #aeb1b5;
+  --dark-accent-color: #787a7c; /* #'s before H1-3 */
+  --background-color: white;
+  --border-color: #ddd; 
+  --code-bg-color: #f8f8f8; 
+  --font-color: #42464c;
+  --header-color: #222324;
+  --link-color: #2077b2;
+  --control-text-color: #667176;
+  --side-bar-bg-color: #fafafa;
+  --body-font: "Iosevka", "Fira Mono", "Source Code Pro", Courier, monospace;
+  --header-font: "Fira Sans", "Roboto", "Source Sans Pro", sans-serif;
+  --border-radius: 2px;
+  --document-horizontal-margin: 80px;
+  --document-padding-x: 10ch;
+  --font-size: 16px;
+  --h1-fontsize: 2rem;   /* 1,5   rem = 24px */
+  --h2-fontsize: 1.375rem; /* 1,375 rem = 22px */
+  --h3-fontsize: 1.25rem;  /* 1,25  rem = 20px */
+  --h4-fontsize: 1.125rem; /* 1,125 rem = 18px */
+  --line-height: 1.4;
+  --main-content-margin: 0 auto;
+  --main-content-max-width: 100ch;
+  --monospace-font-size: 15px;
+  --monospace-font: "Iosevka", "Fira Mono", "Source Code Pro", Courier, monospace;
+  --monospace-line-height: 1.4;
+  --monospace: var(--monospace-font); /* Fixes source code mode */
+  --nav-width: 200px;
+  --vertical-padding: 40px;
 }
 
+/* Narrow layout styles */
+@media (max-width: 640px) {
+  :root {
+    --document-padding-x: 4ch;
+  }
+}
+
+html {
+  font-size: var(--font-size);
+  background-color: var(--background-color);
+}
+
+html,
 body {
-    font-family: 'HKGrotesk', sans-serif;
-    font-weight: 300;
-    font-size: 1.275em;
-    letter-spacing: 0px; 
-    color: #333333;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: subpixel-antialiased;
-    /*-webkit-text-stroke: 0.45px;
-    // or*/
-    -webkit-text-stroke: 0.45px rgba(51, 51, 51, 0.97);
-    line-height: 1.6em;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
+  color: var(--font-color);
+  font-family: var(--body-font);
+  line-height: var(--line-height);
 }
 
-strong {
-    font-family: 'HKGrotesk', serif; 
-    font-weight: 500;
-    color: #303336;
-} 
-
-em {
-    font-family: 'HKGrotesk', serif; 
-    font-weight: normal; 
-    font-style: italic;
-} 
-
-mark {
-    color: #000000;
-    background: #D3FFA4;
-    padding: 1px 1px 1px 1px;
+#write {
+	/* size of writing area: */
+  padding-left: var(--document-padding-x);
+  padding-right: var(--document-padding-x);
+  max-width: var(--main-content-max-width);
+  box-sizing: border-box;
 }
 
-div.md-toc {
-    font-family: 'HKGrotesk', serif;
-    font-size: 18px; 
+/**
+ * ---------------------
+ * Block Elements
+ */
+
+/* yaml */
+pre.md-meta-block {
+  background-color: var(--background-color);
+  padding-bottom: .5rem;
+  color: var(--accent-color);
+  border-bottom: 2px solid var(--border-color);
+  font-family: var(--monospace-font);
 }
 
-#write{
-    max-width: 710px;
-    margin: 0 auto;
-    padding: 20px 30px 40px 30px;
-    padding-top: 20px;
-    padding-bottom: 100px;
-}
-#write > ul:first-child,
-#write > ol:first-child{
-    margin-top: 40px;
+/* headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--header-font);
+  font-weight: bold;
+  color: var(--header-color);  
 }
 
-body > *:first-child {
-    margin-top: 0 !important;
+h1 {
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  font-size: var(--h1-fontsize);
 }
 
-body > *:last-child {
-    margin-bottom: 0 !important;
+h1:not(:first-child) {
+  margin-top: 3rem;
 }
 
-a {
-    color: #DD4C4F;
-    text-decoration: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: subpixel-antialiased;
-    /*-webkit-text-stroke: 0.45px;
-    // or*/
-    -webkit-text-stroke: 0.55px rgba(221, 76, 79, 0.97);
+h2 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-size: var(--h2-fontsize);
 }
-h1,
-h2,
-h3,
-h4,
-h5,
+
+h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: var(--h3-fontsize);
+}
+
+h4, h5, h6 {
+  color: var(--header-color);  
+  margin-top: 1rem;
+  margin-bottom: 0rem;
+  font-size: 1rem;
+}
+
+h4 {
+  font-size: var(--h4-fontsize);
+}
+
 h6 {
-    font-family: "HKGrotesk",sans-serif;
-    font-weight: bold;
-    letter-spacing: -0.45px; 
-    word-spacing: 0.5px;
-    position: relative;
-    cursor: text;
+  color: var(--control-text-color);	
 }
 
-h1:hover a.anchor,
-h2:hover a.anchor,
-h3:hover a.anchor,
-h4:hover a.anchor,
-h5:hover a.anchor,
-h6:hover a.anchor {
-    /*background: url("file:///Users/richard/Library/Application%20Support/images/modules/styleguide/para.png") no-repeat 10px center;*/
-    text-decoration: none;
+/*  We do not need this crap. This will be removed eventually
+h1::before,
+h2::before,
+h3::before {
+  font-weight: 400;
+  text-align: right;
+  width: 5ch;
+  padding-right: 1ch;
+  margin-left: -5ch;
+  color: var(--dark-accent-color);
+  display: inline-block;
 }
+
+h1::before {
+  content: '#';
+}
+
+h2::before {
+  content: '##';
+}
+
+h3::before {
+  content: '###';
+} */
+
 h1 tt,
 h1 code {
     font-size: inherit;
@@ -345,339 +388,159 @@ h6 code {
     font-size: inherit;
 }
 
-h1 {
-    font-size: 2.4em;
-    margin-top: 1.2rem;
-    margin-bottom: 1.2rem;
-    padding-bottom: .3em;
-    line-height: 1.2;
-    letter-spacing: -0.45px; 
-    word-spacing: 0.5px;
-}
-h2 {
-    font-size: 1.8em;
-    margin-top: 1.2rem;
-    margin-bottom: 1.2rem;
-    padding-bottom: .3em;
-    line-height: 1.2;
-    letter-spacing: -0.45px; 
-    word-spacing: 0.5px;
-}
-h3 {
-    font-size: 1.5em;
-    margin-top: 1.2rem;
-    margin-bottom: 1.2rem;
-    padding-bottom: .3em;
-    line-height: 1.2;
-    letter-spacing: -0.45px; 
-    word-spacing: 0.5px;
-}
-h4 {
-    font-size: 1.2em;
-    line-height: 1.2;
-    padding-bottom: .3em;
-    letter-spacing: -0.45px; 
-    word-spacing: 0.5px;}
-h5 {
-    font-size: 1.1em;
-    line-height: 1.2;
-    padding-bottom: .3em;
-    letter-spacing: -0.45px; 
-    word-spacing: 0.5px;}
-h6 {
-    font-size: 1.0em;
-    line-height: 1.2;
-    padding-bottom: .3em;
-    letter-spacing: -0.45px; 
-    word-spacing: 0.5px;
-}
-
-
-  h1 { color: #303336;}
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 { color: #303336;}
-
-p,
-blockquote,
-ul,
-ol,
-dl,
-table{
-    list-style-type: disc 
-    margin: 0.8em 0;
-    margin-top: 1.6rem;
-    margin-bottom: 1.6rem;
-}
-hr {
-    height: 4px;
-    padding: 0;
-    margin: 16px 0;
-    background-color: #FFFFFF;
-    border: 0 none;
-    overflow: hidden;
-    box-sizing: content-box;
-    border-bottom: 1px solid #ddd;
-}
-
-body > h2:first-child {
-    margin-top: 0;
-    padding-top: 0;
-}
-body > h1:first-child {
-    margin-top: 0;
-    padding-top: 0;
-}
-body > h1:first-child + h2 {
-    margin-top: 0;
-    padding-top: 0;
-}
-body > h3:first-child,
-body > h4:first-child,
-body > h5:first-child,
-body > h6:first-child {
-    margin-top: 0;
-    padding-top: 0;
-}
-a:first-child h1,
-a:first-child h2,
-a:first-child h3,
-a:first-child h4,
-a:first-child h5,
-a:first-child h6 {
-    margin-top: 0;
-    padding-top: 0;
-}
-h1 p,
-h2 p,
-h3 p,
-h4 p,
-h5 p,
-h6 p {
-    margin-top: 0;
-}
-li p.first {
-    display: inline-block;
-}
-ul,
-ol {
-    padding-left: 30px;
-}
-ul:first-child,
-ol:first-child {
-    margin-top: 0;
-}
-ul:last-child,
-ol:last-child {
-    margin-bottom: 0;
-}
-blockquote {
-    color: #26344A;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: subpixel-antialiased;
-    /*-webkit-text-stroke: 0.45px;
-    // or*/
-    -webkit-text-stroke: 0.45px rgba(38, 52, 74, 0.97);
-    border-left: 3.5px solid #DD4C4F;
-    margin-left: -1em;
-    padding: 0.2em 1em;
-    padding-top: 2px;
-    padding-bottom: 2px;
-}
-blockquote blockquote {
-    padding-right: 0;
-}
+/* table */
 table {
-    padding: 0;
-    word-break: initial;
-}
-table tr {
-    border-top: 1px solid #cccccc;
-    margin: 0;
-    padding: 0;
-}
-table tr:nth-child(2n) {
-    background-color: #f8f8f8;
-}
-table tr th {
-    font-weight: bold;
-    border: 1px solid #cccccc;
-    text-align: left;
-    margin: 0;
-    padding: 6px 13px;
-}
-table tr td {
-    border: 1px solid #cccccc;
-    text-align: left;
-    margin: 0;
-    padding: 6px 13px;
-}
-table tr th:first-child,
-table tr td:first-child {
-    margin-top: 0;
-}
-table tr th:last-child,
-table tr td:last-child {
-    margin-bottom: 0;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
-.CodeMirror-gutters {
-    border-right: 1px solid #ddd;
+table tr:nth-child(2n),
+thead {
+    background-color: var(--side-bar-bg-color);
 }
+
+td,
+th {
+  border-style: solid;
+  border-color: var(--border-color);
+  border-width: 1px;
+  padding: .35rem .7rem
+}
+
+li p {
+  margin: 0;
+}
+
+.task-list {
+  padding-left: 0;
+}
+
+.task-list-item {
+  padding-left: 1.5em;
+  margin-bottom: 0rem;
+}
+
+#write input[type='checkbox'] {
+  margin-top: 5px;
+}
+
+blockquote {
+  margin: 1rem 0;
+  padding-left: 2ch;
+  margin-left: .5ch;
+  position: relative;
+  overflow: hidden;
+  border-left: 2px solid var(--border-color);
+  color: var(--accent-color);
+}
+
+/* horizontal line */
+hr {
+  border: none;
+  border-bottom: 2px solid var(--border-color);
+  margin-top: 1.4rem;
+  margin-bottom: 1.4rem;
+}
+
+p {
+  margin: 1rem 0;
+}
+
+/**
+ * Code Fences
+ * see http:/*support.typora.io/Code-Block-Styles
+ */
+
+.cm-s-inner .CodeMirror-gutters {
+   background: var(--code-bg-color);
+}
+
+.code-tooltip {
+  box-shadow: none;
+  border-radius: var(--border-radius);
+  background-color: var(--code-bg-color);
+  border-color: var(--border-color);
+  border-style: solid;
+  border-width: 1px;
+}
+
+.code-tooltip input {
+  outline: none;
+  width: 20ch;
+}
+
+.md-fences .code-tooltip {
+  bottom: -1.8rem;
+  padding: none;
+}
+
+.md-fences.md-focus .cm-s-inner {
+  /* Remove bottom right border radius when tooltip is shown */
+  border-bottom-right-radius: 0;
+}
+
+/* code tooltip autocomplete list */
+
+.autoComplt-hint {
+  background-color: transparent !important;
+  margin: 0 !important;
+  padding: 0.125rem 0.375rem !important;
+  color: var(--text-color) !important;
+  line-height: var(--line-height) !important;
+  height: 1.4rem !important;
+}
+
+.autoComplt-hint-selected {
+  background-color: var(--link-color) !important;
+  color: var(--background-color) !important;
+}
+
+/* basic styles */
 
 .md-fences,
 code,
 tt {
-    border: 1px solid #ddd;
-    background: #f8f8f8;
-    padding: 0;
-    font-family: 'OfficeCodePro', monospace;
-    padding: 2px 4px 0px 4px;
-    font-size: 17px;
+  border: 1px solid var(--border-color);
+  background-color: var(--code-bg-color);
+  font-family: var(--monospace-font);
+  font-size: var(--monospace-font-size);
+  border-radius: .25rem;
+  padding: 0 .125rem;
+  line-height: var(--monospace-line-height);
 }
 
 .md-fences {
-    font-family: 'OfficeCodePro', monospace;
-    margin-bottom: 15px;
-    margin-top: 15px;
-    padding: 0.2em 1em;
-    padding-top: 8px;
-    padding-bottom: 6px;
-}
-.task-list{
-    padding-left: 0;
+  margin-bottom: 18px;
+  margin-top: 15px;
+  padding: 0.2em 1em;
+  padding-top: 8px;
+  padding-bottom: 6px;
 }
 
-.task-list-item {
-    padding-left:32px;
-}
-
-.task-list-item input {
-  top: 3px;
-  left: 8px;
-}
-
-@media screen and (min-width: 914px) {
-    /*body {
-        width: 854px;
-        margin: 0 auto;
-    }*/
-}
-@media print {
-    html {
-        font-size: 13px;
-    }
-    table,
-    pre {
-        page-break-inside: avoid;
-    }
-    pre {
-        word-wrap: break-word;
-    }
-}
-
-.md-fences {
-    background-color: #E5E7EA;
-}
-#write pre.md-meta-block {
-    padding: 1rem;
-    font-size: 85%;
-    line-height: 1.45;
-    background-color: #f7f7f7;
-    border: 0;
-    border-radius: 3px;
-    color: #777777;
-    margin-top: 0 !important;
-}
-
-.mathjax-block>.code-tooltip {
-    bottom: .375rem;
-}
-
-#write>h3.md-focus:before{
-    left: -1.5625rem;
-    top: .375rem;
-}
-#write>h4.md-focus:before{
-    left: -1.5625rem;
-    top: .285714286rem;
-}
-#write>h5.md-focus:before{
-    left: -1.5625rem;
-    top: .285714286rem;
-}
-#write>h6.md-focus:before{
-    left: -1.5625rem;
-    top: .285714286rem;
-}
-.md-image>.md-meta {
-    border: 1px solid #ddd;
-    border-radius: 3px;
-    font-family: Consolas, "Liberation Mono", Courier, monospace;
-    padding: 2px 4px 0px 4px;
-    font-size: 0.9em;
-    color: inherit;
-}
-
-.md-tag{
-    color: inherit;
-}
-
-.md-toc { 
-    margin-top:20px;
-    padding-bottom:20px;
-}
-
-.sidebar-tabs {
-    border-bottom: none;
+a {
+  color:  var(--link-color);
+  text-decoration: none;
 }
 
 
-#typora-quick-open {
-    border: 1px solid #ddd;
-    background-color: #f8f8f8;
+/**
+ * Control UI (optional)
+ */
+
+.outline-item:hover {
+  color: var(--header-color);
 }
 
-#typora-quick-open-item {
-    background-color: #FAFAFA;
-    border-color: #FEFEFE #e5e5e5 #e5e5e5 #eee;
-    border-style: solid;
-    border-width: 1px;
+#write div.md-toc-tooltip {
+	background-color: var(--background-color);
 }
-
-#md-notification:before {
-    top: 10px;
-}
-
-/** focus mode */
-.on-focus-mode blockquote {
-    border-left-color: rgba(85, 85, 85, 0.12);
-}
-
-header, .context-menu, .megamenu-content, footer{
-    font-family: "Lyon Display", sans-serif;
-}
-
-.CodeMirror {
-    /* Set height, width, borders, and global font properties here */
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: subpixel-antialiased;
-    /*-webkit-text-stroke: 0.45px;
-    // or*/
-    font-family: 'OfficeCodePro', monospace;
-    font-size: 1.000em;
-}
-
-
 
 
  @media print { @page {margin: 0 0 0 0;} body.typora-export {padding-left: 0; padding-right: 0;} #write {padding:0;}}
 </style><title>manual</title>
 </head>
 <body class='typora-export'><div class='typora-export-content'>
-<div id='write'  class=''><h1 id='rs-extract-fx'><span>RS Extract-fx</span></h1><p><em><span>RS Extract-fx</span></em><span> is a Premiere Pro plugin that automates backing up clip effects. This is especially useful while prepping your sequence for color grading in programs like Davinci Resolve using adjustment layers or an external file. Once extracted, the effects can be restored by placing the processed footage under the generated adjustment layers or using the generated effects file. This makes sure that no effect data is lost due to translation errors during the roundtrip.</span></p><video playsinline autoplay muted loop src="track.webm"></video><div class='md-toc' mdtype='toc'><p class="md-toc-content" role="list"><span role="listitem" class="md-toc-item md-toc-h1" data-ref="n122"><a class="md-toc-inner" style="cursor: pointer;" href="#rs-extract-fx">RS Extract-fx</a></span><span role="listitem" class="md-toc-item md-toc-h2" data-ref="n128"><a class="md-toc-inner" style="cursor: pointer;" href="#what-effects-are-supported">What effects are supported?</a></span><span role="listitem" class="md-toc-item md-toc-h2" data-ref="n133"><a class="md-toc-inner" style="cursor: pointer;" href="#limitations">Limitations.</a></span><span role="listitem" class="md-toc-item md-toc-h2" data-ref="n139"><a class="md-toc-inner" style="cursor: pointer;" href="#controls">Controls</a></span><span role="listitem" class="md-toc-item md-toc-h4" data-ref="n141"><a class="md-toc-inner" style="cursor: pointer;" href="#extract-panel">Extract-panel</a></span><span role="listitem" class="md-toc-item md-toc-h4" data-ref="n157"><a class="md-toc-inner" style="cursor: pointer;" href="#ingest-panel">Ingest-panel</a></span><span role="listitem" class="md-toc-item md-toc-h2" data-ref="n182"><a class="md-toc-inner" style="cursor: pointer;" href="#troubleshooting">Troubleshooting</a></span></p></div><h2 id='what-effects-are-supported'><span>What effects are supported?</span></h2><ul><li><p><span>Other video effects from the </span><code>effects</code><span>-panel</span></p></li><li><p><code>Motion</code><span>-effects (position, scale, rotation etc.)</span></p></li></ul><h2 id='limitations'><span>Limitations.</span></h2><ul><li><p><span>Transition and audio effects are not supported</span></p></li><li><p><span>Transitions, opacity and audio effects are not supported in the &#39;track&#39;-mode. Warp stabilizer is supported in this mode but not recommended.</span></p></li></ul><h2 id='controls'><span>Controls</span></h2><h4 id='extract-panel'><span>Extract-panel</span></h4><p><span>Use this panel to back-up you clip effects</span></p><p><img src="extract.png" referrerpolicy="no-referrer" alt="extract"></p><ul><li><p><strong><span>Source track</span></strong><span>: select the video track you would like to extract effects from. Make sure you&#39;ve simplified your footage to one video track. Make sure you flattened your timeline before extracting clip effects.</span></p></li><li><p><strong><span>Destination</span></strong><span>: choose the backup method</span></p><ul><li><p><strong><span>File</span></strong><span>: save all video effects of a track to an external json-file. Choose this option for the greatest compactibility.</span></p></li><li><p><strong><span>Track</span></strong><span>: save all effects to your sequence by copying all clip effects to adjustment layers just above the clips. Choose this option if you want the ability to visually check if the effect were saved correctly.  This option does not support opacity.</span></p></li></ul></li><li><p><strong><span>Exclude effects</span></strong><span>: Exclude certain effects from being backed up.</span></p><ul><li><p><strong><span>Add exclusion</span></strong><span>: Add a new effect you&#39;d like to exclude.</span></p></li><li><p><strong><span>Clear All</span></strong><span>: delete all exclusions.</span></p></li><li><p><strong><span>Select effect</span></strong><span>: select the effect you&#39;d like to exclude.</span></p></li><li><p><strong><span>X</span></strong><span>: delete exclusion.</span></p></li></ul></li><li><p><code>Extract</code><span>-button: this button starts the copying process.</span></p></li><li><p><code>?</code><span>-button: Help-button that opens the plugin&#39;s manual. </span></p></li></ul><h4 id='ingest-panel'><span>Ingest-panel</span></h4><p><span>Use this panel to restore your clip effects using the file that you created on the Extract-panel when destination is set to &#39;File.&#39;</span></p><p><img src="/Library/Application Support/Adobe/CEP/extensions/space.therichard.ExtractFX/payloads/ingest.png" referrerpolicy="no-referrer" alt="ingest"></p><ul><li><p><strong><span>Source file</span></strong><span>: select the file you created on the extract-page to back up your clip effects to.</span></p></li><li><p><strong><span>Target track</span></strong><span>: choose the track that the clips live on that you want to restore your effects to.</span></p></li><li><p><strong><span>Exclude effects</span></strong><span>: Exclude certain effects from being backed up. Controls are the same as on the extract-panel with the difference that you can only add exclusions for effects that are really in use for this timeline.</span></p></li><li><p><code>Extract</code><span>-button: this button starts the copying process.</span></p></li><li><p><code>?</code><span>-button: Help-button that opens the plugin&#39;s manual. </span></p></li></ul><h2 id='troubleshooting'><span>Troubleshooting</span></h2><style>
+<div id='write'  class=''><h1 id='rs-extract-fx'><span>RS Extract-fx</span></h1><p><em><span>RS Extract-fx</span></em><span> is a Premiere Pro plugin that automates backing up clip effects using adjustment layers or an external file. This is especially useful when prepping your sequence for color grading in programs like Davinci Resolve to make sure that effects don&#39;t change during the roundtrip. </span></p><video style="width: 100%" playsinline autoplay muted loop src="track.webm"></video><div class='md-toc' mdtype='toc'><p class="md-toc-content" role="list"><span role="listitem" class="md-toc-item md-toc-h1" data-ref="n122"><a class="md-toc-inner" style="" href="#rs-extract-fx">RS Extract-fx</a></span><span role="listitem" class="md-toc-item md-toc-h2" data-ref="n128"><a class="md-toc-inner" style="" href="#what-effects-are-supported">What effects are supported?</a></span><span role="listitem" class="md-toc-item md-toc-h2" data-ref="n133"><a class="md-toc-inner" style="" href="#limitations">Limitations.</a></span><span role="listitem" class="md-toc-item md-toc-h2" data-ref="n139"><a class="md-toc-inner" style="" href="#controls">Controls</a></span><span role="listitem" class="md-toc-item md-toc-h4" data-ref="n141"><a class="md-toc-inner" style="" href="#extract-panel">Extract-panel</a></span><span role="listitem" class="md-toc-item md-toc-h4" data-ref="n157"><a class="md-toc-inner" style="" href="#ingest-panel">Ingest-panel</a></span><span role="listitem" class="md-toc-item md-toc-h2" data-ref="n182"><a class="md-toc-inner" style="" href="#troubleshooting">Troubleshooting</a></span></p></div><h2 id='what-effects-are-supported'><span>What effects are supported?</span></h2><ul><li><p><span>Other video effects from the </span><code>effects</code><span>-panel</span></p></li><li><p><code>Motion</code><span>-effects (position, scale, rotation etc.)</span></p></li></ul><h2 id='limitations'><span>Limitations.</span></h2><ul><li><p><span>Transition and audio effects are not supported</span></p></li><li><p><span>Transitions, opacity and audio effects are not supported in the &#39;track&#39;-mode. Warp stabilizer is supported in this mode but not recommended.</span></p></li></ul><h2 id='controls'><span>Controls</span></h2><h4 id='extract-panel'><span>Extract-panel</span></h4><p><span>Use this panel to back-up you clip effects</span></p><p><img src="extract.png" referrerpolicy="no-referrer" alt="extract"></p><ul><li><p><strong><span>Source track</span></strong><span>: select the video track you would like to extract effects from. Make sure you&#39;ve simplified your footage to one video track. Make sure you flattened your timeline before extracting clip effects.</span></p></li><li><p><strong><span>Destination</span></strong><span>: choose the backup method</span></p><ul><li><p><strong><span>File</span></strong><span>: save all video effects of a track to an external json-file. Choose this option for the greatest compactibility.</span></p></li><li><p><strong><span>Track</span></strong><span>: save all effects to your sequence by copying all clip effects to adjustment layers just above the clips. Choose this option if you want the ability to visually check if the effect were saved correctly.  This option does not support opacity.</span></p></li></ul></li><li><p><strong><span>Exclude effects</span></strong><span>: Exclude certain effects from being backed up.</span></p><ul><li><p><strong><span>Add exclusion</span></strong><span>: Add a new effect you&#39;d like to exclude.</span></p></li><li><p><strong><span>Clear All</span></strong><span>: delete all exclusions.</span></p></li><li><p><strong><span>Select effect</span></strong><span>: select the effect you&#39;d like to exclude.</span></p></li><li><p><strong><span>X</span></strong><span>: delete exclusion.</span></p></li></ul></li><li><p><code>Extract</code><span>-button: this button starts the copying process.</span></p></li><li><p><code>?</code><span>-button: Help-button that opens the plugin&#39;s manual. </span></p></li></ul><h4 id='ingest-panel'><span>Ingest-panel</span></h4><p><span>Use this panel to restore your clip effects using the file that you created on the Extract-panel when destination is set to &#39;File.&#39;</span></p><p><img src="/Library/Application Support/Adobe/CEP/extensions/space.therichard.ExtractFX/payloads/ingest.png" referrerpolicy="no-referrer" alt="ingest"></p><ul><li><p><strong><span>Source file</span></strong><span>: select the file you created on the extract-page to back up your clip effects to.</span></p></li><li><p><strong><span>Target track</span></strong><span>: choose the track that the clips live on that you want to restore your effects to.</span></p></li><li><p><strong><span>Exclude effects</span></strong><span>: Exclude certain effects from being backed up. Controls are the same as on the extract-panel with the difference that you can only add exclusions for effects that are really in use for this timeline.</span></p></li><li><p><code>Extract</code><span>-button: this button starts the copying process.</span></p></li><li><p><code>?</code><span>-button: Help-button that opens the plugin&#39;s manual. </span></p></li></ul><h2 id='troubleshooting'><span>Troubleshooting</span></h2><style>
   .faq-item {
     white-space: normal !important;
     margin-bottom: 1em;
@@ -685,6 +548,7 @@ header, .context-menu, .megamenu-content, footer{
 </style>
 <ul >
 	<li class="faq-item" id="custom-container">
+    <b>How can I manually create a custom adjustmennt layer template? (resolution, framerate etc.)</b></br>
     <b>How can I manually create a custom adjustmennt layer template? (resolution, framerate etc.)</b></br>
     Yes, manually create a new adjustment layer called <code>RSFX-container</code> at the root of your project with the specs of your choosing. Make sure to also delete or rename all other files using this name.
 	</li>  

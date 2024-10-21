@@ -1,8 +1,8 @@
 # RS Extract-fx
 
-*RS Extract-fx* is a Premiere Pro plugin that automates backing up clip effects. This is especially useful while prepping your sequence for color grading in programs like Davinci Resolve using adjustment layers or an external file. Once extracted, the effects can be restored by placing the processed footage under the generated adjustment layers or using the generated effects file. This makes sure that no effect data is lost due to translation errors during the roundtrip.
+*RS Extract-fx* is a Premiere Pro plugin that automates backing up clip effects using adjustment layers or an external file. This is especially useful when prepping your sequence for color grading in programs like Davinci Resolve to make sure that effects don't change during the roundtrip. 
 
-<video playsinline autoplay muted loop src="track.webm"></video>
+<video style="width: 100%" playsinline autoplay muted loop src="track.webm"></video>
 
 [TOC]
 
