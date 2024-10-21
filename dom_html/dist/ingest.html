@@ -26,7 +26,7 @@
 		
 	</head>
 
-	<body onLoad="onLoaded()">
+	<body>
 
 	<div id="progress" class="hide">
 		<progress id="progress-indicator" ></progress> </br>
@@ -41,15 +41,15 @@
 	</nav>
 	<main class="start-view">
 		<form>
-	<label>Source file </label><br/>
-	<input id="source-file" onChange="handleSourceData(this.files)" accept="application/json, .rsfx" type="file"><br/>
-	<label>Target track </label><br/>
+	<label>Source file </label>
+	<input id="source-file" accept="application/json, .rsfx" type="file">
+	<label>Target track </label>
 	<select id="targetTrack"> <!--TODO: make dynamic-->
 		<option value="1">V1 - Video 1</option>
 		<option value="2">V2 - video 2</option>
 		<option value="3">V3 - Video 3</option>
 		<option value="4">V4 - Video 4</option>
-	</select><br/><br/>
+	</select>
 	<details open>
 		<summary class="exclusion-header" id='exclusion-header'>Exclude effects</summary>
 		<div class="exclusions">
@@ -62,9 +62,9 @@
 		</div>
 	</details>
 	
-	<br/>
+	
 	<!-- <input id="remove-source-fx" type="checkbox"/>
-	<label>Remove effects from source clips</label><br/> -->
+	<label>Remove effects from source clips</label> -->
 	
 </form>
 	</main>
@@ -77,7 +77,7 @@
 		
 		<div>
 			<button title="Reset app (debug)" class="debug" style="font-size: 1.0em;" onClick="window.location.reload()">↩︎ reset</button>
-			<button title="Help" id="help-btn" onClick="openHelp">?</button>
+
 		</div>
 	</header>
 
@@ -86,6 +86,6 @@
 	</body>
 	<script src="./post-body.js"></script>
 	<script src="./exclusions.js"></script>
-	<script src="./handleExtractions.js"></script>
 	<script src="./handleButtons.js"></script>
+	<script src="./handleIngest.js"></script>
 </html>

@@ -27,7 +27,7 @@
 
 	</head>
 
-	<body onLoad="onLoaded()">
+	<body>
 
 	<div id="progress" class="hide">
 		<progress id="progress-indicator" ></progress> </br>
@@ -43,14 +43,14 @@
 	<main class="start-view">
 		<form class="grid-container">
 			<div class="grid-column">
-				<label>Source track </label><br/>
+				<label>Source track </label>
 				<select id="sourceTrack"> <!--TODO: make dynamic-->
 					<option value="1">V1 - Video 1</option>
 					<option value="2">V2 - video 2</option>
 					<option value="3">V3 - Video 3</option>
 					<option value="4">V4 - Video 4</option>
-				</select><br/><br/>
-				<label>Destination</label><br/>
+				</select>
+				<label>Destination</label>
 				<ul class="switch-input">
 					<li data-destination="file" class="switch-option active">File</li>
 					<li data-destination="track" class="switch-option">Track</li>
@@ -72,9 +72,9 @@
 		
 		
 	
-	<br/>
+	
 	<!-- <input id="remove-source-fx" type="checkbox"/>
-	<label>Remove effects from source clips</label><br/> -->
+	<label>Remove effects from source clips</label> -->
 	
 	
 </form>
@@ -87,7 +87,6 @@
 		</div>
 		
 		<div>
-			<button title="Reset app (debug)" class="debug" style="font-size: 1.0em;" onClick="window.location.reload()">↩︎ reset</button>
 			<button title="Reset app (debug)" style="font-size: 1.0em;" onClick="window.location.reload()">↩︎</button>
 		</div>
 	</header>
@@ -97,6 +96,6 @@
 	</body>
 	<script src="./post-body.js"></script>
 	<script src="./exclusions.js"></script>
-	<script src="./handleExtractions.js"></script>
 	<script src="./handleButtons.js"></script>
+	<script src="./handleExtractions.js"></script>
 </html>

@@ -76,12 +76,10 @@ const handleEffectExtraction = (
     handleEffectExtraction(targetTrack, effectExclusionsElems, destinationValue);
   })
   
-  csInterface.evalScript('$.getVersion()', function(version) {
-    console.log('ExtendScript engine version: ' + version);
-  });
+  // csInterface.evalScript('$.getVersion()', function(version) {
+  //   console.log('ExtendScript engine version: ' + version);
+  // });
 
   document.querySelectorAll('.debug').forEach(e => {
     debug ? e.classList.remove('hide') : e.classList.add('hide')
   });
-
-

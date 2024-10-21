@@ -77,7 +77,9 @@ label, button, select, h1,h2, h3, h4, h5, h6, p, summary {
 }
 
 label {
-	margin: 1em 0;
+	display: block;
+	margin: 0;
+	margin-bottom: .6em;
 }
 
 html, body {
@@ -121,7 +123,7 @@ select, button, input
 
 select, input {
 	width: 100%;
-	margin-bottom: 1em;
+	margin-bottom: 1.33em;
 }
 
 input['number'] {
@@ -196,6 +198,10 @@ input['number'] {
 	font-size: 0.8em;
 }
 
+.remove-exclusion {
+	padding: 0 .66em;
+}
+
 #remove-all-exclusions-btn {
 	background: none;
 	border:none;
@@ -218,7 +224,7 @@ summary {
 	padding: 0.4em;
 	background: var(--bg-dark);
 	justify-content: space-evenly;
-	margin: 1em 0;
+	margin-bottom: 1em;
 	column-gap: .5em;
 	border-radius: var(--border-radius-outer)
 }
@@ -246,8 +252,7 @@ summary {
 	justify-content: space-between;
 	background: var(--nav-bg);
 	margin: 0;
-	padding: 0 1em;
-	padding-top: 0.33em;
+	padding: .5em 1em .5em 1em;
 }
 
 .navlink, .navlink > a {
