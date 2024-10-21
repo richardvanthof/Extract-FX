@@ -462,6 +462,7 @@ $._PPP_ = {
     const saveType: 'file' | 'layer' = 'file';
 
     try {
+      if(!track) {throw "Source track undefined."}
       $._PPP_.updateEventPanel(`Track ${track} - Initializing effect extraction...`, 'info');
 
       // Helper function to find a video track by index
@@ -581,14 +582,13 @@ $._PPP_ = {
     }
 		return true;
   },
-  restoreEffectsToClips: function(options:{exclusions: string[], sourceData: Object, targetTrack: number = 1 }) {
-    const {
-      exclusions,
-      sourceData
-    } = options;
+  restoreEffectsToClips: function(options:string) {
     
     //Get track
     try {
+      const params = JSON.parse(options)
+      const {sourceData, exclusions}:{sourceData: Object, exclusions: string[], targetTrack: number} = params;
+      if(!sourceData) {throw 'Source data not found. JSON is undefined or malformed.'}
        // Helper function to find a video track by index
        function findVideoTrack(index: number): Track | null {
         const videoTrack = app.project.activeSequence.videoTracks[index];
@@ -604,7 +604,7 @@ $._PPP_ = {
       }
 
       // Define which video track to look for clips and where to put adjustment layers
-      const targetTrackIndex = options.targetTrack - 1; // The track where the adjustment layers will be placed
+      const targetTrackIndex = params.targetTrack - 1; // The track where the adjustment layers will be placed
 
       // Target track vars
       const targetTrack: Track = findVideoTrack(targetTrackIndex)!;
@@ -617,8 +617,8 @@ $._PPP_ = {
       const targetClips = targetTrack.clips;
 
       //Loop through clips
-      for(let c = 0; c <= sourceClips.length && c <= targetClips.numItems; c++) {
-        $._PPP_.message(`Restoring efffect for clip ${c} of ${sourceClips.length}`);
+      for(let c = 0; c < sourceClips.length && c <= targetClips.numItems; c++) {
+        $._PPP_.updateEventPanel(`Restoring efffect for clip ${c} of ${sourceClips.length}`);
         const indexQE = c + 1;
         const sourceClip = sourceClips[c];
         const targetClip = targetClips[c];
@@ -676,10 +676,12 @@ $._PPP_ = {
           
         }
       }
-
+      $._PPP_.updateEventPanel('Finishing task...');
+      return true;
     } catch(err) {
-      throw err;
-      alert(err);
+      alert(err, err.name, err.message);
+      $._PPP_.message(err)
+      return err;
     }
   }
 
@@ -694,13 +696,906 @@ $._PPP_ = {
 
 // Start copying effects to adjustment layers from track 1 (we're counting from 1)
 // const excl = ['Lumetri Color', 'Warp Stabilizer'];
-// const data = JSON.parse('{"type":"RS-FX-EXCHANGE","track":1,"sequence":"My video","exclusions":[],"clips":[{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":152},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"keyframes":[[{"seconds":21.1592955,"ticks":"5374799605728"},[0.5,0.5]],[{"seconds":27.683712,"ticks":"7032105787392"},[0.54560631513596,0.46042093634605]]]},"Scale":{"keyframes":[[{"seconds":21.1592955,"ticks":"5374799605728"},109],[{"seconds":27.683712,"ticks":"7032105787392"},124.3671875]]},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":2},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"keyframes":[[{"seconds":3599.819769,"ticks":"914411818442304"},100],[{"seconds":3608.759301,"ticks":"916682602602816"},120]]},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"keyframes":[[{"seconds":3598.4860485,"ticks":"914073032095776"},110],[{"seconds":3605.2627905,"ticks":"915794432991648"},100]]},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}},"Mosaic":{"Horizontal Blocks":{"keyframes":[[{"seconds":10.4644668333333,"ticks":"2658142007136"},600],[{"seconds":10.4978335,"ticks":"2666617674336"},200],[{"seconds":11.4988334999961,"ticks":"2920887690335"},1]]},"Vertical Blocks":{"keyframes":[[{"seconds":10.4644668333333,"ticks":"2658142007136"},600],[{"seconds":10.4978335,"ticks":"2666617674336"},200],[{"seconds":11.4988334999961,"ticks":"2920887690335"},1]]},"Sharp Colors":{"value":true}}}]}');
+// const data = '';
 // $._PPP_.copyClipEffectsToAdjustmentLayers(1, []);
 
-// $._PPP_.restoreEffectsToClips({
-//   exclusions: [],
-//   sourceData: data,
-//   targetTrack: 1
-// })
+const data = {
+  "type": "RS-FX-EXCHANGE",
+  "track": 1,
+  "sequence": "My video",
+  "exclusions": [],
+  "clips": [
+      {
+          "Opacity": {
+              "Opacity": {
+                  "value": 100
+              },
+              "Blend Mode": {
+                  "value": 0
+              }
+          },
+          "Motion": {
+              "Position": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Scale": {
+                  "value": 100
+              },
+              "Scale Width": {
+                  "value": 100
+              },
+              "Uniform Scale": {
+                  "value": true
+              },
+              "Rotation": {
+                  "value": 0
+              },
+              "Anchor Point": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Anti-flicker Filter": {
+                  "value": 0
+              },
+              "Crop Left": {
+                  "value": 0
+              },
+              "Crop Top": {
+                  "value": 0
+              },
+              "Crop Right": {
+                  "value": 0
+              },
+              "Crop Bottom": {
+                  "value": 0
+              }
+          }
+      },
+      {
+          "Opacity": {
+              "Opacity": {
+                  "value": 100
+              },
+              "Blend Mode": {
+                  "value": 0
+              }
+          },
+          "Motion": {
+              "Position": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Scale": {
+                  "value": 152
+              },
+              "Scale Width": {
+                  "value": 100
+              },
+              "Uniform Scale": {
+                  "value": true
+              },
+              "Rotation": {
+                  "value": 0
+              },
+              "Anchor Point": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Anti-flicker Filter": {
+                  "value": 0
+              },
+              "Crop Left": {
+                  "value": 0
+              },
+              "Crop Top": {
+                  "value": 0
+              },
+              "Crop Right": {
+                  "value": 0
+              },
+              "Crop Bottom": {
+                  "value": 0
+              }
+          }
+      },
+      {
+          "Opacity": {
+              "Opacity": {
+                  "value": 100
+              },
+              "Blend Mode": {
+                  "value": 0
+              }
+          },
+          "Motion": {
+              "Position": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Scale": {
+                  "value": 100
+              },
+              "Scale Width": {
+                  "value": 100
+              },
+              "Uniform Scale": {
+                  "value": true
+              },
+              "Rotation": {
+                  "value": 0
+              },
+              "Anchor Point": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Anti-flicker Filter": {
+                  "value": 0
+              },
+              "Crop Left": {
+                  "value": 0
+              },
+              "Crop Top": {
+                  "value": 0
+              },
+              "Crop Right": {
+                  "value": 0
+              },
+              "Crop Bottom": {
+                  "value": 0
+              }
+          }
+      },
+      {
+          "Opacity": {
+              "Opacity": {
+                  "value": 100
+              },
+              "Blend Mode": {
+                  "value": 0
+              }
+          },
+          "Motion": {
+              "Position": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Scale": {
+                  "value": 100
+              },
+              "Scale Width": {
+                  "value": 100
+              },
+              "Uniform Scale": {
+                  "value": true
+              },
+              "Rotation": {
+                  "value": 0
+              },
+              "Anchor Point": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Anti-flicker Filter": {
+                  "value": 0
+              },
+              "Crop Left": {
+                  "value": 0
+              },
+              "Crop Top": {
+                  "value": 0
+              },
+              "Crop Right": {
+                  "value": 0
+              },
+              "Crop Bottom": {
+                  "value": 0
+              }
+          }
+      },
+      {
+          "Opacity": {
+              "Opacity": {
+                  "value": 100
+              },
+              "Blend Mode": {
+                  "value": 0
+              }
+          },
+          "Motion": {
+              "Position": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Scale": {
+                  "value": 100
+              },
+              "Scale Width": {
+                  "value": 100
+              },
+              "Uniform Scale": {
+                  "value": true
+              },
+              "Rotation": {
+                  "value": 0
+              },
+              "Anchor Point": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Anti-flicker Filter": {
+                  "value": 0
+              },
+              "Crop Left": {
+                  "value": 0
+              },
+              "Crop Top": {
+                  "value": 0
+              },
+              "Crop Right": {
+                  "value": 0
+              },
+              "Crop Bottom": {
+                  "value": 0
+              }
+          }
+      },
+      {
+          "Opacity": {
+              "Opacity": {
+                  "value": 100
+              },
+              "Blend Mode": {
+                  "value": 0
+              }
+          },
+          "Motion": {
+              "Position": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Scale": {
+                  "value": 100
+              },
+              "Scale Width": {
+                  "value": 100
+              },
+              "Uniform Scale": {
+                  "value": true
+              },
+              "Rotation": {
+                  "value": 0
+              },
+              "Anchor Point": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Anti-flicker Filter": {
+                  "value": 0
+              },
+              "Crop Left": {
+                  "value": 0
+              },
+              "Crop Top": {
+                  "value": 0
+              },
+              "Crop Right": {
+                  "value": 0
+              },
+              "Crop Bottom": {
+                  "value": 0
+              }
+          }
+      },
+      {
+          "Opacity": {
+              "Opacity": {
+                  "value": 100
+              },
+              "Blend Mode": {
+                  "value": 0
+              }
+          },
+          "Motion": {
+              "Position": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Scale": {
+                  "value": 100
+              },
+              "Scale Width": {
+                  "value": 100
+              },
+              "Uniform Scale": {
+                  "value": true
+              },
+              "Rotation": {
+                  "value": 0
+              },
+              "Anchor Point": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Anti-flicker Filter": {
+                  "value": 0
+              },
+              "Crop Left": {
+                  "value": 0
+              },
+              "Crop Top": {
+                  "value": 0
+              },
+              "Crop Right": {
+                  "value": 0
+              },
+              "Crop Bottom": {
+                  "value": 0
+              }
+          }
+      },
+      {
+          "Opacity": {
+              "Opacity": {
+                  "value": 100
+              },
+              "Blend Mode": {
+                  "value": 0
+              }
+          },
+          "Motion": {
+              "Position": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Scale": {
+                  "value": 100
+              },
+              "Scale Width": {
+                  "value": 100
+              },
+              "Uniform Scale": {
+                  "value": true
+              },
+              "Rotation": {
+                  "value": 0
+              },
+              "Anchor Point": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Anti-flicker Filter": {
+                  "value": 0
+              },
+              "Crop Left": {
+                  "value": 0
+              },
+              "Crop Top": {
+                  "value": 0
+              },
+              "Crop Right": {
+                  "value": 0
+              },
+              "Crop Bottom": {
+                  "value": 0
+              }
+          }
+      },
+      {
+          "Opacity": {
+              "Opacity": {
+                  "value": 100
+              },
+              "Blend Mode": {
+                  "value": 0
+              }
+          },
+          "Motion": {
+              "Position": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Scale": {
+                  "value": 100
+              },
+              "Scale Width": {
+                  "value": 100
+              },
+              "Uniform Scale": {
+                  "value": true
+              },
+              "Rotation": {
+                  "value": 0
+              },
+              "Anchor Point": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Anti-flicker Filter": {
+                  "value": 0
+              },
+              "Crop Left": {
+                  "value": 0
+              },
+              "Crop Top": {
+                  "value": 0
+              },
+              "Crop Right": {
+                  "value": 0
+              },
+              "Crop Bottom": {
+                  "value": 0
+              }
+          }
+      },
+      {
+          "Opacity": {
+              "Opacity": {
+                  "value": 100
+              },
+              "Blend Mode": {
+                  "value": 0
+              }
+          },
+          "Motion": {
+              "Position": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Scale": {
+                  "value": 100
+              },
+              "Scale Width": {
+                  "value": 100
+              },
+              "Uniform Scale": {
+                  "value": true
+              },
+              "Rotation": {
+                  "value": 0
+              },
+              "Anchor Point": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Anti-flicker Filter": {
+                  "value": 0
+              },
+              "Crop Left": {
+                  "value": 0
+              },
+              "Crop Top": {
+                  "value": 0
+              },
+              "Crop Right": {
+                  "value": 0
+              },
+              "Crop Bottom": {
+                  "value": 0
+              }
+          }
+      },
+      {
+          "Opacity": {
+              "Opacity": {
+                  "value": 100
+              },
+              "Blend Mode": {
+                  "value": 0
+              }
+          },
+          "Motion": {
+              "Position": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Scale": {
+                  "value": 100
+              },
+              "Scale Width": {
+                  "value": 100
+              },
+              "Uniform Scale": {
+                  "value": true
+              },
+              "Rotation": {
+                  "value": 0
+              },
+              "Anchor Point": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Anti-flicker Filter": {
+                  "value": 0
+              },
+              "Crop Left": {
+                  "value": 0
+              },
+              "Crop Top": {
+                  "value": 0
+              },
+              "Crop Right": {
+                  "value": 0
+              },
+              "Crop Bottom": {
+                  "value": 0
+              }
+          }
+      },
+      {
+          "Opacity": {
+              "Opacity": {
+                  "value": 100
+              },
+              "Blend Mode": {
+                  "value": 0
+              }
+          },
+          "Motion": {
+              "Position": {
+                  "keyframes": [
+                      [
+                          {
+                              "seconds": 21.1592955,
+                              "ticks": "5374799605728"
+                          },
+                          [
+                              0.5,
+                              0.5
+                          ]
+                      ],
+                      [
+                          {
+                              "seconds": 27.683712,
+                              "ticks": "7032105787392"
+                          },
+                          [
+                              0.54560631513596,
+                              0.46042093634605
+                          ]
+                      ]
+                  ]
+              },
+              "Scale": {
+                  "keyframes": [
+                      [
+                          {
+                              "seconds": 21.1592955,
+                              "ticks": "5374799605728"
+                          },
+                          109
+                      ],
+                      [
+                          {
+                              "seconds": 27.683712,
+                              "ticks": "7032105787392"
+                          },
+                          124.3671875
+                      ]
+                  ]
+              },
+              "Scale Width": {
+                  "value": 100
+              },
+              "Uniform Scale": {
+                  "value": true
+              },
+              "Rotation": {
+                  "value": 2
+              },
+              "Anchor Point": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Anti-flicker Filter": {
+                  "value": 0
+              },
+              "Crop Left": {
+                  "value": 0
+              },
+              "Crop Top": {
+                  "value": 0
+              },
+              "Crop Right": {
+                  "value": 0
+              },
+              "Crop Bottom": {
+                  "value": 0
+              }
+          }
+      },
+      {
+          "Opacity": {
+              "Opacity": {
+                  "value": 100
+              },
+              "Blend Mode": {
+                  "value": 0
+              }
+          },
+          "Motion": {
+              "Position": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Scale": {
+                  "keyframes": [
+                      [
+                          {
+                              "seconds": 3599.819769,
+                              "ticks": "914411818442304"
+                          },
+                          100
+                      ],
+                      [
+                          {
+                              "seconds": 3608.759301,
+                              "ticks": "916682602602816"
+                          },
+                          120
+                      ]
+                  ]
+              },
+              "Scale Width": {
+                  "value": 100
+              },
+              "Uniform Scale": {
+                  "value": true
+              },
+              "Rotation": {
+                  "value": 0
+              },
+              "Anchor Point": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Anti-flicker Filter": {
+                  "value": 0
+              },
+              "Crop Left": {
+                  "value": 0
+              },
+              "Crop Top": {
+                  "value": 0
+              },
+              "Crop Right": {
+                  "value": 0
+              },
+              "Crop Bottom": {
+                  "value": 0
+              }
+          }
+      },
+      {
+          "Opacity": {
+              "Opacity": {
+                  "value": 100
+              },
+              "Blend Mode": {
+                  "value": 0
+              }
+          },
+          "Motion": {
+              "Position": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Scale": {
+                  "keyframes": [
+                      [
+                          {
+                              "seconds": 3598.4860485,
+                              "ticks": "914073032095776"
+                          },
+                          110
+                      ],
+                      [
+                          {
+                              "seconds": 3605.2627905,
+                              "ticks": "915794432991648"
+                          },
+                          100
+                      ]
+                  ]
+              },
+              "Scale Width": {
+                  "value": 100
+              },
+              "Uniform Scale": {
+                  "value": true
+              },
+              "Rotation": {
+                  "value": 0
+              },
+              "Anchor Point": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Anti-flicker Filter": {
+                  "value": 0
+              },
+              "Crop Left": {
+                  "value": 0
+              },
+              "Crop Top": {
+                  "value": 0
+              },
+              "Crop Right": {
+                  "value": 0
+              },
+              "Crop Bottom": {
+                  "value": 0
+              }
+          }
+      },
+      {
+          "Opacity": {
+              "Opacity": {
+                  "value": 100
+              },
+              "Blend Mode": {
+                  "value": 0
+              }
+          },
+          "Motion": {
+              "Position": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Scale": {
+                  "value": 100
+              },
+              "Scale Width": {
+                  "value": 100
+              },
+              "Uniform Scale": {
+                  "value": true
+              },
+              "Rotation": {
+                  "value": 0
+              },
+              "Anchor Point": {
+                  "value": [
+                      0.5,
+                      0.5
+                  ]
+              },
+              "Anti-flicker Filter": {
+                  "value": 0
+              },
+              "Crop Left": {
+                  "value": 0
+              },
+              "Crop Top": {
+                  "value": 0
+              },
+              "Crop Right": {
+                  "value": 0
+              },
+              "Crop Bottom": {
+                  "value": 0
+              }
+          },
+          "Mosaic": {
+              "Horizontal Blocks": {
+                  "keyframes": [
+                      [
+                          {
+                              "seconds": 10.4644668333333,
+                              "ticks": "2658142007136"
+                          },
+                          600
+                      ],
+                      [
+                          {
+                              "seconds": 10.4978335,
+                              "ticks": "2666617674336"
+                          },
+                          200
+                      ],
+                      [
+                          {
+                              "seconds": 11.4988334999961,
+                              "ticks": "2920887690335"
+                          },
+                          1
+                      ]
+                  ]
+              },
+              "Vertical Blocks": {
+                  "keyframes": [
+                      [
+                          {
+                              "seconds": 10.4644668333333,
+                              "ticks": "2658142007136"
+                          },
+                          600
+                      ],
+                      [
+                          {
+                              "seconds": 10.4978335,
+                              "ticks": "2666617674336"
+                          },
+                          200
+                      ],
+                      [
+                          {
+                              "seconds": 11.4988334999961,
+                              "ticks": "2920887690335"
+                          },
+                          1
+                      ]
+                  ]
+              },
+              "Sharp Colors": {
+                  "value": true
+              }
+          }
+      }
+  ]
+}
+
+const options = {
+  exclusions: [],
+  sourceData: data,
+  targetTrack: 1
+}
+$._PPP_.restoreEffectsToClips(JSON.stringify(options))
 
 // $._PPP_.saveEffectstoFile(1);

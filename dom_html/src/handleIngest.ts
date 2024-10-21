@@ -76,6 +76,7 @@ function handleIngestCallback(data) {
 }
 
 const handleEffectIngestion = (
+  data: SourceData,
   targetTrack: number, 
   effectExclusionsElems:HTMLElement[]
 ) => {
@@ -102,14 +103,14 @@ const handleEffectIngestion = (
      
      const options = {
       exclusions: effectExclusions,
-      sourceData: sourceData,
+      sourceData: data,
       targetTrack: targetTrack
      };
 
-     const script = `$._PPP_.saveEffectstoFile(${JSON.stringify(options)})`;
-     setLoadingCaption('Saving effects to file...')
+     const script = `$._PPP_.restoreEffectsToClips(${JSON.stringify(options)})`;
+     setLoadingCaption('Restoring clip effects...')
      
-     csInterface.evalScript(script, handleIngestCallback);
+     csInterface.evalScript(script, handleCallback);
 
   } catch (err) {
     throw new Error(err)
@@ -135,9 +136,13 @@ sourceFileInput.addEventListener("change", (e: Event): void => {
 ingestFile.addEventListener("click", e => {
   e.preventDefault()
   const effectExclusionsElems = document.querySelectorAll('.exclusion-dropdown');
-  const targetTrack:number = document.querySelector('#sourceTrack').value;
-
-  handleEffectIngestion(targetTrack, effectExclusionsElems);
+  const targetTrack:number = document.querySelector('#target-track').value;
+  if(sourceData) { 
+    handleEffectIngestion(sourceData, targetTrack, effectExclusionsElems)
+  } else {
+    alert('Please select a source file.')
+  }
+  
 })
 
 
