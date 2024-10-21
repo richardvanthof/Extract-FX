@@ -67,14 +67,6 @@ const handleSourceData = (file: File): void => {
   reader.readAsText(file);
 };
 
-function handleIngestCallback(data) {
-  if(data) showLoadingScreen(false);
-  if (data !== true) {
-      console.error(`Callback Error: ${data}`, data.message); // Log full error for debugging
-      // alert(`handleCallback-error: ${data.message}`);
-  }
-}
-
 const handleEffectIngestion = (
   data: SourceData,
   targetTrack: number, 
@@ -101,13 +93,15 @@ const handleEffectIngestion = (
      if(!targetTrack) throw 'TargetTrack is undefined'
      if(!effectExclusions) throw 'Effect exclusions are undefined.'
      
-     const options = {
+     const options = JSON.stringify({
       exclusions: effectExclusions,
       sourceData: data,
       targetTrack: targetTrack
-     };
+     });
 
-     const script = `$._PPP_.restoreEffectsToClips(${JSON.stringify(options)})`;
+     console.log(options)
+
+     const script = `$._PPP_.restoreEffectsToClips('${options}')`;
      setLoadingCaption('Restoring clip effects...')
      
      csInterface.evalScript(script, handleCallback);

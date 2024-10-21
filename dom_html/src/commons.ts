@@ -16,8 +16,5 @@ function setLoadingCaption(message) {
 
 function handleCallback(data: any) {
   showLoadingScreen(false);
-  if (data !== true) {
-      console.error(`Callback Error: ${data}`, data.message); // Log full error for debugging
-      alert(data);
-  }
+  if(data != true) {console.log(data)}
 }
