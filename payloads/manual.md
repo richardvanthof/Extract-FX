@@ -9,11 +9,12 @@
 
 ## What effects are supported?
 
+- Motion-effects (position, scale, rotation etc.);
 - Other video effects from the `effects`-panel
-- `Motion`-effects (position, scale, rotation etc.)
 ## Limitations.
-- Transition and audio effects are not supported
-- Transitions, opacity and audio effects are not supported in the 'track'-mode. Warp stabilizer is supported in this mode but not recommended.
+- Transitions and audio effects are not supported.
+- Opacity is not supported in 'track'-mode
+- It is recommended to exclude Warp stabilizer and Lumetri in track-mode.
 ## Controls
 
 #### Extract-panel
@@ -37,7 +38,7 @@ Use this panel to back-up you clip effects
 
 #### Ingest-panel
 
-Use this panel to restore your clip effects using the file that you created on the Extract-panel when destination is set to 'File.'
+Use this panel to restore your clip effects using the file that you created on the Extract-panel in 'file'-mode.
 
 ![ingest](ingest.png)
 
@@ -59,14 +60,15 @@ Use this panel to restore your clip effects using the file that you created on t
 </style>
 <ul >
 	<li class="faq-item" id="custom-container">
-    <b>How can I manually create a custom adjustmennt layer template? (resolution, framerate etc.)</b></br>
-    Yes, manually create a new adjustment layer called <code>RSFX-container</code> at the root of your project with the specs of your choosing. Make sure to also delete or rename all other files using this name.
+    <b>How can I manually create an adjustmennt layer template with custom settings (resolution, framerate etc.)? </b></br>
+    Create a new adjustment layer called <code>RSFX-container</code> at the root of your project with the specs of your choosing. Make sure to also delete or rename all other files using this name.
 	</li>  
   <li class="faq-item">
     <b>The created adjustment layers overlap clips on the track above the source track.</b></br>
     Manually append a video track to the source track and run the program again.
 	</li>  
 </ul>
+
 
 
 
