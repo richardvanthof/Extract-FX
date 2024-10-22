@@ -112,7 +112,7 @@ $._PPP_ = {
           $._PPP_.message('File not found. Importing...');
           importedFile = $._PPP_.importFile(path);
           foundFile = $._PPP_.searchForFileWithName(fileName);
-          if(foundFile === null) { throw "Adjustment layer template not found. Try again or manually create a template file."}
+          if(foundFile === null) { throw "Adjustment layer template not found. Try again or manually create a template file (see help-screen for more info)."}
         }
       } else {
         $._PPP_.message('File found in the project.');

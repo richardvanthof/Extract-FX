@@ -39,36 +39,52 @@ $._PPP_ = {
         return null;
     },
     importFile: function (path) {
-        var file = path;
-        var suppressWarnings = true;
-        var importAsStills = false;
-        app.project.importFiles([file], suppressWarnings, importAsStills);
+        try {
+            var file = path;
+            var supressUI = true;
+            var importAsStills = false;
+            var targetBin = app.project.rootItem;
+            var imported = app.project.importFiles(file, supressUI, targetBin, importAsStills);
+            return imported;
+        }
+        catch (err) {
+            return err;
+        }
     },
     getAdjustmentLayer: function () {
-        var fileName = 'RSFX-container';
-        var path;
-        var foundFile = $._PPP_.searchForFileWithName(fileName);
-        if (Folder.fs === 'Macintosh') {
-            path = '/Library/Application Support/Adobe/CEP/extensions/space.therichard.ExtractFX/payloads/adjustment-layer.prproj';
-        }
-        else {
-            path = 'file:///C:/Program%20Files%20(x86)/Common%20Files/Adobe/CEP/extensions/space.therichard.ExtractFX/payloads/adjustment-layer.prproj';
-        }
-        if (foundFile === null) {
-            $._PPP_.message('File not found. Importing...');
-            $._PPP_.importFile(path);
-            foundFile = $._PPP_.searchForFileWithName(fileName);
-            if (foundFile === null) {
-                throw 'Failed to import the file.';
+        try {
+            var fileName = 'RSFX-container';
+            var path = void 0;
+            var importedFile = void 0;
+            var foundFile = $._PPP_.searchForFileWithName(fileName);
+            if (Folder.fs === 'Macintosh') {
+                path = '/Library/Application Support/Adobe/CEP/extensions/space.therichard.ExtractFX/payloads/payloads/adjustment-layer.prproj';
             }
             else {
-                $._PPP_.message('File imported successfully.');
+                path = 'file:///C:/Program%20Files%20(x86)/Common%20Files/Adobe/CEP/extensions/space.therichard.ExtractFX/payloads/adjustment-layer.prproj';
             }
+            if (foundFile === null) {
+                $._PPP_.message('File not found. Importing...');
+                importedFile = $._PPP_.importFile(path);
+                foundFile = $._PPP_.searchForFileWithName(fileName);
+                if (foundFile === null) {
+                    $._PPP_.message('File not found. Importing...');
+                    importedFile = $._PPP_.importFile(path);
+                    foundFile = $._PPP_.searchForFileWithName(fileName);
+                    if (foundFile === null) {
+                        throw "Adjustment layer template not found. Try again or manually create a template file (see help-screen for more info).";
+                    }
+                }
+            }
+            else {
+                $._PPP_.message('File found in the project.');
+            }
+            return foundFile;
         }
-        else {
-            $._PPP_.message('File found in the project.');
+        catch (err) {
+            alert(err);
+            return err;
         }
-        return foundFile;
     },
     sanitized: function (effect) {
         if (effect.toLowerCase() === 'motion' ||
@@ -335,8 +351,10 @@ $._PPP_ = {
         if (userExclusions === void 0) { userExclusions = []; }
         var saveType = 'file';
         try {
+            if (!track) {
+                throw "Source track undefined.";
+            }
             $._PPP_.updateEventPanel("Track " + track + " - Initializing effect extraction...", 'info');
-            var adjustmentLayer = $._PPP_.getAdjustmentLayer();
             function findVideoTrack(index) {
                 var videoTrack = app.project.activeSequence.videoTracks[index];
                 return videoTrack ? videoTrack : null;
@@ -354,6 +372,10 @@ $._PPP_ = {
             if (!sourceTrack || !targetTrack) {
                 throw 'Please ensure the source and target tracks exist.';
             }
+            if (sourceTrack.clips.numItems <= 0) {
+                throw "No clips on source track were found.";
+            }
+            var adjustmentLayer = $._PPP_.getAdjustmentLayer();
             for (var c = 0; c < sourceTrack.clips.numItems; c++) {
                 var sourceClip = sourceTrack.clips[c];
                 var clipEffects = sourceClip.components;
@@ -412,8 +434,12 @@ $._PPP_ = {
         return true;
     },
     restoreEffectsToClips: function (options) {
-        var exclusions = options.exclusions, sourceData = options.sourceData;
         try {
+            var params = JSON.parse(options);
+            var sourceData = params.sourceData, exclusions = params.exclusions;
+            if (!sourceData) {
+                throw 'Source data not found. JSON is undefined or malformed.';
+            }
             function findVideoTrack(index) {
                 var videoTrack = app.project.activeSequence.videoTracks[index];
                 return videoTrack ? videoTrack : null;
@@ -423,7 +449,7 @@ $._PPP_ = {
                 alert('No active sequence found.');
                 return false;
             }
-            var targetTrackIndex = options.targetTrack - 1;
+            var targetTrackIndex = params.targetTrack - 1;
             var targetTrack = findVideoTrack(targetTrackIndex);
             var qeTargetTrack = qe.project.getActiveSequence().getVideoTrackAt(targetTrackIndex);
             if (!targetTrack) {
@@ -435,8 +461,8 @@ $._PPP_ = {
             ;
             var sourceClips = sourceData.clips;
             var targetClips = targetTrack.clips;
-            for (var c = 0; c < sourceClips.length && c < targetClips.numItems; c++) {
-                $._PPP_.message("Restoring efffect for clip " + c + " of " + sourceClips.length);
+            for (var c = 0; c < sourceClips.length && c <= targetClips.numItems; c++) {
+                $._PPP_.updateEventPanel("Restoring efffect for clip " + c + " of " + sourceClips.length);
                 var indexQE = c + 1;
                 var sourceClip = sourceClips[c];
                 var targetClip = targetClips[c];
@@ -484,16 +510,13 @@ $._PPP_ = {
                     }
                 }
             }
+            $._PPP_.updateEventPanel('Finishing task...');
+            return true;
         }
         catch (err) {
-            throw err;
-            alert(err);
+            alert(err, err.name, err.message);
+            $._PPP_.message(err);
+            return err;
         }
     }
 };
-var data = JSON.parse('{"type":"RS-FX-EXCHANGE","track":1,"sequence":"My video","exclusions":[],"clips":[{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":152},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"keyframes":[[{"seconds":21.1592955,"ticks":"5374799605728"},[0.5,0.5]],[{"seconds":27.683712,"ticks":"7032105787392"},[0.54560631513596,0.46042093634605]]]},"Scale":{"keyframes":[[{"seconds":21.1592955,"ticks":"5374799605728"},109],[{"seconds":27.683712,"ticks":"7032105787392"},124.3671875]]},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":2},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"keyframes":[[{"seconds":3599.819769,"ticks":"914411818442304"},100],[{"seconds":3608.759301,"ticks":"916682602602816"},120]]},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"keyframes":[[{"seconds":3598.4860485,"ticks":"914073032095776"},110],[{"seconds":3605.2627905,"ticks":"915794432991648"},100]]},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}}},{"Opacity":{"Opacity":{"value":100},"Blend Mode":{"value":0}},"Motion":{"Position":{"value":[0.5,0.5]},"Scale":{"value":100},"Scale Width":{"value":100},"Uniform Scale":{"value":true},"Rotation":{"value":0},"Anchor Point":{"value":[0.5,0.5]},"Anti-flicker Filter":{"value":0},"Crop Left":{"value":0},"Crop Top":{"value":0},"Crop Right":{"value":0},"Crop Bottom":{"value":0}},"Mosaic":{"Horizontal Blocks":{"keyframes":[[{"seconds":10.4644668333333,"ticks":"2658142007136"},600],[{"seconds":10.4978335,"ticks":"2666617674336"},200],[{"seconds":11.4988334999961,"ticks":"2920887690335"},1]]},"Vertical Blocks":{"keyframes":[[{"seconds":10.4644668333333,"ticks":"2658142007136"},600],[{"seconds":10.4978335,"ticks":"2666617674336"},200],[{"seconds":11.4988334999961,"ticks":"2920887690335"},1]]},"Sharp Colors":{"value":true}}}]}');
-$._PPP_.restoreEffectsToClips({
-    exclusions: [],
-    sourceData: data,
-    targetTrack: 1
-});
