@@ -1602,4 +1602,4 @@ $._PPP_ = {
 
 // $._PPP_.restoreEffectsToClips(options)
 
-$._PPP_.saveEffectstoFile(1);
+//$._PPP_.saveEffectstoFile(1);
