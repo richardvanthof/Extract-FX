@@ -1,6 +1,6 @@
 var qe = app.enableQE();
 var updateUI = 1;
-var debug = true;
+var debug = false;
 $._PPP_ = {
     message: function (msg) {
         if (debug) {
@@ -326,9 +326,11 @@ $._PPP_ = {
                 clips: effectsList
             };
             var jsonString = JSON.stringify(outputFile);
-            var file = File.saveDialog("Save effects list", "*.json");
-            file.type = 'rsfx';
+            var file = File.saveDialog("Save effects list");
             if (file) {
+                if (file.name.split('.').pop().toLowerCase() !== 'json') {
+                    file = new File(file.fullName + ".json");
+                }
                 if (file.open("w")) {
                     file.write(jsonString);
                     file.close();
@@ -520,3 +522,4 @@ $._PPP_ = {
         }
     }
 };
+$._PPP_.saveEffectstoFile(1);

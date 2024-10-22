@@ -1,7 +1,7 @@
 // Enable Adobe Query Engine (QE) API
 const qe = app.enableQE();
 const updateUI = 1;
-const debug = true // Set to false when deploying for production.
+const debug = false // Set to false when deploying for production.
 
 // Custom namespace to avoid conflicts with other libraries
 // namespace $ {
@@ -434,17 +434,20 @@ $._PPP_ = {
       var jsonString = JSON.stringify(outputFile);
 
       // Open a Save Dialog
-      var file = File.saveDialog("Save effects list", "*.json"); // Open dialog to save file with .json extension
-      file.type = 'rsfx';
+      var file = File.saveDialog("Save effects list"); // Open dialog to save file with .json extension
 
       if (file) {
-          // If the user chooses a file
-          if (file.open("w")) {
-              file.write(jsonString); // Write the JSON string to the selected file
-              file.close();           // Close the file to save changes
-          } else {
-              alert("Failed to open the file for writing.");
-          }
+          if (file.name.split('.').pop().toLowerCase() !== 'json') {
+            file = new File(file.fullName + ".json");
+        }
+
+        // If the user chooses a file
+        if (file.open("w")) {
+            file.write(jsonString); // Write the JSON string to the selected file
+            file.close();           // Close the file to save changes
+        } else {
+            alert("Failed to open the file for writing.");
+        }
       } else {
           alert("No file selected.");
       }
@@ -1599,4 +1602,4 @@ $._PPP_ = {
 
 // $._PPP_.restoreEffectsToClips(options)
 
-// $._PPP_.saveEffectstoFile(1);
+$._PPP_.saveEffectstoFile(1);
