@@ -1,3 +1,6 @@
+<script>
+</script>
+
 <style>
     ul {
         margin: 0;
@@ -19,7 +22,7 @@
         width: 100%;
         text-align: center;
         justify-content: space-evenly;
-        border: var(--border-style-transparent);
+        
         color: var(--text);
         cursor: pointer;
         border-radius: var(--border-radius-inner);
@@ -27,6 +30,7 @@
 
     .active {
         background: var(--bg-selected);
+        border: var(--border-styling-teal);
     }
 </style>
 

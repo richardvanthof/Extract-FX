@@ -9,12 +9,16 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 1em 0em;
+        padding: 1em;
         position: fixed;
         bottom: 0;
         width: 100%;
         background: var(--bg-regular);
         border-top: var(--border-styling);
+    }
+
+    .caption {
+        color: var(--text-color-dark)
     }
 </style>
 
@@ -27,7 +31,8 @@
         {:else}
         <Button name="Cancel" title="Cancel process" id="cancel-btn" onClick="window.location.reload()"/>
         {/if}
-       
-        
+    </div>
+    <div>
+        <p class='caption'>&#169; Richard Space 2024</p>
     </div>
 </footer>

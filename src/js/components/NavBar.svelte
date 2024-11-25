@@ -2,7 +2,7 @@
     import Button from './Button.svelte';
   </script>
   
-  <style lang="scss">
+  <style>
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -29,7 +29,7 @@
         border-radius: var(--border-radius) 0 0 var(--border-radius);
       }
   
-      &.active, &.active > a {
+      & .active, &.active > a {
         background: var(--bg-selected);
         border-radius: var(--border-radius);
         border: var(--border-width) solid var(--border-color);

@@ -1,6 +1,5 @@
 <style>
 .exclusions {
-	
 	background: var(--bg-dark);
 	border: var(--border-styling);
 	border-radius: var(--border-radius-inner);
