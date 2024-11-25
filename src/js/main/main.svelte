@@ -1,12 +1,12 @@
-<script type="ts">
+<script>
     import NavBar from '../components/NavBar.svelte';
     import Extract from '../pages/Extract.svelte';
     import Footer from '../components/Footer.svelte';
     import Ingest from '../pages/Ingest.svelte';
     import Loader from '../components/Loader.svelte';
-    
-    let isLoading:boolean = false;
-    const mode: 'extract' | 'ingest' = 'extract';
+
+    const isLoading = false;
+    const currentPage = 'extract';
 </script>
 
 <style>
@@ -16,10 +16,9 @@
     }
 </style>
 
-
-<NavBar/>
+<NavBar goto="test"/>
 <main> 
-    {#if mode === 'extract'}
+    {#if  true}
         <Extract/>
     {:else}
         <Ingest/>
@@ -29,4 +28,5 @@
         <Loader/>
     {/if}
 </main>
-<Footer {mode}}/>
+
+<Footer {currentPage} />

@@ -1,5 +1,7 @@
 <script>
-    export let name = ''
+    export let name;
+    export let title;
+    export let onclick;
 </script>
 
 <style lang="scss">
@@ -16,4 +18,4 @@
     }
 </style>
 
-<button>{name}</button>
+<button {title} {onclick}>{name}</button>

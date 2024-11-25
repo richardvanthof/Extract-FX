@@ -52,8 +52,7 @@ export default defineConfig({
   plugins: [
     svelte({ 
       preprocess: sveltePreprocess({
-        sourceMap: !isProduction,
-        prependData: `@use 'src/js/global-styles/global-styles.scss'`
+        sourceMap: !config.isProduction
       }) 
     }),
     cep(config),

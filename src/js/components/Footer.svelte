@@ -1,7 +1,32 @@
 <script>
     import Button from "./Button.svelte";
+    import { currentPage } from "../main/shared";
+    export let action;
+    const actions = (mode) => {
+        const methods = {
+            extract: {
+                name: 'Extract',
+                description: 'Back up video effects.',
+                method: () => console.log('extract...')
+            },
+            ingest: {
+                name: 'Ingest',
+                description: 'Restore video effects to timeline.',
+                method: () => console.log('restoring...')
+            },
+            cancel: {
+                name: 'Cancel',
+                description: 'Stop operation.',
+                method: () => console.log('Cancelling...')
+            }
+        }
+        if(mode === 'extract') () => actions.extract;
+        else if(mode === 'ingest') () => actions.ingest;
+        else () => actions.cancel;
+    }
 
-    export let mode = '';
+    const {name, description, method} = () => actions(currentPage);
+
 </script>
 
 <style>
@@ -24,13 +49,7 @@
 
 <footer>
     <div>
-        {#if mode === 'ingest'}
-        <Button name="Ingest" title="Restore effects to timeline" id="extract-btn" />
-        {:else if mode == 'extract'}
-        <Button name="Extract" title="Extract effects frin timeline" id="extract-btn" />
-        {:else}
-        <Button name="Cancel" title="Cancel process" id="cancel-btn" onClick="window.location.reload()"/>
-        {/if}
+        <Button {name} title={description} onclick={method} />
     </div>
     <div>
         <p class='caption'>&#169; Richard Space 2024 - version 0.0.0</p>
