@@ -1,4 +1,5 @@
 :root {
+    // Colors
     --lightgray: #262525;
     --gray: #232323;
     --darkgray: #1D1D1D;
@@ -9,31 +10,38 @@
     --whitesnow: rgb(174, 174, 181);
     --black: rgb(0,0,0);
 
+    // Backgrounds
     --bg-regular: var(--gray);
     --bg-light: var(--lightgray);
     --bg-dark: var(--darkgray);
+    --bg-selected: var(--darkteal);
+    --btn-active: var(--teal);
+
+    // Border
     --border-color: var(--lightgray);
     --border-weight: 1px;
     --border-radius: 3px;
+
     --border-styling: solid var(--border-weight) var(--border-color);
     --border-styling-teal: solid var(--border-weight) var(--darkteal);
     --border-style-transparent: var(--border-weight) solid transparent;
-   
+    
+    --border-radius-outer: 5px;
+    --border-radius-inner: 3px;
+
+    // Buttons
+    --btn-border-radius: 3px;
+    
+
+    // Typography
     --text-color: var(--white);
     --text-color-dark: var(--whitesnow);
     --btn-text-color: var(--white);
     --link-color: var(--blue);
-
-    --bg-selected: var(--darkteal);
-
-    --btn-active: var(--teal);
-    --btn-border-radius: 3px;
-
-    --border-radius-outer: 5px;
-    --border-radius-inner: 3px;
-
+    
     --fonts: 'LucidaGrande', sans-serif;
-
     --font-size: 12px;
     --font-size-sm: .9em;
+
+    --inputs-padding: 0.5em
 }

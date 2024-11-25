@@ -5,7 +5,7 @@ import { cep, runAction } from "vite-cep-plugin";
 import cepConfig from "./cep.config";
 import path from "path";
 import { extendscriptConfig } from "./vite.es.config";
-import { sveltePreprocess } from "svelte-preprocess/dist/autoProcess";
+import { sveltePreprocess } from "svelte-preprocess";
 
 const extensions = [".js", ".ts", ".tsx"];
 
@@ -50,7 +50,12 @@ if (action) {
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    svelte({ preprocess: sveltePreprocess({ typescript: true }) }),
+    svelte({ 
+      preprocess: sveltePreprocess({
+        sourceMap: !isProduction,
+        prependData: `@use 'src/js/global-styles/global-styles.scss'`
+      }) 
+    }),
     cep(config),
   ],
   resolve: {

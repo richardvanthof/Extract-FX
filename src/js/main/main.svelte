@@ -5,14 +5,11 @@
     import Ingest from '../pages/Ingest.svelte';
     import Loader from '../components/Loader.svelte';
     let isLoading = false;
-    const mode = 'extract'
+    const mode = 'extract';
 </script>
 
 <style>
-    @import '../global-styles/normalize.scss';
-    @import '../global-styles/variables.scss';
-    @import '../global-styles/globals.scss';
-    
+    @import '../global-styles/global-styles.scss';
     main {
         margin: 1em;
     }
@@ -21,10 +18,11 @@
 
 <!-- <Loader/> -->
 <main>
+    <NavBar/>
 {#if isLoading}
     <Loader/>
 {:else}
-        <NavBar/>
+        
     {#if mode === 'extract'}
         <Extract/>
     {:else}

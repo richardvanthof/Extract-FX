@@ -7,11 +7,7 @@
 	margin-top: 1em;
 }
 
-.exclusion {
-	margin: 0.5em;
-	display: flex;
-	border-right: none;
-}
+
 
 .exclusions-controls {
   background: #272626;
@@ -23,7 +19,7 @@
 }
 
 .exclusions-container {
-	min-height: 10rem;
+	min-height: 8rem;
 	/* padding-bottom: 2em; */
 }
 
@@ -33,9 +29,7 @@
 	text-align: center;
 }
 
-.remove-exclusion {
-	padding: 0 .66em;
-}
+
 
 #remove-all-exclusions-btn {
 	background: none;
@@ -54,7 +48,7 @@
 </style>
 
 <script>
-
+import Exclusion from "./Exclusion.svelte";
 </script>
 
 
@@ -66,6 +60,9 @@
                 <button class='exclusion-control' id='remove-all-exclusions-btn'>Clear all</button>
             </div>
         <div class="exclusions-container">
+            <Exclusion/>
+            <Exclusion/>
+            <Exclusion/>
         </div>
     </div>
 </details>

@@ -2,7 +2,7 @@
     import Button from './Button.svelte';
   </script>
   
-  <style>
+  <style lang='scss'>
     .navbar {
       display: flex;
       justify-content: space-between;

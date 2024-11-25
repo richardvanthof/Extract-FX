@@ -5,9 +5,9 @@
 <style>
     button {
         border: var(--border-styling);
-	    min-height: 20px;
         background: var(--bg-dark);
-        padding: 0 .66em;
+        padding: var(--inputs-padding);
+        min-width: 4ch;
     }
 </style>
 

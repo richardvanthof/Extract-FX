@@ -33,6 +33,6 @@
         {/if}
     </div>
     <div>
-        <p class='caption'>&#169; Richard Space 2024</p>
+        <p class='caption'>&#169; Richard Space 2024 - version 0.0.0</p>
     </div>
 </footer>

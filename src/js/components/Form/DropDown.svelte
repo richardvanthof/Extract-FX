@@ -4,11 +4,9 @@
         border: var(--border-styling);
         border-radius: var(--border-radius);
         color: var(--white);
-        padding: .3em;
-        margin-bottom: 0.3em;
+        padding: var(--inputs-padding);
         display: block;
         width: 100%;
-        margin-bottom: 1em;
     }
 
     option {
