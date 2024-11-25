@@ -1,6 +1,6 @@
 import { CEP_Config } from "vite-cep-plugin";
 import { version } from "./package.json";
-
+import { signSecret } from './secrets';
 
 const config: CEP_Config = {
   version,
@@ -43,7 +43,7 @@ const config: CEP_Config = {
     country: "NL",
     province: "ZH",
     org: "Richard Space",
-    password: import.meta.SIGNING_SECRET,
+    password: signSecret,
     tsa: "http://timestamp.digicert.com/",
     sourceMap: false,
     jsxBin: "off",

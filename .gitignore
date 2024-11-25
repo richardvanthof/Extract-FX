@@ -5,4 +5,5 @@ payloads/.DS_Store
 dist
 .env.*
 .env
-dist/*
+dist/**/*
+secrets.ts
