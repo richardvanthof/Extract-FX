@@ -40,16 +40,16 @@ const config: CEP_Config = {
     sourceMap: true,
   },
   zxp: {
-    country: "US",
-    province: "CA",
-    org: "MyCompany",
-    password: "mypassword",
+    country: "NL",
+    province: "ZH",
+    org: "Richard Space",
+    password: import.meta.SIGNING_SECRET,
     tsa: "http://timestamp.digicert.com/",
     sourceMap: false,
     jsxBin: "off",
   },
   installModules: [],
   copyAssets: [],
-  copyZipAssets: [],
+  copyZipAssets: ['src/static/installation-assets/*'],
 };
 export default config;
