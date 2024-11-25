@@ -139,20 +139,7 @@ input['number'] {
 	height: 75vh;
 }
 
-.exclusions {
-	
-	background: var(--bg-dark);
-	border: var(--border-width) solid var(--border-color);
-	border-radius: 3px;
-	position: relative;
-	margin-top: 1em;
-}
 
-.exclusion {
-	margin: 0.5em;
-	display: flex;
-	border-right: none;
-}
 
 .selected, .selected > * {
 	background: rgb(108, 156, 208);
