@@ -1,4 +1,4 @@
-<style>
+<style lang="scss">
 .exclusions {
 	background: var(--bg-dark);
 	border: var(--border-styling);
@@ -11,7 +11,6 @@
 
 .exclusions-controls {
   background: #272626;
-  border-radius: var(--border-radius);
   display: flex;
   justify-content: space-between;
   padding: 0.1em;
@@ -20,6 +19,7 @@
 
 .exclusions-container {
 	min-height: 8rem;
+    margin: .4em;
 	/* padding-bottom: 2em; */
 }
 
@@ -29,13 +29,18 @@
 	text-align: center;
 }
 
-
+.exclusions {
+    border-radius: var(--border-radius-outer)
+}
 
 #remove-all-exclusions-btn {
 	background: none;
 	border:none;
 	font-size: 0.85em;
 	margin: 0 0.5em;
+    &:active {
+        background: var(--bg-btn-active)
+    }
 }
 
 .exclusion-toolbar-button {
@@ -44,6 +49,9 @@
     border-right: var(--border-styling);
     background: none;
     border-radius: 0;
+    &:active {
+        background: var(--bg-btn-active)
+    }
 }
 </style>
 

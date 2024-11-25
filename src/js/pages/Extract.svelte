@@ -5,12 +5,23 @@
     const name = 'Anna';
 </script>
 
+<style>
+    .group {
+        margin-bottom: 1.33em;
+    }
+</style>
+
 <form class="grid-container">
     <div class="grid-column">
-        <label class="caption">Source track </label>
-        <DropDown />
-        <label class="caption">Destination</label>
-        <Switch/>
+        <div class="group">
+            <label for="source-track">Source track </label>
+            <DropDown id="source-track" />
+        </div>
+        <div class="group">
+            <label for="destination">Destination</label>
+            <Switch id="destination"/>
+        </div>
+        
     </div>
     <div class="grid-column">
         <ExcludeModal/>

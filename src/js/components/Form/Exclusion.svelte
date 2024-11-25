@@ -1,6 +1,6 @@
 <style>
 .exclusion {
-	margin: 0.5em;
+	margin-bottom: 0.5em;
 	display: flex;
 	border-right: none;
 }

@@ -11,4 +11,4 @@
     }
 </style>
 
-<input id="source-file" accept="application/json, .rsfx" type="file">
+<input id="source-file" accept="application/json" type="file">

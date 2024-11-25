@@ -6,10 +6,10 @@
 
 <form class="grid-container">
     <div class="grid-column">
-        <label class="caption">Source file </label>
-        <SelectFile/>
-        <label class="caption">Target track </label>
-        <DropDown />
+        <label for="source-file" class="caption">Source file </label>
+        <SelectFile id="source-file"/>
+        <label for="target-track" class="caption">Target track </label>
+        <DropDown id="target-track"/>
     </div>
     <div class="grid-column">
         <ExcludeModal/>

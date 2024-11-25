@@ -3,47 +3,43 @@
   </script>
   
   <style lang='scss'>
+
     .navbar {
+      padding: 1em;
       display: flex;
       justify-content: space-between;
-      background: var(--nav-bg);
-      margin: 0;
-      padding-bottom: 2em;
-  
-      & > a {
-        color: var(--text);
-        text-decoration: none;
-        margin-right: .1em;
-        padding: .5em;
-        cursor: pointer;
-        border: var(--border-weight) solid transparent;
-      }
+      align-items: center;
     }
-  
-    .nav-link {
-      &:last-of-type {
-        border-radius: 0 var(--border-radius) var(--border-radius) 0;
-      }
-  
-      &:first-of-type {
-        border-radius: var(--border-radius) 0 0 var(--border-radius);
-      }
-  
-      & .active, &.active > a {
-        background: var(--bg-selected);
-        border-radius: var(--border-radius);
-        border: var(--border-width) solid var(--border-color);
-      }
-    }
-  
+
     .nav-links {
       display: flex;
       text-decoration: none;
       list-style: none;
-      margin: 0;
       padding: 0;
-      background: var(--bg-dark);
+      margin: 0;
+      border: var(--border-styling);
+      border-radius: var(--border-radius-inner);
+      overflow: hidden;
     }
+
+    .nav-link {
+      background: var(--bg-dark);
+      
+      padding: .66em 1.5em;
+
+      a {
+        text-decoration: none;
+      }
+
+      &.active {
+        background: var(--bg-btn-selected);
+        border-radius: var(--border-radius);
+         &:active {
+          background: var(--bg-btn-active)
+         }
+      }
+    }
+
   </style>
   
   <nav class="navbar">

@@ -1,7 +1,7 @@
 <script>
 </script>
 
-<style>
+<style lang="scss">
     ul {
         margin: 0;
         margin-bottom: 0px;
@@ -22,15 +22,21 @@
         width: 100%;
         text-align: center;
         justify-content: space-evenly;
-        
+        border: var(--border-styling);
         color: var(--text);
         cursor: pointer;
         border-radius: var(--border-radius-inner);
+        &:active {
+            background: var(--bg-btn-active);
+        }
     }
 
     .active {
         background: var(--bg-selected);
-        border: var(--border-styling-teal);
+        border: var(--border-styling-active);
+        &:active {
+            background: var(--bg-btn-active);
+        }
     }
 </style>
 

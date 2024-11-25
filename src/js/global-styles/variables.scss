@@ -1,9 +1,13 @@
 :root {
     // Colors
+    --lightergray: #312f2f;
     --lightgray: #262525;
-    --gray: #232323;
+    --gray: rgb(36, 36, 36);
+    --gray-transparent: rgba(36, 36, 36, 0.601);
     --darkgray: #1D1D1D;
-    --teal: rgb(72, 116, 162);
+    --darkestgray: #141313;
+    --lightteal: rgb(59, 59, 68);
+    --teal: rgb(75, 75, 83);
     --darkteal: #373740;
     --blue: #8080ff;
     --white: rgb(216, 205, 205);
@@ -15,15 +19,19 @@
     --bg-light: var(--lightgray);
     --bg-dark: var(--darkgray);
     --bg-selected: var(--darkteal);
-    --btn-active: var(--teal);
+
+    --bg-btn-active: var(--lightteal);
+    --bg-btn-selected: var(--teal);
+    --bg-loader: var(--gray-transparent);
 
     // Border
-    --border-color: var(--lightgray);
+    --border-color: var(--lightergray);
+    --border-color-active: var(--teal);
     --border-weight: 1px;
     --border-radius: 3px;
 
     --border-styling: solid var(--border-weight) var(--border-color);
-    --border-styling-teal: solid var(--border-weight) var(--darkteal);
+    --border-styling-active: solid var(--border-weight) var(--border-color-active);
     --border-style-transparent: var(--border-weight) solid transparent;
     
     --border-radius-outer: 5px;
@@ -31,7 +39,7 @@
 
     // Buttons
     --btn-border-radius: 3px;
-    
+    --bg-btn-active: var(--lightergray);
 
     // Typography
     --text-color: var(--white);
@@ -43,5 +51,5 @@
     --font-size: 12px;
     --font-size-sm: .9em;
 
-    --inputs-padding: 0.5em
+    --inputs-padding: .5em;
 }
