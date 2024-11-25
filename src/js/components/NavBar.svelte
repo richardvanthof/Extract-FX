@@ -1,13 +1,9 @@
 <script>
     import Button from './Button.svelte';
-    import {currentPage} from '../main/shared';
 
-    const handleIngestBtn = (e) => {
-      e.preventDefault();
-      console.log('ingest');
-      alert(1)
-      
-    }
+    let {setMode, mode} = $props()
+
+    const modes = ['extract', 'ingest']
 </script>
 
 <style lang='scss'>
@@ -53,8 +49,12 @@
 
 <nav class="navbar">
   <ul class="nav-links">
-    <li class="nav-link active" >Extract</li>
-    <li class="nav-link" ><a href="#" onclick={handleIngestBtn}>Ingest</a></li>
+    {#each modes as modeName}
+		 <!-- <li class="nav-link class:active={() => mode === 'extract'} onclick={() => setMode('extract')}>Extract</li> -->
+      <li class="nav-link {mode === modeName && 'active'}" onclick={()=>setMode(modeName)}>{modeName}</li>
+     
+    {/each}
+    
   </ul>
   <Button title="Help" id="help-btn" onclick="openHelp" name="?" />
 </nav>

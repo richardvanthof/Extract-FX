@@ -5,8 +5,10 @@
     import Ingest from '../pages/Ingest.svelte';
     import Loader from '../components/Loader.svelte';
 
-    const isLoading = false;
-    const currentPage = 'extract';
+    const loader = $state({isLoading: false, status: null});
+    let mode = $state('extract');
+
+    const setMode = (name) => mode = name;
 </script>
 
 <style>
@@ -16,17 +18,17 @@
     }
 </style>
 
-<NavBar goto="test"/>
+<NavBar {mode} {setMode}/>
 <main> 
-    {#if  true}
+    {#if mode === 'extract'}
         <Extract/>
     {:else}
         <Ingest/>
     {/if}
 
-    {#if isLoading}
+    {#if loader.isLoading}
         <Loader/>
     {/if}
 </main>
 
-<Footer {currentPage} />
+<Footer />

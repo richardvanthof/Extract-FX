@@ -1,6 +1,5 @@
 <script>
     import Button from "./Button.svelte";
-    import { currentPage } from "../main/shared";
     export let action;
     const actions = (mode) => {
         const methods = {
