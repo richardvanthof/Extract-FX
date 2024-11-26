@@ -3480,6 +3480,11 @@ vite-cep-plugin@^1.1.12:
     magic-string "^0.25.7"
     prettify-xml "^1.2.0"
 
+vite-plugin-version-mark@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/vite-plugin-version-mark/-/vite-plugin-version-mark-0.1.2.tgz#85b2315cffce7ac2d83b6afceb313d0d1c47c4d4"
+  integrity sha512-+mPRTwx6SOEfEq3/y1u+O0ju5Lz0Ac27Fx6hE5Xn1fMpIQfo3aERPB2/xxYI8lIa8GPHCX5c8ApqBKWwFNHxwA==
+
 vite@^4.5.2:
   version "4.5.5"
   resolved "https://registry.yarnpkg.com/vite/-/vite-4.5.5.tgz#639b9feca5c0a3bfe3c60cb630ef28bf219d742e"
