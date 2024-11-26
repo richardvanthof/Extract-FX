@@ -20,14 +20,10 @@ select {
 <script>
     import DropDown from "./DropDown.svelte";
     import Button from "../Button.svelte";
-
+    import {handleClick} from '../../lib/helpers';
     const {exclusion, remove} = $props();
     const {effect, id} = exclusion;
 
-    const handleClick = (e, callback) => {
-        e.preventDefault()
-        return callback;
-    }
 </script>
 
 <div class='exclusion'>

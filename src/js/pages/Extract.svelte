@@ -9,14 +9,10 @@
 
     const setDestination = (type) => destination = type;
 
-    
-
 </script>
 
 <style>
-    .group {
-        margin-bottom: 1.33em;
-    }
+    
 </style>
 
 <form class="grid-container">
