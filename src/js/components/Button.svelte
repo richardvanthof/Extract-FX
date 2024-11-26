@@ -16,4 +16,4 @@
     }
 </style>
 
-<button {title} {onclick}>{name}</button>
+<button {title} name={title} {onclick}>{name}</button>

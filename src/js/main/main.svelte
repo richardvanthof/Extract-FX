@@ -1,13 +1,14 @@
 <script>
     import NavBar from '../components/NavBar.svelte';
     import Extract from '../pages/Extract.svelte';
-    import Footer from '../components/Footer.svelte';
+    
     import Ingest from '../pages/Ingest.svelte';
     import Loader from '../components/Loader.svelte';
+    import Footer from '../components/Footer.svelte';
 
     const loader = $state({isLoading: false, status: null});
     let mode = $state('extract');
-
+    
     const setMode = (name) => mode = name;
 </script>
 
@@ -31,4 +32,4 @@
     {/if}
 </main>
 
-<Footer />
+<Footer {mode} {loader}/>

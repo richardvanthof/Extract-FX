@@ -1,30 +1,31 @@
 <script>
     import Button from "./Button.svelte";
-    export let action;
-    const actions = (mode) => {
-        const methods = {
-            extract: {
-                name: 'Extract',
-                description: 'Back up video effects.',
-                method: () => console.log('extract...')
-            },
-            ingest: {
-                name: 'Ingest',
-                description: 'Restore video effects to timeline.',
-                method: () => console.log('restoring...')
-            },
-            cancel: {
-                name: 'Cancel',
-                description: 'Stop operation.',
-                method: () => console.log('Cancelling...')
-            }
+    import {handleClick} from '../lib/helpers';
+    import config from '../../../cep.config';
+    
+    const actions = {
+        extract: {
+            name: 'Extract',
+            description: 'Back up video effects.',
+            method: () => console.log('extract...')
+        },
+        ingest: {
+            name: 'Ingest',
+            description: 'Restore video effects to timeline.',
+            method: () => console.log('restoring...')
+        },
+        cancel: {
+            name: 'Cancel',
+            description: 'Stop operation.',
+            method: () => console.log('Cancelling...')
         }
-        if(mode === 'extract') () => actions.extract;
-        else if(mode === 'ingest') () => actions.ingest;
-        else () => actions.cancel;
     }
-
-    const {name, description, method} = () => actions(currentPage);
+        
+    const {mode, loader} = $props();
+    const {isLoading} = $derived(loader)
+    const {name, description, method} = $derived(actions[isLoading ? 'cancel' : mode]);
+    
+    
 
 </script>
 
@@ -44,13 +45,21 @@
     .caption {
         color: var(--text-color-dark)
     }
+    
+    .info {
+        opacity: 0.4;
+        @media only screen and (max-width: 400px) {
+            display: none
+        }
+    }
+    
 </style>
 
 <footer>
     <div>
-        <Button {name} title={description} onclick={method} />
+        <Button name={isLoading ? 'Cancel' : name} aria-label={description} onclick={(e) => handleClick(e, method())} />
     </div>
     <div>
-        <p class='caption'>&#169; Richard Space 2024 - version 0.0.0</p>
+        <p class='info caption'>&#169; {config.zxp.org} {new Date().getFullYear()} - version: {__EXTRACT_FX_VERSION__}</p>
     </div>
 </footer>
