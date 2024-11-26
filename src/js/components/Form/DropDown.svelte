@@ -16,7 +16,8 @@
 </style>
 
 <script>
-    const options = [['option 1', 1], ['option 2' , 2]]
+    const {options} = $props();
+    console.log(options)
 </script>
 
 <select id="sourceTrack"> <!--TODO: make dynamic-->
