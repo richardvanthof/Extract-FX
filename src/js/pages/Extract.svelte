@@ -31,7 +31,7 @@
             <label for="destination">Destination</label>
             <Switch 
                 selected={$destination} 
-                callback={setDestination}  // Pass the setDestination function to Switch
+                callback={setDestination} 
                 options={['file', 'track']} 
                 id="destination"
             />
