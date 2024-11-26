@@ -62,7 +62,7 @@ button, summary {
 <script>
     import Exclusion from "./Exclusion.svelte";
     import { v4 as uuidv4 } from 'uuid';
-
+    import {handleClick} from '../../lib/helpers';
     let {exclusions} = $props();
 
     let setExclusions = {
@@ -90,11 +90,6 @@ button, summary {
     }
 
     const {add, update, remove, removeAll} = setExclusions;
-
-    const handleClick = (e, callback) => {
-        e.preventDefault()
-        return callback;
-    }
 
 </script>
 
