@@ -1,6 +1,7 @@
 <script>
-    const {destination, setDestination} = $props();
-    const destinations = ['file', 'track'];
+    export let selected;
+    export let callback;  // This will be the setDestination function passed from the parent
+    export let options;
 </script>
 
 <style lang="scss">
@@ -43,7 +44,11 @@
 </style>
 
 <ul class="switch-input">
-    {#each destinations as destinationName}
-    <li onclick={() => setDestination(destinationName)} class="switch-option {destination === destinationName && 'active'}">{destinationName}</li>
+    {#each options as option}
+        <li 
+            onclick={() => callback(option)} 
+            class="switch-option {selected === option ? 'active' : ''}">
+            {option}
+        </li>
     {/each}
 </ul>
