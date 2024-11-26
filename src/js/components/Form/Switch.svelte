@@ -1,4 +1,6 @@
 <script>
+    const {destination, setDestination} = $props();
+    const destinations = ['file', 'track'];
 </script>
 
 <style lang="scss">
@@ -41,6 +43,7 @@
 </style>
 
 <ul class="switch-input">
-    <li data-destination="file" class="switch-option active">File</li>
-    <li data-destination="track" class="switch-option">Track</li>
+    {#each destinations as destinationName}
+    <li onclick={() => setDestination(destinationName)} class="switch-option {destination === destinationName && 'active'}">{destinationName}</li>
+    {/each}
 </ul>

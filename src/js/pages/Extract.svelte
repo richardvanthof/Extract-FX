@@ -2,7 +2,15 @@
     import DropDown from "../components/Form/DropDown.svelte";
     import Switch from "../components/Form/Switch.svelte";
     import ExcludeModal from "../components/Form/ExcludeModal.svelte";
-    const name = 'Anna';
+    
+
+    let destination = $state('file');
+    let exclusions = $state([]);
+
+    const setDestination = (type) => destination = type;
+
+    
+
 </script>
 
 <style>
@@ -19,11 +27,11 @@
         </div>
         <div class="group">
             <label for="destination">Destination</label>
-            <Switch id="destination"/>
+            <Switch {destination} {setDestination} id="destination"/>
         </div>
         
     </div>
     <div class="grid-column">
-        <ExcludeModal/>
+        <ExcludeModal {exclusions}/>
     </div>
 </form>

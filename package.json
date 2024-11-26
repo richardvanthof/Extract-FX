@@ -13,7 +13,8 @@
     "delsymlink": "cross-env ACTION=delsymlink vite"
   },
   "dependencies": {
-    "cep-interface": "^0.6.0"
+    "cep-interface": "^0.6.0",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.19.0",

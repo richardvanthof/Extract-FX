@@ -2,16 +2,18 @@
     import DropDown from '../components/Form/DropDown.svelte'
     import SelectFile from '../components/Form/SelectFile.svelte'; 
     import ExcludeModal from '../components/Form/ExcludeModal.svelte';
+
+    let exclusions = $state([]);
 </script>
 
 <form class="grid-container">
     <div class="grid-column">
-        <label for="source-file" class="caption">Source file </label>
+        <label for="source-file" >Source file </label>
         <SelectFile id="source-file"/>
-        <label for="target-track" class="caption">Target track </label>
+        <label for="target-track" >Target track </label>
         <DropDown id="target-track"/>
     </div>
     <div class="grid-column">
-        <ExcludeModal/>
+        <ExcludeModal {exclusions}/>
     </div>
 </form>

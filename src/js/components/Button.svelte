@@ -1,7 +1,5 @@
 <script>
-    export let name;
-    export let title;
-    export let onclick;
+    const {name, title, onclick} = $props();
 </script>
 
 <style lang="scss">

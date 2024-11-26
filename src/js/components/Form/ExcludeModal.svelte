@@ -56,7 +56,42 @@
 </style>
 
 <script>
-import Exclusion from "./Exclusion.svelte";
+    import Exclusion from "./Exclusion.svelte";
+    import { v4 as uuidv4 } from 'uuid';
+    
+    let {exclusions} = $props();
+
+    let setExclusions = {
+        add: (effect) => exclusions.push({
+            effect: effect || null,
+            id: uuidv4()
+        }),
+        update: (newEffect, targetId) => {
+            const index = exclusions.findIndex(({id}) => id === targetId)
+            if(index) {
+                exclusions[index] = {
+                    id: targetId,
+                    effect: newEffect
+                }
+            } else {
+                throw 'Update failed. Exclusion not found.'
+            }
+        },
+        remove: (targetId) => {
+            exclusions = exclusions.filter(({id}) => id != targetId)
+        },
+        removeAll: () => {
+            exclusions = [];
+        }
+    }
+
+    const {add, update, remove, removeAll} = setExclusions;
+
+    const handleClick = (e, callback) => {
+        e.preventDefault()
+        return callback;
+    }
+
 </script>
 
 
@@ -64,13 +99,13 @@ import Exclusion from "./Exclusion.svelte";
     <summary class="exclusion-header" id='exclusion-header'>Exclude effects</summary>
     <div class="exclusions">
         <div class='exclusions-controls'>
-                <button class='exclusion-toolbar-button exclusion-control' id='add-exclusion-btn'>+ Add Exclusion</button>
-                <button class='exclusion-control' id='remove-all-exclusions-btn'>Clear all</button>
+                <button class='exclusion-toolbar-button exclusion-control' id='add-exclusion-btn' onclick={(e) => handleClick(e, add())}>+ Add Exclusion</button>
+                <button class='exclusion-control' id='remove-all-exclusions-btn' onclick={(e) => handleClick(e, removeAll())}>Clear all</button>
             </div>
         <div class="exclusions-container">
-            <Exclusion/>
-            <Exclusion/>
-            <Exclusion/>
+            {#each exclusions as exclusion}
+            <Exclusion {exclusion} {remove}/>
+            {/each}
         </div>
     </div>
 </details>
