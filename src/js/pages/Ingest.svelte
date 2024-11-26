@@ -8,10 +8,14 @@
 
 <form class="grid-container">
     <div class="grid-column">
-        <label for="source-file" >Source file </label>
-        <SelectFile id="source-file"/>
-        <label for="target-track" >Target track </label>
-        <DropDown id="target-track"/>
+        <div class="group">
+            <label for="source-file" >Source file </label>
+            <SelectFile id="source-file"/>
+        </div>
+        <div class="group">
+            <label for="target-track" >Target track </label>
+            <DropDown id="target-track"/>
+        </div>
     </div>
     <div class="grid-column">
         <ExcludeModal {exclusions}/>

@@ -7,6 +7,7 @@
         padding: var(--inputs-padding);
         display: block;
         width: 100%;
+        cursor: pointer;
     }
 
     option {

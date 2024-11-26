@@ -5,16 +5,16 @@
 	border-radius: var(--border-radius-inner);
 	position: relative;
 	margin-top: 1em;
+    overflow: hidden;
 }
 
-
-
 .exclusions-controls {
-  background: #272626;
+  background: var(--bg-light);
   display: flex;
   justify-content: space-between;
   padding: 0.1em;
   min-width: .5em 2em;
+  box-shadow: 0px .5px 5px 2px rgba(0,0,0,0.05);
 }
 
 .exclusions-container {
@@ -53,12 +53,16 @@
         background: var(--bg-btn-active)
     }
 }
+
+button, summary {
+    cursor: pointer
+}
 </style>
 
 <script>
     import Exclusion from "./Exclusion.svelte";
     import { v4 as uuidv4 } from 'uuid';
-    
+
     let {exclusions} = $props();
 
     let setExclusions = {
@@ -96,7 +100,7 @@
 
 
 <details open>
-    <summary class="exclusion-header" id='exclusion-header'>Exclude effects</summary>
+    <summary class="exclusion-header" id='exclusion-header'>Exclude effects { (exclusions.length > 0) ? `(${exclusions.length})` : ''}</summary>
     <div class="exclusions">
         <div class='exclusions-controls'>
                 <button class='exclusion-toolbar-button exclusion-control' id='add-exclusion-btn' onclick={(e) => handleClick(e, add())}>+ Add Exclusion</button>

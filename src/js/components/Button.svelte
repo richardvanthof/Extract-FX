@@ -9,7 +9,7 @@
         background: var(--bg-dark);
         padding: var(--inputs-padding);
         min-width: 4ch;
-
+        cursor: pointer;
         &:active {
             background: var(--bg-btn-active)
         }

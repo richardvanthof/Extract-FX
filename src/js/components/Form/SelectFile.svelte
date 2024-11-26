@@ -8,6 +8,7 @@
         display: block;
         width: 100%;
         margin-bottom: 1em;
+        cursor: pointer;
     }
 </style>
 
