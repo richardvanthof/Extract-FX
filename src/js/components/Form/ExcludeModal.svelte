@@ -1,100 +1,48 @@
-<style lang="scss">
-
-.wrapper {
-    margin-bottom: 1em;
-}
-
-.exclusions {
-	background: var(--bg-dark);
-	border: var(--border-styling);
-	border-radius: var(--border-radius-inner);
-	position: relative;
-	margin-top: 1em;
-    overflow: hidden;
-}
-
-.exclusions-controls {
-  background: var(--bg-light);
-  display: flex;
-  justify-content: space-between;
-  padding: 0.1em;
-  min-width: .5em 2em;
-  box-shadow: 0px .5px 5px 2px rgba(0,0,0,0.05);
-}
-
-.exclusions-container {
-	min-height: 8rem;
-    margin: .4em;
-	/* padding-bottom: 2em; */
-}
-
-.exclusions-placeholder {
-	margin: 0;
-	transform: translateY(2.5em);
-	text-align: center;
-}
-
-.exclusions {
-    border-radius: var(--border-radius-outer)
-}
-
-#remove-all-exclusions-btn {
-	background: none;
-	border:none;
-	font-size: 0.85em;
-	margin: 0 0.5em;
-    &:active {
-        background: var(--bg-btn-active)
-    }
-}
-
-.exclusion-toolbar-button {
-    padding: .66em 1.5em .66em 1em;
-    border: none;
-    border-right: var(--border-styling);
-    background: none;
-    border-radius: 0;
-    &:active {
-        background: var(--bg-btn-active)
-    }
-}
-
-button, summary {
-    cursor: pointer
-}
-</style>
-
-<script>
-    import Exclusion from "./Exclusion.svelte";
+<script lang="ts">
+    import { Writable } from 'svelte/store';
     import { v4 as uuidv4 } from 'uuid';
     import { handleClick } from '../../lib/helpers';
-    let { exclusions, open } = $props();
-    
+    import Exclusion from "./Exclusion.svelte";
+
+    // Define the types for Exclusion and Props
+    type ExclusionType = {
+        id: string;
+        effect: string | null;
+    };
+
+    type Props = {
+        exclusions: Writable<ExclusionType[]>;  // Writable store containing an array of Exclusions
+        options: Writable<string[]> | string[];  // Replace `any[]` with a more specific type if needed
+        open: Writable<boolean>;  // Boolean for controlling the open state of the details element
+    };
+
+    // Destructure props with types
+    let { exclusions, options, open }: Props = $props();
+
+    // Derive exclusions (excl) as an array of Exclusion objects
     const excl = $derived($exclusions);
 
     // Add a new exclusion item
     const add = () => {
-        exclusions.update(
-            (current) => [
-                ...current,
-                {
-                    effect: null,  // You might want to set this dynamically
-                    id: uuidv4()
-                }
-            ]
-        );
+        exclusions.update((current: ExclusionType[]) => [
+            ...current,
+            {
+                effect: null, // You might want to set this dynamically
+                id: uuidv4()
+            }
+        ]);
     };
 
     // Update an exclusion item
-    const update = (newEffect, id) => {
-        exclusions.update( (currentItems) => {
-            return currentItems.map(item => item.id === id ? {...item, effect: newEffect} : item)
-        })
-    }
+    const update = (newEffect: string | null, id: string) => {
+        exclusions.update((currentItems: ExclusionType[]) => {
+            return currentItems.map(item => item.id === id ? { ...item, effect: newEffect } : item);
+        });
+    };
 
-    const remove = (id) => {
-        console.log(`remove ${id}`);
-        exclusions.update((currentItems) => {
+    // Remove an exclusion by ID
+    const remove = (id: string) => {
+        exclusions.update((currentItems: ExclusionType[]) => {
             return currentItems.filter(({ id: exclusionId }) => exclusionId !== id);
         });
     };
@@ -103,33 +51,102 @@ button, summary {
     const removeAll = () => exclusions.set([]);
 </script>
 
+<style lang="scss">
+    .wrapper {
+        margin-bottom: 1em;
+    }
+
+    .exclusions {
+        background: var(--bg-dark);
+        border: var(--border-styling);
+        border-radius: var(--border-radius-inner);
+        position: relative;
+        margin-top: 1em;
+        overflow: hidden;
+    }
+
+    .exclusions-controls {
+        background: var(--bg-light);
+        display: flex;
+        justify-content: space-between;
+        padding: 0.1em;
+        min-width: .5em 2em;
+        box-shadow: 0px .5px 5px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .exclusions-container {
+        min-height: 8rem;
+        margin: .4em;
+    }
+
+    .exclusions-placeholder {
+        margin: 0;
+        transform: translateY(2.5em);
+        text-align: center;
+    }
+
+    .exclusions {
+        border-radius: var(--border-radius-outer);
+    }
+
+    #remove-all-exclusions-btn {
+        background: none;
+        border: none;
+        font-size: 0.85em;
+        margin: 0 0.5em;
+        &:active {
+            background: var(--bg-btn-active);
+        }
+    }
+
+    .exclusion-toolbar-button {
+        padding: .66em 1.5em .66em 1em;
+        border: none;
+        border-right: var(--border-styling);
+        background: none;
+        border-radius: 0;
+        &:active {
+            background: var(--bg-btn-active);
+        }
+    }
+
+    button,
+    summary {
+        cursor: pointer;
+    }
+</style>
+
 <details class="wrapper" bind:open={$open}>
-    <summary class="exclusion-header" id='exclusion-header'>
-        Exclude effects { ($exclusions.length > 0) ? `(${$exclusions.length})` : '' }
+    <summary class="exclusion-header" id="exclusion-header">
+        Exclude effects {($exclusions.length > 0) ? `(${$exclusions.length})` : ''}
     </summary>
     <div class="exclusions">
-        <div class='exclusions-controls'>
-            <button 
-                class='exclusion-toolbar-button exclusion-control' 
-                id='add-exclusion-btn' 
-                onclick={(e) => handleClick(e, add())}>+ Add Exclusion
+        <div class="exclusions-controls">
+            <button
+                class="exclusion-toolbar-button exclusion-control"
+                id="add-exclusion-btn"
+                onclick={(e) => handleClick(e, add())}
+            >
+                + Add Exclusion
             </button>
-            <button 
-                class='exclusion-control' 
-                id='remove-all-exclusions-btn' 
-                onclick={(e) => handleClick(e, removeAll())}>Clear all</button>
+            <button
+                class="exclusion-control"
+                id="remove-all-exclusions-btn"
+                onclick={(e) => handleClick(e, removeAll())}
+            >
+                Clear all
+            </button>
         </div>
         <div class="exclusions-container">
             {#if $exclusions.length > 0}
-                {#each excl as {id}}
-                <Exclusion {id} {exclusions} {remove}/>
+                {#each excl as { id }}
+                    <Exclusion {id} {exclusions} {remove} />
                 {/each}
             {:else}
                 <div class="exclusions-placeholder">
-                    <p class='caption'>Press the +-button to add an exclusion.</p>
+                    <p class="caption">Press the +-button to add an exclusion.</p>
                 </div>
             {/if}
-            
         </div>
     </div>
 </details>

@@ -19,6 +19,10 @@
       "@esTypes/*": ["./src/jsx"]
     }
   },
-  "include": ["./src"],
-  "exclude": ["./src/jsx"]
+  "include": [
+    "./src",
+    "./src/",
+    "./src/**/*.d.ts"
+  ],
+  "exclude": ["./src/jsx", "./legacy"]
 }

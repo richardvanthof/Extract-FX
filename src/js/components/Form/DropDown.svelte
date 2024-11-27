@@ -15,17 +15,28 @@
     }
 </style>
 
-<script>
-    let { options, store, value, onchange } = $props();
+<script lang="ts">
+    
+    import type { Writable as Writable} from "svelte/store"
+    type Option = [string|number, string|number];
+    type Props = {
+        options: Option[],
+        store?: Writable<string|number>,
+        value: string|number,
+        onchange?: (updatedValue: string|null) => void,
+    }
+    let { options, store, value, onchange }:Props = $props();
 
     // Handle update when the value changes
-    let handleUpdate = (event) => {
-        const updatedValue = event.target.value;
-        console.log('DROPDOWN - using custom handler');
-        onchange(updatedValue);
+    let handleUpdate = (event:Event) => {
+        if(event.target && onchange) {
+            const target = event.target as HTMLSelectElement;
+            const updatedValue = target.value;
+            onchange(updatedValue);
+        }
+        
     };
 
-    const isSelected = (currentValue) => (value === currentValue);
 </script>
 
 <!-- Corrected binding for the value -->

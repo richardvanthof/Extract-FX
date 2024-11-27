@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
     export let selected;
     export let callback;  // This will be the setDestination function passed from the parent
     export let options;
@@ -46,9 +46,12 @@
 <ul class="switch-input">
     {#each options as option}
         <li 
-            onclick={() => callback(option)} 
+            
             class="switch-option {selected === option ? 'active' : ''}">
-            {option}
+            <button onclick={() => callback(option)} >
+                {option}
+            </button>
+            
         </li>
     {/each}
 </ul>

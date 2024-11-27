@@ -1,3 +1,5 @@
+// @ts-nocheck
+// This is just legacy code, no need to typecheck :)
 const sourceFileInput = document.querySelector('#source-file');
 
 const getUniqueKeysFromObjectList = (objects: Object[]):string[] => {

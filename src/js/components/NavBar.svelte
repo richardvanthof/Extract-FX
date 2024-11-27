@@ -1,7 +1,12 @@
-<script>
+<script lang='ts'>
     import Button from './Button.svelte';
 
     let {setMode, mode} = $props()
+
+    const openHelp = ():void => {
+      console.log('there is no help muhahahahaha')
+      //TODO
+    }
 
     const modes = ['extract', 'ingest']
 </script>
@@ -52,9 +57,9 @@
     {#each modes as modeName}
 		 <!-- <li class="nav-link class:active={() => mode === 'extract'} onclick={() => setMode('extract')}>Extract</li> -->
       <li class="nav-link {mode === modeName && 'active'}" onclick={()=>setMode(modeName)}>{modeName}</li>
-     
+
     {/each}
     
   </ul>
-  <Button title="Help" id="help-btn" onclick="openHelp" name="?" />
+  <Button title="Help" onclick={openHelp} name="?" />
 </nav>

@@ -7,6 +7,7 @@ import path from "path";
 import { extendscriptConfig } from "./vite.es.config";
 import { sveltePreprocess } from "svelte-preprocess";
 import {vitePluginVersionMark} from 'vite-plugin-version-mark'
+import dts from 'vite-plugin-dts';
 
 const extensions = [".js", ".ts", ".tsx"];
 
@@ -65,9 +66,13 @@ export default defineConfig({
       ifLog: false,
       ifGlobal: true
     }),
+    dts({
+      include: ['src/js/global-vars/global.d.ts']
+    }),
     svelte({ 
       preprocess: sveltePreprocess({
-        sourceMap: !config.isProduction
+        sourceMap: !config.isProduction,
+        typescript: true
       }) 
     }),
     cep(config),
@@ -83,7 +88,9 @@ export default defineConfig({
   preview: {
     port: cepConfig.servePort,
   },
-
+  define: {
+    __EXTRACT_FX_VERSION__: JSON.stringify(process.env.npm_package_version)  // Or whatever value you want to inject
+  },
   build: {
     sourcemap: isPackage ? cepConfig.zxp.sourceMap : cepConfig.build?.sourceMap,
     watch: {
@@ -99,6 +106,7 @@ export default defineConfig({
       },
     },
     target: "chrome74",
+    
     outDir,
   },
 });

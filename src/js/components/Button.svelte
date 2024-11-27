@@ -1,5 +1,12 @@
-<script>
-    const {name, title, onclick} = $props();
+<script lang='ts'>
+    type Props = {
+        name: string,
+        title?: string,
+        onclick: (event: Event | null | undefined) => any,
+        ariaLabel?: string
+    }
+    
+    const {name, title, onclick, ariaLabel}:Props = $props();
 </script>
 
 <style lang="scss">
@@ -16,4 +23,4 @@
     }
 </style>
 
-<button {title} name={title} {onclick}>{name}</button>
+<button {title} aria-label={ariaLabel} name={title} {onclick}>{name}</button>

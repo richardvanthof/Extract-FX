@@ -11,7 +11,7 @@
         clips: object[];
     };
 
-    let files:File[]|null|undefined = $state();
+    let files:FileList | null | undefined = $state();
 
     // Initialize state for file content
     let fileContent: SourceData | null = null;
@@ -52,7 +52,7 @@
                     // If JSON parsing fails, show an error message
                     fileContent = null;
                     sourceData.set(null)
-                    files = [];
+                    files = null;
                     alert(err.message);
                 }
             };
@@ -64,6 +64,8 @@
             fileContent = null;
         }
     };
+
+    
 </script>
 
 <style>
@@ -79,14 +81,7 @@
         cursor: pointer;
     }
 
-    pre {
-        background: #f4f4f4;
-        padding: 1em;
-        border-radius: 4px;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-    }
 </style>
 
 <!-- File input field that accepts only .json files -->
-<input bind:files onchange={handleFile} accept="application/json" type="file">
+<input bind:files={files} onchange={handleFile} accept="application/json" type="file">
