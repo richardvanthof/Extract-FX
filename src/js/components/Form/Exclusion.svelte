@@ -4,17 +4,6 @@
 	display: flex;
 	border-right: none;
 }
-
-.remove-btn {
-	padding: 0 1em;
-    flex-grow: 0;
-    width: 1em;
-}
-
-select {
-    flex-grow: 1;
-    margin-bottom: 0;
-}
 </style>
 
 <script>
