@@ -5,18 +5,10 @@
     import {targetTrack, sourceFile, exclusions, exclusionOptions} from '../global-vars/ingest';
     import {trackTotal} from '../global-vars/shared';
     import {generateNumberedOptions} from '../lib/helpers';
+    import {debugMode} from '../../../secrets';
 
-    let options = [];
     // Manually subscribe to the store
-    const unsubscribe = trackTotal.subscribe(value => {
-        options = generateNumberedOptions(value, 'VIDEO');  // Update options when num changes
-    });
-
-    // Clean up the subscription when the component is destroyed
-    import { onDestroy } from 'svelte';
-    onDestroy(() => {
-        unsubscribe();
-    });
+    const trackOptions = generateNumberedOptions($trackTotal, 'VIDEO');
 
 </script>
 
@@ -28,10 +20,24 @@
         </div>
         <div class="group">
             <label for="target-track" >Target track </label>
-            <DropDown {options} value={targetTrack} id="target-track"/>
+            <DropDown options={trackOptions} selected={targetTrack} value={$targetTrack} id="target-track" />
         </div>
     </div>
     <div class="grid-column">
         <ExcludeModal {exclusions}/>
     </div>
 </form>
+
+{#if debugMode}
+<details>
+    <summary>Debug</summary>
+    <h3>Current data</h3>
+<ul>
+    <li>Target track: {$targetTrack}</li>
+    <li>sourceFile: {$sourceFile}</li>
+    <li>Exclusions: {$exclusions}</li>
+    <li>Exclusion options: {$exclusionOptions}</li>
+</ul>
+</details>
+
+{/if}

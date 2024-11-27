@@ -5,27 +5,20 @@
     import { sourceTrack, destination, exclusions, exclusionOptions } from '../global-vars/extract';
     import { trackTotal } from '../global-vars/shared';
     import { generateNumberedOptions } from '../lib/helpers';
+    import {debugMode} from '../../../secrets';
 
-    const setDestination = (type) => destination.set(type); // Updates the destination store
-    let options = [];
+    const setDestination = (type) => $destination = type; // Updates the destination store
+    const setSourceTrack = (track) => $sourceTrack = track;
+    const trackOptions = generateNumberedOptions($trackTotal, 'VIDEO');
 
-    // Manually subscribe to the store
-    const unsubscribe = trackTotal.subscribe(value => {
-        options = generateNumberedOptions(value, 'VIDEO');  // Update options when trackTotal changes
-    });
-
-    // Clean up the subscription when the component is destroyed
-    import { onDestroy } from 'svelte';
-    onDestroy(() => {
-        unsubscribe();
-    });
+    console.log(globalThis.$);
 </script>
 
 <form class="grid-container">
     <div class="grid-column">
         <div class="group">
             <label for="source-track">Source track</label>
-            <DropDown {options} value={sourceTrack} id="source-track" />
+            <DropDown options={trackOptions} selected={sourceTrack} value={sourceTrack} id="source-track" />
         </div>
         <div class="group">
             <label for="destination">Destination</label>
@@ -41,3 +34,17 @@
         <ExcludeModal {exclusions}/>
     </div>
 </form>
+
+{#if debugMode}
+<details>
+    <summary>Debug</summary>
+    <h3>Current data</h3>
+    <ul>
+        <li>Source track: {$sourceTrack}</li>
+        <li>Destination: {$destination}</li>
+        <li>Exclusions: {$exclusions}</li>
+        <li>Exclusion options: {$exclusionOptions}</li>
+    </ul>
+</details>
+
+{/if}

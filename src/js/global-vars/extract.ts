@@ -7,5 +7,4 @@ const destination:Writable<'file' | 'track'> = writable('file');
 const exclusions:Writable<string[]> = writable([]);
 const exclusionOptions:Writable<string[]> = writable(defaultEffects)
 
-
-export {sourceTrack, trackTotal, destination, exclusions, exclusionOptions};
+export {sourceTrack, destination, exclusions, exclusionOptions};

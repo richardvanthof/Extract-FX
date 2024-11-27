@@ -16,11 +16,11 @@
 </style>
 
 <script>
-    const {options} = $props();
+    let {options, selected} = $props();
     console.log(options)
 </script>
 
-<select id="sourceTrack"> <!--TODO: make dynamic-->
+<select bind:value={$selected} id="sourceTrack"> <!--TODO: make dynamic-->
 {#each options as [label, value]}
 <option value={value}>{label}</option>
 {/each}

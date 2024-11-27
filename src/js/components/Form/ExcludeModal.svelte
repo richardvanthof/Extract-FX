@@ -1,4 +1,9 @@
 <style lang="scss">
+
+.wrapper {
+    margin-bottom: 1em;
+}
+
 .exclusions {
 	background: var(--bg-dark);
 	border: var(--border-styling);
@@ -94,7 +99,7 @@ button, summary {
 </script>
 
 
-<details open>
+<details class="wrapper" open>
     <summary class="exclusion-header" id='exclusion-header'>Exclude effects { (exclusions.length > 0) ? `(${exclusions.length})` : ''}</summary>
     <div class="exclusions">
         <div class='exclusions-controls'>
