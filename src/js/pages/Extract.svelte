@@ -9,9 +9,8 @@
     import {debugMode} from '../../../secrets';
 
     const setDestination = (type) => $destination = type; // Updates the destination store
-    const setSourceTrack = (track) => $sourceTrack = track;
     const trackOptions = generateNumberedOptions($trackTotal, 'VIDEO');
-
+    const currentSource = $derived($sourceTrack);
 
     setContext('exclusionOptions', $exclusionOptions);
 </script>
@@ -20,7 +19,7 @@
     <div class="grid-column">
         <div class="group">
             <label for="source-track">Source track</label>
-            <DropDown options={trackOptions} selected={sourceTrack} value={sourceTrack} id="source-track" />
+            <DropDown options={trackOptions} value={currentSource} store={sourceTrack}  />
         </div>
         <div class="group">
             <label for="destination">Destination</label>
@@ -38,9 +37,9 @@
 </form>
 
 {#if debugMode}
-<details>
+<details open>
     <summary>Debug</summary>
-    <h3>Current data</h3>
+    <h3>Extract: global vars.</h3>
     <ul>
         <li>Source track: {$sourceTrack}</li>
         <li>Destination: {$destination}</li>

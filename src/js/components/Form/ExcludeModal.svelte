@@ -68,7 +68,7 @@ button, summary {
     import Exclusion from "./Exclusion.svelte";
     import { v4 as uuidv4 } from 'uuid';
     import {handleClick} from '../../lib/helpers';
-    let {exclusions, options, open} = $props();
+    let {exclusions, open} = $props();
 
     const excl = $derived($exclusions);
 
@@ -101,15 +101,15 @@ button, summary {
 
 
 <details class="wrapper" bind:open={$open}>
-    <summary class="exclusion-header" id='exclusion-header'>Exclude effects { (exclusions.length > 0) ? `(${exclusions.length})` : ''}</summary>
+    <summary class="exclusion-header" id='exclusion-header'>Exclude effects { ($exclusions.length > 0) ? `(${$exclusions.length})` : ''}</summary>
     <div class="exclusions">
         <div class='exclusions-controls'>
                 <button class='exclusion-toolbar-button exclusion-control' id='add-exclusion-btn' onclick={(e) => handleClick(e, add())}>+ Add Exclusion</button>
                 <button class='exclusion-control' id='remove-all-exclusions-btn' onclick={(e) => handleClick(e, removeAll())}>Clear all</button>
             </div>
         <div class="exclusions-container">
-            {#each excl as exclusion}
-            <Exclusion callback={update} {exclusion} {remove}/>
+            {#each excl as {id}}
+            <Exclusion {id} {exclusions} {remove}/>
             {/each}
         </div>
     </div>

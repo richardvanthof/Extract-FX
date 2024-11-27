@@ -9,7 +9,8 @@
     import { setContext } from 'svelte';
     // Manually subscribe to the store
     const trackOptions = generateNumberedOptions($trackTotal, 'VIDEO');
-
+    const targetTrackVal = $derived($targetTrack);
+    // const currentTarget = $derived();
     setContext('exclusionOptions', $exclusionOptions);
 </script>
 
@@ -21,7 +22,7 @@
         </div>
         <div class="group">
             <label for="target-track" >Target track </label>
-            <DropDown options={trackOptions} selected={targetTrack} value={$targetTrack} id="target-track" />
+            <DropDown options={trackOptions} value={targetTrack} store={targetTrack} id="target-track" />
         </div>
     </div>
     <div class="grid-column">
@@ -30,9 +31,9 @@
 </form>
 
 {#if debugMode}
-<details>
+<details open>
     <summary>Debug</summary>
-    <h3>Current data</h3>
+    <h3>Ingest: global vars</h3>
 <ul>
     <li>Target track: {$targetTrack}</li>
     <li>sourceFile: {$sourceFile}</li>

@@ -16,12 +16,32 @@
 </style>
 
 <script>
-    let {options, selected} = $props();
-    console.log(options)
+    let { options, store, value, onchange } = $props();
+
+    // Handle update when the value changes
+    let handleUpdate = (event) => {
+        const updatedValue = event.target.value;
+        console.log('DROPDOWN - using custom handler');
+        onchange(updatedValue);
+    };
+
+    const isSelected = (currentValue) => (value === currentValue);
 </script>
 
-<select bind:value={$selected} id="sourceTrack"> <!--TODO: make dynamic-->
-{#each options as [label, value]}
-<option value={value}>{label}</option>
-{/each}
-</select>
+<!-- Corrected binding for the value -->
+
+
+{#if onchange}
+    <select  {value} onchange={handleUpdate} id="sourceTrack">
+        {#each options as [label, val]}
+            <option value={val}>{label}</option>
+        {/each}
+    </select>
+
+{:else}
+    <select bind:value={$store} id="sourceTrack">
+        {#each options as [label, val]}
+            <option value={val}>{label}</option>
+        {/each}
+    </select>
+{/if}
