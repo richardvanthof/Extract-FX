@@ -68,38 +68,39 @@ button, summary {
     import Exclusion from "./Exclusion.svelte";
     import { v4 as uuidv4 } from 'uuid';
     import {handleClick} from '../../lib/helpers';
-    let {exclusions} = $props();
+    let {exclusions, options, open} = $props();
 
-    let setExclusions = {
-        add: (effect) => exclusions.push({
-            effect: effect || null,
-            id: uuidv4()
-        }),
-        update: (newEffect, targetId) => {
-            const index = exclusions.findIndex(({id}) => id === targetId)
-            if(index) {
-                exclusions[index] = {
-                    id: targetId,
-                    effect: newEffect
-                }
-            } else {
-                throw 'Update failed. Exclusion not found.'
+    const excl = $derived($exclusions);
+
+    const add = () => {
+        exclusions.update( (exclusions) => [
+            ...exclusions,
+            {
+                effect: effect || null,
+                id: uuidv4()
             }
-        },
-        remove: (targetId) => {
-            exclusions = exclusions.filter(({id}) => id != targetId)
-        },
-        removeAll: () => {
-            exclusions = [];
-        }
+        ])
     }
 
-    const {add, update, remove, removeAll} = setExclusions;
+    const update = (newEffect, id) => {
+        exclusions.update( (currentItems) => {
+            return currentItems.map(item => item.id === id ? {...item, effect: newEffect} : item)
+        })
+    }
 
+    const remove = (id) => {
+        console.log(`remove ${id}`)
+        exclusions.update((exclusions) => {
+            return exclusions.filter(({id}) => id != targetId)
+        }) 
+    }
+
+    const removeAll = () => exclusions.set([])
+     
 </script>
 
 
-<details class="wrapper" open>
+<details class="wrapper" bind:open={$open}>
     <summary class="exclusion-header" id='exclusion-header'>Exclude effects { (exclusions.length > 0) ? `(${exclusions.length})` : ''}</summary>
     <div class="exclusions">
         <div class='exclusions-controls'>
@@ -107,8 +108,8 @@ button, summary {
                 <button class='exclusion-control' id='remove-all-exclusions-btn' onclick={(e) => handleClick(e, removeAll())}>Clear all</button>
             </div>
         <div class="exclusions-container">
-            {#each exclusions as exclusion}
-            <Exclusion {exclusion} {remove}/>
+            {#each excl as exclusion}
+            <Exclusion callback={update} {exclusion} {remove}/>
             {/each}
         </div>
     </div>

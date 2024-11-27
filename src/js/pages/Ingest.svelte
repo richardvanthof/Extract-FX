@@ -2,14 +2,15 @@
     import DropDown from '../components/Form/DropDown.svelte'
     import SelectFile from '../components/Form/SelectFile.svelte'; 
     import ExcludeModal from '../components/Form/ExcludeModal.svelte';
-    import {targetTrack, sourceFile, exclusions, exclusionOptions} from '../global-vars/ingest';
+    import {targetTrack, sourceFile, exclusions, exclusionOptions, isExclusionModalOpen} from '../global-vars/ingest';
     import {trackTotal} from '../global-vars/shared';
     import {generateNumberedOptions} from '../lib/helpers';
     import {debugMode} from '../../../secrets';
-
+    import { setContext } from 'svelte';
     // Manually subscribe to the store
     const trackOptions = generateNumberedOptions($trackTotal, 'VIDEO');
 
+    setContext('exclusionOptions', $exclusionOptions);
 </script>
 
 <form class="grid-container">
@@ -24,7 +25,7 @@
         </div>
     </div>
     <div class="grid-column">
-        <ExcludeModal {exclusions}/>
+        <ExcludeModal {exclusions} options={exclusionOptions} open={isExclusionModalOpen} />
     </div>
 </form>
 
@@ -37,6 +38,7 @@
     <li>sourceFile: {$sourceFile}</li>
     <li>Exclusions: {$exclusions}</li>
     <li>Exclusion options: {$exclusionOptions}</li>
+    <li>Exclusion modal open: {$isExclusionModalOpen}</li>
 </ul>
 </details>
 

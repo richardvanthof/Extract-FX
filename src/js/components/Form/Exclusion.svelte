@@ -18,15 +18,20 @@ select {
 </style>
 
 <script>
+    import { getContext } from 'svelte';
     import DropDown from "./DropDown.svelte";
     import Button from "../Button.svelte";
     import {handleClick} from '../../lib/helpers';
-    const {exclusion, remove} = $props();
+    
+    const {exclusion, remove, update} = $props();
     const {effect, id} = exclusion;
+
+    const optionsContext = getContext('exclusionOptions');
+    const options = [['Choose an effect', null], ...optionsContext].map((option) => [option, option])
 
 </script>
 
 <div class='exclusion'>
-    <DropDown {effect} class='select'/>
+    <DropDown {effect} {options} onchange={(e) => handleClick(e, update(id))} class='select'/>
     <Button data-id={id} class='remove-btn' onclick={(e) => handleClick(e, remove(id))} name='x'/>
 </div>

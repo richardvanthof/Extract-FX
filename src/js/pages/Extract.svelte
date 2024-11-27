@@ -2,7 +2,8 @@
     import DropDown from "../components/Form/DropDown.svelte";
     import Switch from "../components/Form/Switch.svelte";
     import ExcludeModal from "../components/Form/ExcludeModal.svelte";
-    import { sourceTrack, destination, exclusions, exclusionOptions } from '../global-vars/extract';
+    import { setContext } from 'svelte';
+    import { sourceTrack, destination, exclusions, exclusionOptions, isExclusionModalOpen } from '../global-vars/extract';
     import { trackTotal } from '../global-vars/shared';
     import { generateNumberedOptions } from '../lib/helpers';
     import {debugMode} from '../../../secrets';
@@ -11,7 +12,8 @@
     const setSourceTrack = (track) => $sourceTrack = track;
     const trackOptions = generateNumberedOptions($trackTotal, 'VIDEO');
 
-    console.log(globalThis.$);
+
+    setContext('exclusionOptions', $exclusionOptions);
 </script>
 
 <form class="grid-container">
@@ -31,7 +33,7 @@
         </div>
     </div>
     <div class="grid-column">
-        <ExcludeModal {exclusions}/>
+        <ExcludeModal {exclusions} options={exclusionOptions} open={isExclusionModalOpen}/>
     </div>
 </form>
 
@@ -42,8 +44,9 @@
     <ul>
         <li>Source track: {$sourceTrack}</li>
         <li>Destination: {$destination}</li>
-        <li>Exclusions: {$exclusions}</li>
+        <li>Exclusions: {JSON.stringify($exclusions)}</li>
         <li>Exclusion options: {$exclusionOptions}</li>
+        <li>Exclusion modal open: {$isExclusionModalOpen}</li>
     </ul>
 </details>
 
