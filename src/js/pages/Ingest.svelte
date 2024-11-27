@@ -2,7 +2,7 @@
     import DropDown from '../components/Form/DropDown.svelte'
     import SelectFile from '../components/Form/SelectFile.svelte'; 
     import ExcludeModal from '../components/Form/ExcludeModal.svelte';
-    import {targetTrack, sourceFile, exclusions, exclusionOptions, isExclusionModalOpen} from '../global-vars/ingest';
+    import {targetTrack, sourceData, exclusions, exclusionOptions, isExclusionModalOpen} from '../global-vars/ingest';
     import {trackTotal} from '../global-vars/shared';
     import {generateNumberedOptions} from '../lib/helpers';
     import {debugMode} from '../../../secrets';
@@ -36,7 +36,7 @@
     <h3>Ingest: global vars</h3>
 <ul>
     <li>Target track: {$targetTrack}</li>
-    <li>sourceFile: {$sourceFile}</li>
+    <li>Source Data: {JSON.stringify($sourceData)}</li>
     <li>Exclusions: {$exclusions}</li>
     <li>Exclusion options: {$exclusionOptions}</li>
     <li>Exclusion modal open: {$isExclusionModalOpen}</li>
