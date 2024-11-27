@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
     import Button from './Button.svelte';
 
     let {setMode, mode} = $props()
@@ -56,7 +56,8 @@
   <ul class="nav-links">
     {#each modes as modeName}
 		 <!-- <li class="nav-link class:active={() => mode === 'extract'} onclick={() => setMode('extract')}>Extract</li> -->
-      <li class="nav-link {mode === modeName && 'active'}" onclick={()=>setMode(modeName)}>{modeName}</li>
+  
+      <button class="nav-link {mode === modeName && 'active'}" onclick={()=>setMode(modeName)}>{modeName}</button>
 
     {/each}
     

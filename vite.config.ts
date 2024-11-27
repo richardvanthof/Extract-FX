@@ -66,9 +66,6 @@ export default defineConfig({
       ifLog: false,
       ifGlobal: true
     }),
-    dts({
-      include: ['src/js/global-vars/global.d.ts']
-    }),
     svelte({ 
       preprocess: sveltePreprocess({
         sourceMap: !config.isProduction,
