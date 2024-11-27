@@ -30,7 +30,7 @@
 
 .exclusions-placeholder {
 	margin: 0;
-	transform: translateY(3em);
+	transform: translateY(2.5em);
 	text-align: center;
 }
 
@@ -67,21 +67,25 @@ button, summary {
 <script>
     import Exclusion from "./Exclusion.svelte";
     import { v4 as uuidv4 } from 'uuid';
-    import {handleClick} from '../../lib/helpers';
-    let {exclusions, open} = $props();
-
+    import { handleClick } from '../../lib/helpers';
+    let { exclusions, open } = $props();
+    
     const excl = $derived($exclusions);
 
+    // Add a new exclusion item
     const add = () => {
-        exclusions.update( (exclusions) => [
-            ...exclusions,
-            {
-                effect: effect || null,
-                id: uuidv4()
-            }
-        ])
-    }
+        exclusions.update(
+            (current) => [
+                ...current,
+                {
+                    effect: null,  // You might want to set this dynamically
+                    id: uuidv4()
+                }
+            ]
+        );
+    };
 
+    // Update an exclusion item
     const update = (newEffect, id) => {
         exclusions.update( (currentItems) => {
             return currentItems.map(item => item.id === id ? {...item, effect: newEffect} : item)
@@ -89,28 +93,43 @@ button, summary {
     }
 
     const remove = (id) => {
-        console.log(`remove ${id}`)
-        exclusions.update((exclusions) => {
-            return exclusions.filter(({id}) => id != targetId)
-        }) 
-    }
+        console.log(`remove ${id}`);
+        exclusions.update((currentItems) => {
+            return currentItems.filter(({ id: exclusionId }) => exclusionId !== id);
+        });
+    };
 
-    const removeAll = () => exclusions.set([])
-     
+    // Remove all exclusions
+    const removeAll = () => exclusions.set([]);
 </script>
 
-
 <details class="wrapper" bind:open={$open}>
-    <summary class="exclusion-header" id='exclusion-header'>Exclude effects { ($exclusions.length > 0) ? `(${$exclusions.length})` : ''}</summary>
+    <summary class="exclusion-header" id='exclusion-header'>
+        Exclude effects { ($exclusions.length > 0) ? `(${$exclusions.length})` : '' }
+    </summary>
     <div class="exclusions">
         <div class='exclusions-controls'>
-                <button class='exclusion-toolbar-button exclusion-control' id='add-exclusion-btn' onclick={(e) => handleClick(e, add())}>+ Add Exclusion</button>
-                <button class='exclusion-control' id='remove-all-exclusions-btn' onclick={(e) => handleClick(e, removeAll())}>Clear all</button>
-            </div>
+            <button 
+                class='exclusion-toolbar-button exclusion-control' 
+                id='add-exclusion-btn' 
+                onclick={(e) => handleClick(e, add())}>+ Add Exclusion
+            </button>
+            <button 
+                class='exclusion-control' 
+                id='remove-all-exclusions-btn' 
+                onclick={(e) => handleClick(e, removeAll())}>Clear all</button>
+        </div>
         <div class="exclusions-container">
-            {#each excl as {id}}
-            <Exclusion {id} {exclusions} {remove}/>
-            {/each}
+            {#if $exclusions.length > 0}
+                {#each excl as {id}}
+                <Exclusion {id} {exclusions} {remove}/>
+                {/each}
+            {:else}
+                <div class="exclusions-placeholder">
+                    <p class='caption'>Press the +-button to add an exclusion.</p>
+                </div>
+            {/if}
+            
         </div>
     </div>
 </details>
