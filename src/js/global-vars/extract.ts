@@ -9,7 +9,7 @@ type Exclusion = {
 
 const sourceTrack:Writable<number> = writable(1);
 const destination:Writable<'file' | 'track'> = writable('file');
-const exclusions:Writable<Exclusion[]> = writable([{id: '1', effect: 'Color Replace'}]);
+const exclusions:Writable<Exclusion[]> = writable([]);
 const exclusionOptions:Writable<string[]> = writable(defaultEffects)
 const isExclusionModalOpen:Writable<boolean> = writable(true);
 

@@ -1,6 +1,6 @@
 <script lang="ts">
     // Importing the store
-    import { sourceData } from '../../global-vars/ingest';
+    import { sourceData,  } from '../../global-vars/ingest';
 
     // Define the type for the source data
     type SourceData = {
@@ -36,18 +36,16 @@
 
                     // Check if the file is empty or does not contain valid data
                     if (content.length === 0) {
-                        throw new Error('File is empty!');
+                        throw new Error('This file is empty!');
                     }
 
-                    if (parsedContent.type !== 'RS-FX-EXCHANGE' || !parsedContent.clips) {
-                        throw new Error('File does not contain valid data.');
+                    if (parsedContent.type !== 'RS-FX-EXCHANGE' || parsedContent.clips.length <= 0) {
+                        throw new Error('This file is invalid and cannot be read by this program.');
                     }
 
                     // Update the store with the file content
                     sourceData.set(parsedContent);
                     
-                    
-
                 } catch (err: any) {
                     // If JSON parsing fails, show an error message
                     fileContent = null;
@@ -64,6 +62,8 @@
             fileContent = null;
         }
     };
+
+
 </script>
 
 <style>

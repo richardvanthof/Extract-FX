@@ -37,7 +37,7 @@
 <ul>
     <li>Target track: {$targetTrack}</li>
     <li>Source Data: {JSON.stringify($sourceData)}</li>
-    <li>Exclusions: {$exclusions}</li>
+    <li>Exclusions: {JSON.stringify($exclusions)}</li>
     <li>Exclusion options: {$exclusionOptions}</li>
     <li>Exclusion modal open: {$isExclusionModalOpen}</li>
 </ul>
