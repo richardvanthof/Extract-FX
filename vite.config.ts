@@ -67,7 +67,9 @@ export default defineConfig({
     }),
     svelte({ 
       preprocess: sveltePreprocess({
-        sourceMap: !config.isProduction
+        sourceMap: !config.isProduction,
+        typescript: true,
+        scss: true
       }) 
     }),
     cep(config),

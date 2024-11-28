@@ -13,11 +13,15 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "verbatimModuleSyntax": false, //FIX: needs to be turned on but gives errors
     "noEmit": true,
     "jsx": "preserve",
     "paths": {
-      "@esTypes/*": ["./src/jsx"]
-    }
+      "@esTypes/*": ["./src/jsx"],
+      "~/*": ["./src/*"]
+    },
+    "types": ["svelte", "node"],
+    "baseUrl": ".",
   },
   "include": ["./src"],
   "exclude": ["./src/jsx"]
