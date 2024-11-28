@@ -13,17 +13,17 @@
 
     let files:File[]|null|undefined = $state();
 
-    // Initialize state for file content
-    let fileContent: SourceData | null = null;
+    const getUniqueKeys =(data:object[]):string[] => {
+        const keys = Object.keys(data);
+        return keys.filter((value, index, array) => {
+            if(array.indexOf(value) === index) {
+                return value;
+            }
+        })
+    }
 
-    // Handle file input change
-    const handleFile = (event: Event) => {
-
-        const fileInput = event.target as HTMLInputElement;
-        const file:File|null|undefined = files && files[0]; // Get the first file selected
-
-        if (file) {
-            // Create a FileReader to read the file
+    const decodeJson = (file: File): Promise<SourceData> => {
+    return new Promise((resolve, reject) => {
             const reader = new FileReader();
 
             // FileReader event to handle the file once it's read
@@ -32,34 +32,46 @@
 
                 try {
                     // Try to parse JSON content
-                    const parsedContent: SourceData = JSON.parse(content);
+                    const parsedContent = JSON.parse(content);
 
-                    // Check if the file is empty or does not contain valid data
-                    if (content.length === 0) {
-                        throw new Error('This file is empty!');
+                    if (parsedContent && parsedContent.type === 'RS-FX-EXCHANGE' && parsedContent.clips) {
+                        resolve(parsedContent);  // Resolve the promise with parsed content
+                    } else {
+                        reject(new Error('File does not contain valid data.'));
                     }
-
-                    if (parsedContent.type !== 'RS-FX-EXCHANGE' || parsedContent.clips.length <= 0) {
-                        throw new Error('This file is invalid and cannot be read by this program.');
-                    }
-
-                    // Update the store with the file content
-                    sourceData.set(parsedContent);
-                    
                 } catch (err: any) {
                     // If JSON parsing fails, show an error message
-                    fileContent = null;
-                    sourceData.set(null)
-                    files = [];
-                    alert(err.message);
+                    sourceData.set(null); // Reset the source data
+                    files = [];            // Clear the files array
+                    alert(err.message);    // Show the error message
+                    reject(err);           // Reject the promise with the error
                 }
+            };
+
+            // FileReader error event
+            reader.onerror = () => {
+                reject(new Error('Error reading the file.'));
             };
 
             // Read the file as text
             reader.readAsText(file);
-        } else {
-            // Clear content if no file is selected
-            fileContent = null;
+        });
+    };
+
+
+    // Handle file input change
+    const handleFile = async (event: Event) => {
+        const {files} = (event.target as HTMLInputElement) || null;
+        try{
+            if(files && files != null && $sourceData) {
+                // Decode file
+                const data:Promise<SourceData> = await decodeJson(files[0]);
+                sourceData.set(data || null);
+
+
+            } 
+        } catch (err) {
+            alert(err);
         }
     };
 
