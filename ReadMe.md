@@ -26,19 +26,7 @@ Learn more about using the plugin in the [manual](payloads/manual.md)
 
 ---
 
-## Quick Start
-
-<img src="src/js/assets/create-bolt-cep.jpg" alt="Bolt CEP">
-
-<img src="create-bolt-cep--demo.gif" alt="Bolt CEP">
-
-`yarn create bolt-cep`
-
-- Create Extension
-
-`cd myApp`
-
-- CD into Directory
+## Quick Start Guide
 
 `yarn`
 
@@ -57,6 +45,18 @@ Learn more about using the plugin in the [manual](payloads/manual.md)
 - Viewable in browser via localhost:3000/panel/
   - (e.g. http://localhost:3000/main/, http://localhost:3000/settings/, etc. (see [Panel Structure](#cep-panel-structure) to set up multiple panels)))
 
+`yarn test`
+
+- Run all unit tests in watch mode 
+
+`yarn lint`
+
+- Check for code quality issues.
+
+`yarn lint:fix`
+
+- Check for code quality issues and fix automatically fixable issues.
+
 `yarn serve`
 
 - Serve files after running `yarn build`
@@ -71,6 +71,15 @@ Learn more about using the plugin in the [manual](payloads/manual.md)
 
 - Bundles your zxp and specified assets to a zip archive in the `dist/zip` folder
 
+---
+
+## Pull request requirements
+For a commit to be eledgible for merging it needs pass the ci/cd pipeline. To do that it must comply with the following:
+- The code needs to work
+- All functions must contain `types`.
+- Make sure `yarn test` passes. 
+- All functions need to have a unit test.
+- No linting errors allowed. Run `yarn lint` to check this.
 ---
 
 ## Config
@@ -250,8 +259,6 @@ Then your new build will be available under GitHub Releases.
 
 ---
 
----
-
 ## Copy Assets
 
 If you have assets that you would like copied without being affected by the bundler, you can add the optional `copyAssets:[]` array inside your cep.config.ts to include files or entire folders.
@@ -263,8 +270,6 @@ If you have assets that you would like copied without being affected by the bund
 **Example:**
 
 Files placed in `src/public` will be copied to `dist/public` with config set to `copyAssets: ["public"]`.
-
----
 
 ---
 
@@ -379,7 +384,7 @@ ReactDOM.render(
   document.getElementById("root")
 );
 ```
-
+---
 ## Misc Troubleshooting
 
 **React Spectrum won't allow certain UI items to be clicked on MacOS**:
@@ -423,30 +428,3 @@ If you're experiencing issues building on your Apple Silicon Machine regarding t
 5. `src/js/lib` - Update this entire folder.
 6. `src/jsx/index.ts` - Check if any new properties have been added that don't exist in your config.
 7. `src/shared/universals.d.ts` - Check if any new properties have been added that don't exist in your config.
-
-
-### Packaging and deployment
-
-#### Requirements
--   **The [ZXPSignCmd](https://github.com/Adobe-CEP/CEP-Resources/tree/master/ZXPSignCMD/4.0.7) signing utility**: creates signed .zxp bundles for Add-Ons or direct distribution.
--   **Utility for testing installation:**
-    -   [ZXPinstaller](https://zxpinstaller.com/): (GUI)
-    -   [ExManCmd](https://www.adobeexchange.com/resources/28) (command line)
-
-
-#### Instructions
-
-You can either generate a self-signed certificate (ZXPSignCmd will make them for
-you), or get one from a commercial security provider. Here's an example:
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./ZXPSignCmd -selfSignedCert US California Adobe "Bruce Bullis" password certificate.p12
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-To sign directory `/PanelDir` with `certificate.p12`, do the following:
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./ZXPSignCmd -sign panelDir/ PanelName.zxp certificate.p12 password -tsa https://timestamp.geotrust.com/tsa
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Submit your panel to the [Adobe Add-Ons site](https://www.adobeexchange.com/producer) for approval, and distribution. You can also directly supply the .zxp file enterprise customers, and those who do not connect their systems to the public internet, for installation using [ExManCmd](https://www.adobeexchange.com/resources/28), the command line version of Extension Manager, or [ZXPinstaller](https://zxpinstaller.com/), which provides a user friendly GUI.

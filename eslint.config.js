@@ -21,6 +21,7 @@ export default [
   
   // Ignore specific files and directories globally
   {
+    // Ignore pre-made Bolt CEP scripts.
     ignores: [
       '.test/*',
       '.config/*',
@@ -28,7 +29,6 @@ export default [
       'src/js/lib/**/*',
       'src/jsx/lib/**/*',
       'src/jsx/ppro/**/*',
-      'src/jsx/lib/cep/json2.js',
       'legacy/**/*',
       'dist/**/*'
     ],
