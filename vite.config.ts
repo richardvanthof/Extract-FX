@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 
 import { cep, runAction } from "vite-cep-plugin";
@@ -24,7 +24,7 @@ const isPackage = process.env.ZXP_PACKAGE === "true" || isMetaPackage;
 const isServe = process.env.SERVE_PANEL === "true";
 const action = process.env.ACTION;
 
-let input = {};
+const input = {};
 cepConfig.panels.map((panel) => {
   input[panel.name] = path.resolve(root, panel.mainPath);
 });
@@ -78,6 +78,13 @@ export default defineConfig({
     alias: [{ find: "@esTypes", replacement: path.resolve(__dirname, "src") }],
   },
   root,
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    include: ['**/*.test.ts', '**/*.test.svelte'],  // Glob for test files
+    dir: 'src',
+    outputFile: 'dist/test'
+  },
   clearScreen: false,
   server: {
     port: cepConfig.port,
