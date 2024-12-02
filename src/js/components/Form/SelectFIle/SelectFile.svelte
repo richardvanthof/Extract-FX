@@ -1,89 +1,39 @@
 <script lang="ts">
     // Importing the store
-    import { sourceData,  } from '../../../global-vars/ingest';
+    import { sourceData, exclusions } from '../../../global-vars/ingest';  // Assuming this store is used to store data globally
+    import { getUniqueKeys, getJSON, SourceData } from './SelectFile.helpers';  // Utility for extracting keys from the file if needed
 
-    // Define the type for the source data
-    type SourceData = {
-        type: 'RS-FX-EXCHANGE';
-        track: number;
-        sequence: string;
-        exclusions: string[];
-        clips: object[];
-    };
-
-    let files:File[]|null|undefined = $state();
-
-    const getUniqueKeys = (data:object[]):string[] => {
-        return ['Transform', 'Stabilize', 'Displace', 'Motion', 'Color', 'Limit'];
-        
-        // return data.map((value: object, index: number):string[] => {
-        //     const keys = Object.keys(data);
-        //     return keys.filter((value, index, array) => {
-        //         if(array.indexOf(value) === index) {
-        //             return value;
-        //         }
-        //     })
-        // })
-        
-    }
-
-    const sum = (num1:number, num2:number):number => num1 + num2;
-
-    const decodeJson = (file: File): Promise<SourceData> => {
-    return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-
-            // FileReader event to handle the file once it's read
-            reader.onload = () => {
-                const content: string = reader.result as string;
-
-                try {
-                    // Try to parse JSON content
-                    const parsedContent = JSON.parse(content);
-
-                    if (parsedContent && parsedContent.type === 'RS-FX-EXCHANGE' && parsedContent.clips) {
-                        resolve(parsedContent);  // Resolve the promise with parsed content
-                    } else {
-                        reject(new Error('File does not contain valid data.'));
-                    }
-                } catch (err: any) {
-                    // If JSON parsing fails, show an error message
-                    sourceData.set(null); // Reset the source data
-                    files = [];            // Clear the files array
-                    alert(err.message);    // Show the error message
-                    reject(err);           // Reject the promise with the error
-                }
-            };
-
-            // FileReader error event
-            reader.onerror = () => {
-                reject(new Error('Error reading the file.'));
-            };
-
-            // Read the file as text
-            reader.readAsText(file);
-        });
-    };
-
+    // Declare a variable to hold the files
+    let files: FileList | null = null;
 
     // Handle file input change
     const handleFile = async (event: Event) => {
-        const {files} = (event.target as HTMLInputElement) || null;
-        try{
-            if(files && files != null && $sourceData) {
-                // Decode file
-                const data:Promise<SourceData> = await decodeJson(files[0]);
-                sourceData.set(data || null);
+        const input = event.target as HTMLInputElement;
+        const files = input?.files;
 
+        try {
+            // Decode and parse the JSON file
+            if(!files) {
+                throw new Error("File not found.")
+            }
+            const data: SourceData = await getJSON(files[0]);
+            
+            // Set the decoded data in the store
+            sourceData.set(data);
 
-            } 
+            // Optionally: If you want to extract unique keys from the data, you can use the helper function
+            const uniqueKeys = getUniqueKeys(data.clips);
+            if(uniqueKeys) {
+                exclusions.set(uniqueKeys);
+            }
+
         } catch (err) {
-            alert(err);
+            console.error(err);
+            alert(err)
         }
     };
-
-
 </script>
+
 
 <style>
     input {
@@ -97,15 +47,7 @@
         margin-bottom: 1em;
         cursor: pointer;
     }
-
-    pre {
-        background: #f4f4f4;
-        padding: 1em;
-        border-radius: 4px;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-    }
 </style>
 
 <!-- File input field that accepts only .json files -->
-<input bind:files onchange={handleFile} accept="application/json" type="file">
+<input bind:files={files} onchange={handleFile} accept="application/json" type="file">
