@@ -3,7 +3,8 @@ import {
     getJSON,
     SourceData
 } from "./SelectFile.helpers"
-import {describe, expect, it} from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { render, act, cleanup, fireEvent } from '@testing-library/svelte‘;  
 
 describe("getUniqueKeys()", () => {
 
@@ -37,9 +38,7 @@ describe("getUniqueKeys()", () => {
             Motion: {}, 
             transform:{}, 
             Color:{}, 
-            // @ts-expect-error duplication is part of test
             transform: {}, 
-            // @ts-expect-error duplication is part of test
             Stabilize: {},
             Limit: {}
             }
@@ -113,3 +112,4 @@ describe("getJSON", async () => {
         await expect(getJSON(file)).rejects.toThrowError("File does not contain valid data.");
     })
 })
+

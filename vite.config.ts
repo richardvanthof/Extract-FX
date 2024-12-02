@@ -6,7 +6,8 @@ import cepConfig from "./cep.config";
 import path from "path";
 import { extendscriptConfig } from "./vite.es.config";
 import { sveltePreprocess } from "svelte-preprocess";
-import {vitePluginVersionMark} from 'vite-plugin-version-mark'
+import {svelteTesting} from '@testing-library/svelte/vite';
+import {vitePluginVersionMark} from 'vite-plugin-version-mark';
 
 const extensions = [".js", ".ts", ".tsx"];
 
@@ -72,6 +73,7 @@ export default defineConfig({
         scss: true
       }) 
     }),
+    svelteTesting(),
     cep(config),
   ],
   resolve: {
