@@ -4,7 +4,7 @@
     import ExcludeModal from '../components/Form/ExclusionModal/ExcludeModal.svelte';
     import {targetTrack, sourceData, exclusions, exclusionOptions, isExclusionModalOpen} from '../global-vars/ingest';
     import {trackTotal} from '../global-vars/shared';
-    import {generateNumberedOptions} from '../lib/helpers';
+    import {generateNumberedOptions} from '../helpers/helpers';
     import {debugMode} from '../../../secrets';
     import { setContext } from 'svelte';
     // Manually subscribe to the store

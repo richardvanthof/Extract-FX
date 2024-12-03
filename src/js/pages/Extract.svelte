@@ -5,7 +5,7 @@
     import { setContext } from 'svelte';
     import { sourceTrack, destination, exclusions, exclusionOptions, isExclusionModalOpen } from '../global-vars/extract';
     import { trackTotal } from '../global-vars/shared';
-    import { generateNumberedOptions } from '../lib/helpers';
+    import { generateNumberedOptions } from '../helpers/helpers';
     import {debugMode} from '../../../secrets';
 
     const setDestination = (type) => $destination = type; // Updates the destination store

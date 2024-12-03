@@ -1,6 +1,6 @@
 <script>
     import Button from "./Button.svelte";
-    import {handleClick} from '../lib/helpers';
+    import {handleClick} from '../helpers/helpers';
     import config from '../../../cep.config';
     
     const actions = {

@@ -64,10 +64,11 @@ button, summary {
 }
 </style>
 
-<script>
-    import Exclusion from "../Exclusion.svelte";
+<script lang="ts">
+    import type {Exclusion as ExclusionType } from '../../../global-vars/shared';
+    import Exclusion from "../Exclusion/Exclusion.svelte";
     import { v4 as uuidv4 } from 'uuid';
-    import { handleClick } from '../../../lib/helpers';
+    import {handleClick} from '../../../helpers/helpers';
     let { exclusions, open } = $props();
     
     const excl = $derived($exclusions);
@@ -75,7 +76,7 @@ button, summary {
     // Add a new exclusion item
     const add = () => {
         exclusions.update(
-            (current) => [
+            (current: ExclusionType[]) => [
                 ...current,
                 {
                     effect: null,  // You might want to set this dynamically
@@ -86,15 +87,15 @@ button, summary {
     };
 
     // Update an exclusion item
-    const update = (newEffect, id) => {
-        exclusions.update( (currentItems) => {
+    const update = (newEffect: string, id: string) => {
+        exclusions.update( (currentItems: ExclusionType[]) => {
             return currentItems.map(item => item.id === id ? {...item, effect: newEffect} : item)
         })
     }
 
-    const remove = (id) => {
+    const remove = (id: string) => {
         console.log(`remove ${id}`);
-        exclusions.update((currentItems) => {
+        exclusions.update((currentItems: ExclusionType[]) => {
             return currentItems.filter(({ id: exclusionId }) => exclusionId !== id);
         });
     };
@@ -113,18 +114,24 @@ button, summary {
                 class='exclusion-toolbar-button exclusion-control' 
                 id='add-exclusion-btn' 
                 title="add"
-                onclick={(e) => handleClick(e, add())}>+ Add Exclusion
+                onclick={(e:Event) => {
+                    e.preventDefault();
+                    add()
+                }}>+ Add Exclusion
             </button>
             <button 
                 class='exclusion-control' 
                 title="clear"
                 id='remove-all-exclusions-btn' 
-                onclick={(e) => handleClick(e, removeAll())}>Clear all</button>
+                onclick={(e:Event) => {
+                    e.preventDefault();
+                    removeAll()
+                }}>Clear all</button>
         </div>
         <div class="exclusions-container">
             {#if $exclusions.length > 0}
                 {#each excl as {id}}
-                <Exclusion {id} {exclusions} {remove}/>
+                    <Exclusion {id} {exclusions} {remove}/>
                 {/each}
             {:else}
                 <div class="exclusions-placeholder">

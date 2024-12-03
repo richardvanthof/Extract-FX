@@ -6,10 +6,10 @@ import Exclusions from './ExcludeModal.svelte'; // Adjust the path if necessary
 import { writable } from 'svelte/store';
 import '@testing-library/jest-dom';
 import type { Writable } from "svelte/store"
-import { Exclusion } from '~/js/global-vars/shared';
+import { Exclusion as ExclusionType} from '../../../global-vars/shared';
 
 //temp store
-const exclusions:Writable<Exclusion[]> = writable([]);
+const exclusions:Writable<ExclusionType[]> = writable([]);
 
 describe('Exclusions Component', () => {
   // Test case for rendering the component

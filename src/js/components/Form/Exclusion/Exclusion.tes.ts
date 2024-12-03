@@ -3,7 +3,7 @@ import { vi, it, expect, describe, beforeEach } from 'vitest';
 import { get } from 'svelte/store';
 import '@testing-library/jest-dom';
 import type { Writable } from "svelte/store"
-import { Exclusion as ExclusionType} from '~/js/global-vars/shared';
+import { Exclusion as ExclusionType} from '../../../global-vars/shared';
 import { writable } from 'svelte/store';
 import { setContext } from 'svelte';
 
@@ -27,11 +27,6 @@ const mockRemove = (id: string) => {
 
 
 describe('Exclusion Component', () => {
-  
-  beforeEach(() => {
-    // Reset mock functions before each test
-    mockRemove.mockClear();
-  });
 
   it('renders correctly with props', async () => {
     setContext('exclusionOptions', mockExclusionOptions);
@@ -40,7 +35,7 @@ describe('Exclusion Component', () => {
       props: {
         id: 'uuid-1',
         exclusions: mockExclusions,
-        remove: 
+        remove: mockRemove
       }
     });
 
