@@ -15,7 +15,7 @@ describe("Get unique keys from object array()", () => {
             {Transform: {}, Stabilize: {}, Limit: {}}
         ]
         expect(getUniqueKeys(list)).toStrictEqual(
-            ['Transform', 'Stabilize', 'Displace', 'Motion', 'Color', 'Limit']
+            ['transform', 'stabilize', 'displace', 'motion', 'color', 'limit']
         );
     });
 
@@ -26,7 +26,7 @@ describe("Get unique keys from object array()", () => {
             {Transform: {}, stabilize: {}, Limit: {}}
         ]
         expect(getUniqueKeys(list)).toStrictEqual(
-            ['TRANSform', 'Stabilize', 'Displace', 'Motion', 'COLOR', 'Limit']
+            ['transform', 'stabilize', 'displace', 'motion', 'color', 'limit']
         );
     });
     
@@ -45,7 +45,7 @@ describe("Get unique keys from object array()", () => {
             Limit: {}
             }
         expect(getUniqueKeys(list)).toStrictEqual(
-            ['Transform', 'Stabilize', 'Displace', 'Motion', 'Color', 'Limit']
+            ['transform', 'stabilize', 'displace', 'motion', 'color', 'limit']
         );
     });
 });
@@ -81,8 +81,8 @@ describe("getJSON", async () => {
         await expect(getJSON(file)).rejects.toThrowError("This file is empty.");
     })
 
-    it("Returns error when file does not contain clip data.", async () => {
-        const data= {
+    it("Returns error when file does not contain clips data.", async () => {
+        const data:SourceData= {
             type: 'RS-FX-EXCHANGE',
             track: 1,
             sequence: 'My Video',
@@ -90,28 +90,32 @@ describe("getJSON", async () => {
             clips: []
         };
 
-        const file = new File([JSON.stringify(data)], 'noclips.json', {
+        const file = new File([JSON.stringify(data)], 'noClips.json', {
             type: 'application/json',
         });
 
-        await expect(getJSON(file)).rejects.toThrowError("File does not contain valid data.");
+        await expect(getJSON(file)).rejects.toThrowError("No clip effect data has been found.");
     })
 
     it("Returns error when file does not contain the correct data type.", async () => {
         const data:SourceData= {
             // @ts-expect-error part of test
-            type: 'NOT-RS-FX-EXCHANGE',
+            type: 'NOT-RS-FX-EXCHANGE', // this file is not the correct type.
             track: 1,
             sequence: 'My Video',
             exclusions: [],
-            clips: []
+            clips: [
+                {Motion: {}, Opacity: {}},
+                {Motion: {}, Opacity: {}},
+                {Motion: {}, Opacity: {}}
+            ]
         };
 
         const file = new File([JSON.stringify(data)], 'invalid.json', {
             type: 'application/json',
         });
 
-        await expect(getJSON(file)).rejects.toThrowError("File does not contain valid data.");
+        await expect(getJSON(file)).rejects.toThrowError("This file contains invalid data and cannot be opened.");
     })
 })
 

@@ -39,8 +39,8 @@
     input {
         background: var(--bg-dark);
         border: var(--border-styling);
-        border-radius: 3px;
-        color: white;
+        border-radius: var(--border-radius-inner);
+        color: var(--white);
         padding: .3em;
         display: block;
         width: 100%;
