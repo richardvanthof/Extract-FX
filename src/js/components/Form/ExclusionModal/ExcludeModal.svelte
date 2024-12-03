@@ -65,9 +65,9 @@ button, summary {
 </style>
 
 <script>
-    import Exclusion from "./Exclusion.svelte";
+    import Exclusion from "../Exclusion.svelte";
     import { v4 as uuidv4 } from 'uuid';
-    import { handleClick } from '../../lib/helpers';
+    import { handleClick } from '../../../lib/helpers';
     let { exclusions, open } = $props();
     
     const excl = $derived($exclusions);
@@ -112,10 +112,12 @@ button, summary {
             <button 
                 class='exclusion-toolbar-button exclusion-control' 
                 id='add-exclusion-btn' 
+                title="add"
                 onclick={(e) => handleClick(e, add())}>+ Add Exclusion
             </button>
             <button 
                 class='exclusion-control' 
+                title="clear"
                 id='remove-all-exclusions-btn' 
                 onclick={(e) => handleClick(e, removeAll())}>Clear all</button>
         </div>

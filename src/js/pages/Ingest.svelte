@@ -1,7 +1,7 @@
 <script>
     import DropDown from '../components/Form/DropDown.svelte'
-    import SelectFile from '../components/Form/SelectFile.svelte'; 
-    import ExcludeModal from '../components/Form/ExcludeModal.svelte';
+    import SelectFile from '../components/Form/SelectFIle/SelectFile.svelte'; 
+    import ExcludeModal from '../components/Form/ExclusionModal/ExcludeModal.svelte';
     import {targetTrack, sourceData, exclusions, exclusionOptions, isExclusionModalOpen} from '../global-vars/ingest';
     import {trackTotal} from '../global-vars/shared';
     import {generateNumberedOptions} from '../lib/helpers';

@@ -25,7 +25,7 @@
     } 
 </script>
 
-<div class='exclusion'>
+<div class='exclusion' data-testid="exclusion">
     <DropDown {effect} value={effect} onchange={handleUpdate} {options}  class='select'/>
     <Button data-id={id} class='remove-btn' onclick={(e) => handleClick(e, remove(id))} name='x'/>
 </div>

@@ -1,7 +1,7 @@
 <script>
     import DropDown from "../components/Form/DropDown.svelte";
     import Switch from "../components/Form/Switch.svelte";
-    import ExcludeModal from "../components/Form/ExcludeModal.svelte";
+    import ExcludeModal from "../components/Form/ExclusionModal/ExcludeModal.svelte";
     import { setContext } from 'svelte';
     import { sourceTrack, destination, exclusions, exclusionOptions, isExclusionModalOpen } from '../global-vars/extract';
     import { trackTotal } from '../global-vars/shared';
