@@ -10,8 +10,10 @@
 
 > While supported, it is recommended to exclude Warp Stabilizer and Lumetri Color.
 
-## User guide
+# User guide
 Learn more about using the plugin in the [manual](payloads/manual.md)
+
+# Development guide
 
 ### Dev Requirements
 
@@ -75,11 +77,11 @@ Learn more about using the plugin in the [manual](payloads/manual.md)
 
 ## Pull request requirements
 For a commit to be eledgible for merging it needs pass the ci/cd pipeline. To do that it must comply with the following:
-- The code needs to work
+- The code needs to work.
 - All functions must contain `types`.
 - Make sure `yarn test` passes. 
 - All functions need to have a unit test.
-- No linting errors allowed. Run `yarn lint` to check this.
+- No linting errors allowed. Run `yarn lint:fix` to check.
 ---
 
 ## Config
