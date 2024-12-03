@@ -4,9 +4,9 @@ import {
     SourceData
 } from "./SelectFile.helpers"
 import { describe, expect, it } from 'vitest';
-import { render, act, cleanup, fireEvent } from '@testing-library/svelte‘;  
 
-describe("getUniqueKeys()", () => {
+
+describe("Get unique keys from object array()", () => {
 
     it("Returns unique keys from list of objects", () => {
         const list = [
@@ -38,7 +38,9 @@ describe("getUniqueKeys()", () => {
             Motion: {}, 
             transform:{}, 
             Color:{}, 
+            //@ts-expect-error part of test
             transform: {}, 
+            //@ts-expect-error part of test
             Stabilize: {},
             Limit: {}
             }
