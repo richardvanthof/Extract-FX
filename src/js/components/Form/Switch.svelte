@@ -1,10 +1,12 @@
 <script lang="ts">
+  import { globals } from "~/js/global-vars/globals.svelte";
+
     type Props = {
         selected: string,
         options: string[],
-        callback: (option: string) => void
+        callback: (option: typeof globals.destination) => void
     }
-    const {selected, callback, options} = $props();
+    const {selected, callback, options}: Props = $props();
 
 </script>
 

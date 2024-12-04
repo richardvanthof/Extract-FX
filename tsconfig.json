@@ -21,12 +21,8 @@
       "~/*": ["./src/*"]
     },
     "types": ["svelte", "node"],
-    "baseUrl": ".",
+    "baseUrl": "."
   },
-  "include": [
-    "./src",
-    "./src/",
-    "./src/**/*.d.ts"
-  ],
+  "include": ["./src", "./src/", "./src/**/*.d.ts"],
   "exclude": ["./src/jsx", "./legacy"]
 }

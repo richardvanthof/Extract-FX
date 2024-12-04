@@ -8,6 +8,10 @@
     const {name, title, onclick}:Props = $props();
 </script>
 
+
+<button {title} name={name||title} {onclick}>{name}</button>
+
+
 <style lang="scss">
     button {
         border: var(--border-styling);
@@ -21,5 +25,3 @@
         }
     }
 </style>
-
-<button {title} name={name||title} {onclick}>{name}</button>
