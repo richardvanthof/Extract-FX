@@ -1,7 +1,7 @@
 # RS Extract-fx
 ## What is it for?
 
-*RS Extract-fx* is a Premiere Pro plugin that automates mass moving video effects to 'adjustment layers' just above the clip. This is especially useful while prepping for color grading in programs like Davinci Resolve. Once reimported, the effects can be restored by placing the processed footage under the generated adjustment layers -- built using the Bolt CEP starter. 
+*RS Extract-fx* is a Premiere Pro plugin that automates mass moving video effects to 'adjustment layers' just above the clip. This is especially useful while prepping for color grading in programs like Davinci Resolve. Once reimported, the effects can be restored by placing the processed footage under the generated adjustment layers -- built using the [Bolt CEP starter](https://hyperbrew.co/resources/bolt-cep/). 
 
 ## What effects are supported?
 
@@ -11,7 +11,7 @@
 > While supported, it is recommended to exclude Warp Stabilizer and Lumetri Color.
 
 # User guide
-Learn more about using the plugin in the [manual](payloads/manual.md)
+Learn more about using the plugin in the [manual](src/static/manual/manual.md)
 
 # Development guide
 
@@ -27,8 +27,20 @@ Learn more about using the plugin in the [manual](payloads/manual.md)
 - Mac Arm64 (M1 / M2) require special setup ([more details](#misc-troubleshooting))
 
 ---
+## 🚀 Quick start guide
+1. Install all depencencies using `yarn`;
+2. Run `yarn build` to create the initial build;
+3. Start the development services:
+   1. `yarn dev` to start the development server. Go to [localhost:3000/main/index.html](localhost:3000/main/index.html) to view the output.
+   2.  `yarn test` to start the unit tester.
+   3. `yarn lint:fix` to check for code quality issues.
 
-## Quick Start Guide
+
+🎉 Done. 
+
+> It is of course also possible to use another package manager than yarn :)
+
+## Commands
 
 `yarn`
 
