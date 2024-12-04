@@ -7,3 +7,4 @@ dist
 .env
 dist/**/*
 secrets.ts
+yarn.lock
