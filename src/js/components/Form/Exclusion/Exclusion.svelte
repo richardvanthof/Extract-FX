@@ -22,8 +22,8 @@
 	}
     
     const {id, exclusions, remove}:Props = $props();
-    const {effect} = $derived(() => $exclusions.find(id));
-    const optionsContext = getContext('exclusionOptions');
+    const {effect} = $derived(():Exclusion => $exclusions.find(id));
+    const optionsContext:[string,string][] = getContext('exclusionOptions');
     const options = [['Choose an effect', null], ...optionsContext].map((option) => [option, option])
     const handleUpdate = (newEffect: string) => {
         exclusions.update((currentItems:Exclusion[]) => {
