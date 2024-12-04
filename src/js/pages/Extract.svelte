@@ -6,7 +6,8 @@
     import { sourceTrack, destination, exclusions, exclusionOptions, isExclusionModalOpen } from '../global-vars/extract';
     import { trackTotal } from '../global-vars/shared';
     import { generateNumberedOptions } from '../helpers/helpers';
-    import {debugMode} from '../../../secrets';
+
+    const debugMode = process.env.NODE_ENV != "production"
 
     const setDestination = (type) => $destination = type; // Updates the destination store
     const trackOptions = generateNumberedOptions($trackTotal, 'VIDEO');

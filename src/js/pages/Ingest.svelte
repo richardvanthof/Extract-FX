@@ -5,13 +5,14 @@
     import {targetTrack, sourceData, exclusions, exclusionOptions, isExclusionModalOpen} from '../global-vars/ingest';
     import {trackTotal} from '../global-vars/shared';
     import {generateNumberedOptions} from '../helpers/helpers';
-    import {debugMode} from '../../../secrets';
     import { setContext } from 'svelte';
     // Manually subscribe to the store
     const trackOptions = generateNumberedOptions($trackTotal, 'VIDEO');
     const targetTrackVal = $derived($targetTrack);
     // const currentTarget = $derived();
     setContext('exclusionOptions', $exclusionOptions);
+
+    const debugMode = process.env.NODE_ENV != "production"
 </script>
 
 <form class="grid-container">
