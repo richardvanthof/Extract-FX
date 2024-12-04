@@ -7,23 +7,14 @@ export type SourceData = {
     clips: object[];
 };
 
-// Get all uniqe keys from an (array of) object(s).
 export const getUniqueKeys = (data:object[]|object):string[] => {
     let keys:string[];
-    
-    // Check if we're working with an array or just a single object
-    if(Array.isArray(data)) {
-        keys = data.map((val: object) => Object.keys(val)).flat();
-    } else {
-        keys = Object.keys(data);
-    };
+    if(Array.isArray(data)) { keys = data.map((val) => Object.keys(val)).flat();} 
+    else { keys = Object.keys(data);};
 
-    // Normalize all values to lowerkey and flatten to onedimensional array.
-    const normalizedKeys = keys.map((val) => val.toLocaleLowerCase()) 
-
-    // Remove duplicate values
-    return normalizedKeys.filter((value, index, array) => {
-        return array.indexOf(value.toLocaleLowerCase()) === index;
+    return keys.filter((value, index, array) => {
+        const normalizedArray = array.map((val) => val.toLocaleLowerCase()) 
+        return normalizedArray.indexOf(value.toLocaleLowerCase()) === index;
     }); 
 };
 
@@ -43,7 +34,6 @@ const isSourceData = (data: unknown, type: string = "RS-FX-EXCHANGE"): data is S
     )
 }
 
-// Get json data from file and check if data is a valid.
 export const getJSON = async (file: File): Promise<SourceData> => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -63,8 +53,6 @@ export const getJSON = async (file: File): Promise<SourceData> => {
 
                 // Type assertion to `SourceData`
                 if (isSourceData(parsedContent)) {
-                    
-                    // Check if it contains clip effect data
                     if(parsedContent.clips.length <= 0) {
                         reject("No clip effect data has been found.")
                     }

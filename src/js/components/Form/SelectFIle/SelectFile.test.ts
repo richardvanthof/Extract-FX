@@ -15,7 +15,7 @@ describe("Get unique keys from object array()", () => {
             {Transform: {}, Stabilize: {}, Limit: {}}
         ]
         expect(getUniqueKeys(list)).toStrictEqual(
-            ['transform', 'stabilize', 'displace', 'motion', 'color', 'limit']
+            ['Transform', 'Stabilize', 'Displace', 'Motion', 'Color', 'Limit']
         );
     });
 
@@ -26,7 +26,7 @@ describe("Get unique keys from object array()", () => {
             {Transform: {}, stabilize: {}, Limit: {}}
         ]
         expect(getUniqueKeys(list)).toStrictEqual(
-            ['transform', 'stabilize', 'displace', 'motion', 'color', 'limit']
+            ['TRANSform', 'Stabilize', 'Displace', 'Motion', 'COLOR', 'Limit']
         );
     });
     
@@ -45,7 +45,7 @@ describe("Get unique keys from object array()", () => {
             Limit: {}
             }
         expect(getUniqueKeys(list)).toStrictEqual(
-            ['transform', 'stabilize', 'displace', 'motion', 'color', 'limit']
+            ['Transform', 'Stabilize', 'Displace', 'Motion', 'Color', 'Limit']
         );
     });
 });

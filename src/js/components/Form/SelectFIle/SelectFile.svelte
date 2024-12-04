@@ -1,7 +1,10 @@
 <script lang="ts">
     // Importing the store
-    import { sourceData, exclusions } from '../../../global-vars/ingest';  // Assuming this store is used to store data globally
+    import { sourceData, exclusions, exclusionOptions } from '../../../global-vars/ingest';  // Assuming this store is used to store data globally
     import { getUniqueKeys, getJSON, SourceData } from './SelectFile.helpers';  // Utility for extracting keys from the file if needed
+    import type {Writable} from 'svelte/store';
+    import {get} from 'svelte/store';
+    import {v4 as uuid} from 'uuid';
 
     // Declare a variable to hold the files
     let files: FileList | null = null;
@@ -13,19 +16,24 @@
 
         try {
             // Decode and parse the JSON file
-            if(!files) {
-                throw new Error("File not found.")
-            }
-            const data: SourceData = await getJSON(files[0]);
-            
+            if(!files) {throw new Error("File not found.")}
+            const decodedData: SourceData = await getJSON(files[0]);
+        
             // Set the decoded data in the store
-            sourceData.set(data);
-
+            sourceData.set(decodedData);
+            
+            const uniqueKeys = getUniqueKeys(decodedData.clips);
+            
             // Optionally: If you want to extract unique keys from the data, you can use the helper function
-            const uniqueKeys = getUniqueKeys(data.clips);
-            if(uniqueKeys) {
-                exclusions.set(uniqueKeys);
-            }
+            if(uniqueKeys) {exclusionOptions.set(uniqueKeys);}
+
+            // Add all the exclusions from the source file to the exclude panel.
+            if(decodedData && exclusions) {
+                exclusions.set(decodedData.exclusions.map((exclusion) => ({
+                    effect: exclusion,
+                    id: uuid()
+                })))
+            };
 
         } catch (err) {
             console.error(err);
