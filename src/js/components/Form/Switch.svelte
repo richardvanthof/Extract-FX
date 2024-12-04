@@ -1,7 +1,11 @@
-<script>
-    export let selected;
-    export let callback;  // This will be the setDestination function passed from the parent
-    export let options;
+<script lang="ts">
+    type Props = {
+        selected: string,
+        options: string[],
+        callback: (option: string) => void
+    }
+    const {selected, callback, options} = $props();
+
 </script>
 
 <style lang="scss">

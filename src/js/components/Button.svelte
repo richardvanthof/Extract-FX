@@ -1,5 +1,11 @@
-<script>
-    const {name, title, onclick} = $props();
+<script lang="ts">
+
+    type Props = {
+        name?: string,
+        title: string,
+        onclick?: (event: Event) => void
+    }
+    const {name, title, onclick}:Props = $props();
 </script>
 
 <style lang="scss">
@@ -16,4 +22,4 @@
     }
 </style>
 
-<button {title} name={title} {onclick}>{name}</button>
+<button {title} name={name||title} {onclick}>{name}</button>

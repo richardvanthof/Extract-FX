@@ -67,6 +67,7 @@ button, summary {
 <script lang="ts">
     import type {Exclusion as ExclusionType } from '../../../global-vars/shared';
     import Exclusion from "../Exclusion/Exclusion.svelte";
+    import Button from "../../Button.svelte";
     import { v4 as uuidv4 } from 'uuid';
     import {handleClick} from '../../../helpers/helpers';
     let { exclusions, open } = $props();
@@ -105,6 +106,7 @@ button, summary {
 </script>
 
 <details class="wrapper" bind:open={$open}>
+    <Button title="test" />
     <summary class="exclusion-header" id='exclusion-header'>
         Exclude effects { ($exclusions.length > 0) ? `(${$exclusions.length})` : '' }
     </summary>
