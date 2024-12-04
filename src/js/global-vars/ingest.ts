@@ -12,4 +12,3 @@ const exclusionOptions:Writable<string[]> = writable(defaultEffects)
 const isExclusionModalOpen:Writable<boolean> = writable(true);
 
 export {targetTrack, sourceData, exclusions, exclusionOptions, isExclusionModalOpen};
-export {targetTrack, sourceData, exclusions, exclusionOptions, isExclusionModalOpen};
