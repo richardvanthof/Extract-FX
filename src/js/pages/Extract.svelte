@@ -1,19 +1,25 @@
-<script>
+<script lang='ts'>
     import DropDown from "../components/Form/DropDown.svelte";
     import Switch from "../components/Form/Switch.svelte";
     import ExcludeModal from "../components/Form/ExclusionModal/ExcludeModal.svelte";
     import { setContext } from 'svelte';
+    import type {Writable} from 'svelte/store';
+
+    type Globals = {
+        sourceTrack: Writable<number>,
+
+    }
     import { sourceTrack, destination, exclusions, exclusionOptions, isExclusionModalOpen } from '../global-vars/extract';
     import { trackTotal } from '../global-vars/shared';
     import { generateNumberedOptions } from '../helpers/helpers';
 
     const debugMode = process.env.NODE_ENV != "production"
 
-    const setDestination = (type) => $destination = type; // Updates the destination store
-    const trackOptions = generateNumberedOptions($trackTotal, 'VIDEO');
-    const currentSource = $derived($sourceTrack);
+    const setDestination = (type: 'file'| 'track') => globalThis.$destination = type; // Updates the destination store
+    const trackOptions = generateNumberedOptions(globalThis.$trackTotal, 'VIDEO');
+    const currentSource = $derived(globalThis.$sourceTrack);
 
-    setContext('exclusionOptions', $exclusionOptions);
+    setContext('exclusionOptions', globalThis.$exclusionOptions);
 </script>
 
 <form class="grid-container">
@@ -25,10 +31,9 @@
         <div class="group">
             <label for="destination">Destination</label>
             <Switch 
-                selected={$destination} 
+                selected={globalThis.$destination} 
                 callback={setDestination} 
                 options={['file', 'track']} 
-                id="destination"
             />
         </div>
     </div>
@@ -42,11 +47,11 @@
     <summary>Debug</summary>
     <h3>Extract: global vars.</h3>
     <ul>
-        <li>Source track: {$sourceTrack}</li>
-        <li>Destination: {$destination}</li>
-        <li>Exclusions: {JSON.stringify($exclusions)}</li>
-        <li>Exclusion options: {$exclusionOptions}</li>
-        <li>Exclusion modal open: {$isExclusionModalOpen}</li>
+        <li>Source track: {globalThis.$sourceTrack}</li>
+        <li>Destination: {globalThis.$destination}</li>
+        <li>Exclusions: {JSON.stringify(globalThis.$exclusions)}</li>
+        <li>Exclusion options: {globalThis.$exclusionOptions}</li>
+        <li>Exclusion modal open: {globalThis.$isExclusionModalOpen}</li>
     </ul>
 </details>
 

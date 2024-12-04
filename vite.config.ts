@@ -94,7 +94,9 @@ export default defineConfig({
   preview: {
     port: cepConfig.servePort,
   },
-
+  define: {
+    __EXTRACT_FX_VERSION__: JSON.stringify(process.env.npm_package_version)  // Or whatever value you want to inject
+  },
   build: {
     sourcemap: isPackage ? cepConfig.zxp.sourceMap : cepConfig.build?.sourceMap,
     watch: {
@@ -110,6 +112,7 @@ export default defineConfig({
       },
     },
     target: "chrome74",
+    
     outDir,
   },
 });

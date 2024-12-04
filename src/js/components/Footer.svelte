@@ -1,9 +1,19 @@
-<script>
+<script lang='ts'>
     import Button from "./Button.svelte";
     import {handleClick} from '../helpers/helpers';
     import config from '../../../cep.config';
-    
-    const actions = {
+
+    type Action = {
+        name: string;
+        description: string;
+        method: () => void;
+    };
+
+    type Actions = {
+        [key: string]: Action;  // Allows any string key with an Action type
+    };
+
+    const actions:Actions = {
         extract: {
             name: 'Extract',
             description: 'Back up video effects.',
@@ -57,7 +67,7 @@
 
 <footer>
     <div>
-        <Button name={isLoading ? 'Cancel' : name} aria-label={description} onclick={(e) => handleClick(e, method())} />
+        <Button name={isLoading ? 'Cancel' : name} ariaLabel={description} onclick={(e:Event|null|undefined) => handleClick(e||null, method())} />
     </div>
     <div>
         <p class='info caption'>&#169; {config.zxp.org} {new Date().getFullYear()} - version: {__EXTRACT_FX_VERSION__}</p>

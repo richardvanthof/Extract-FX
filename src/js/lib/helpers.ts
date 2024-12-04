@@ -1,5 +1,5 @@
-const handleClick = (e:Event, callback: any) => {
-    e.preventDefault()
+const handleClick = (e:Event|null|undefined, callback: any) => {
+    e && e.preventDefault()
     return callback;
 }
 

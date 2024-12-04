@@ -50,9 +50,12 @@
 <ul class="switch-input">
     {#each options as option}
         <li 
-            onclick={() => callback(option)} 
+            
             class="switch-option {selected === option ? 'active' : ''}">
-            {option}
+            <button onclick={() => callback(option)} >
+                {option}
+            </button>
+            
         </li>
     {/each}
 </ul>

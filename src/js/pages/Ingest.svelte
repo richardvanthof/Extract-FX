@@ -18,16 +18,16 @@
 <form class="grid-container">
     <div class="grid-column">
         <div class="group">
-            <label for="source-file" >Source file </label>
-            <SelectFile id="source-file"/>
+            <label for="source-file">Source file</label>
+            <SelectFile />
         </div>
         <div class="group">
-            <label for="target-track" >Target track </label>
-            <DropDown options={trackOptions} value={targetTrack} store={targetTrack} id="target-track" />
+            <label for="target-track">Target track</label>
+            <DropDown options={trackOptions} value={globalThis.$targetTrack} store={targetTrack} />
         </div>
     </div>
     <div class="grid-column">
-        <ExcludeModal {exclusions} options={exclusionOptions} open={isExclusionModalOpen} />
+        <ExcludeModal {exclusions} options={globalThis.$exclusionOptions} open={globalThis.$isExclusionModalOpen} />
     </div>
 </form>
 
@@ -43,5 +43,4 @@
     <li>Exclusion modal open: {$isExclusionModalOpen}</li>
 </ul>
 </details>
-
 {/if}

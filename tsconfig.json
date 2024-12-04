@@ -23,6 +23,10 @@
     "types": ["svelte", "node"],
     "baseUrl": ".",
   },
-  "include": ["./src"],
-  "exclude": ["./src/jsx"]
+  "include": [
+    "./src",
+    "./src/",
+    "./src/**/*.d.ts"
+  ],
+  "exclude": ["./src/jsx", "./legacy"]
 }
