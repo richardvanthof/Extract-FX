@@ -6,7 +6,7 @@ const defaultTrackAmount:number = 4;
 
 export type Exclusion = {
     id: string,
-    effect: string
+    effect: string|null
 }
 
 const trackTotal:Writable<number> = writable(defaultTrackAmount)
