@@ -4,7 +4,7 @@ export type Exclusion = {
 };
 
 interface Globals {
-  destination: "file" | "track";
+  destination?: "file" | "track";
   exclusions: Exclusion[]; // Adjust type as needed
   exclusionOptions: string[];
   sourceTrack: number;

@@ -23,7 +23,6 @@
 </script>
 
 <details class="wrapper" bind:open={globals.isExclusionModalOpen}>
-    <Button title="test" />
     <summary class="exclusion-header" id='exclusion-header'>
         Exclude effects { (globals.exclusions.length > 0) ? `(${globals.exclusions.length})` : '' }
     </summary>

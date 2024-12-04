@@ -36,7 +36,7 @@
     cursor: pointer;
     padding: .66em 1.5em;
     text-decoration: none;
-
+    border: var(--border-styling-transparent);
     &:active {
       background: var(--bg-btn-active)
     }

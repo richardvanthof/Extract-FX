@@ -24,7 +24,7 @@
         border-radius: var(--border-radius-outer);
     }
 
-    li {
+    button {
         padding: .8em 1.5em;
         background: var(--bg-light);
         list-style: none;
@@ -51,13 +51,10 @@
 
 <ul class="switch-input">
     {#each options as option}
-        <li 
-            
-            class="switch-option {selected === option ? 'active' : ''}">
-            <button onclick={() => callback(option)} >
-                {option}
-            </button>
-            
-        </li>
+    <button 
+    class="switch-option {selected === option ? 'active' : ''}"
+    onclick={() => callback(option)} >
+        {option}
+    </button>
     {/each}
 </ul>
