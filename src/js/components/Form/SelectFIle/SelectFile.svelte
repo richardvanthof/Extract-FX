@@ -1,7 +1,8 @@
 <script lang="ts">
     // Importing the store
-    import { sourceData, exclusions, exclusionOptions } from '../../../global-vars/ingest';  // Assuming this store is used to store data globally
-    import { getUniqueKeys, getJSON, SourceData } from './SelectFile.helpers';  // Utility for extracting keys from the file if needed
+    import { globals } from '@/js/global-vars/globals.svelte';  // Assuming this store is used to store data globally
+    import { getUniqueKeys, getJSON } from './SelectFile.helpers';  // Utility for extracting keys from the file if needed
+    import type {SourceData} from './SelectFile.helpers';
     import type {Writable} from 'svelte/store';
     import {get} from 'svelte/store';
     import {v4 as uuid} from 'uuid';

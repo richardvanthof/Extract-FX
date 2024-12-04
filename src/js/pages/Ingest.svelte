@@ -2,13 +2,14 @@
     import DropDown from '../components/Form/DropDown.svelte'
     import SelectFile from '../components/Form/SelectFIle/SelectFile.svelte'; 
     import ExcludeModal from '../components/Form/ExclusionModal/ExcludeModal.svelte';
-    import {targetTrack, sourceData, exclusions, exclusionOptions, isExclusionModalOpen} from '../global-vars/ingest';
-    import {trackTotal} from '../global-vars/shared';
+    // imp÷ort {targetTrack, sourceData, exclusions, exclusionOptions, isExclusionModalOpen} from '../global-vars/ingest';
     import {generateNumberedOptions} from '../helpers/helpers';
     import { setContext } from 'svelte';
+    import {globals} from '../global-vars/globals.svelte'
     // Manually subscribe to the store
-    const trackOptions = generateNumberedOptions($trackTotal, 'VIDEO');
-    const targetTrackVal = $derived($targetTrack);
+    const trackOptions = generateNumberedOptions(trackTotal, 'VIDEO');
+    const {sourceTrack, exclusionOptions, trackTotal, isExclusionModalOpen} = globals;
+
     // const currentTarget = $derived();
     setContext('exclusionOptions', $exclusionOptions);
 
@@ -23,15 +24,15 @@
         </div>
         <div class="group">
             <label for="target-track">Target track</label>
-            <DropDown options={trackOptions} value={globalThis.$targetTrack} store={targetTrack} />
+            <!-- <DropDown options={trackOptions} value={globalThis.$targetTrack} store={targetTrack} /> -->
         </div>
     </div>
     <div class="grid-column">
-        <ExcludeModal {exclusions} options={globalThis.$exclusionOptions} open={globalThis.$isExclusionModalOpen} />
+        <ExcludeModal {exclusions} options={exclusionOptions} open={isExclusionModalOpen} />
     </div>
 </form>
 
-{#if debugMode}
+<!-- {#if debugMode}
 <details open>
     <summary>Debug</summary>
     <h3>Ingest: global vars</h3>
@@ -43,4 +44,4 @@
     <li>Exclusion modal open: {$isExclusionModalOpen}</li>
 </ul>
 </details>
-{/if}
+{/if} -->

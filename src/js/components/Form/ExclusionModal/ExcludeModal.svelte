@@ -2,8 +2,7 @@
     import Exclusion from "../Exclusion/Exclusion.svelte";
     import Button from "../../Button.svelte";
     import { v4 as uuidv4 } from 'uuid';
-  import { globals } from '~/js/global-vars/globals.svelte';
-  import { exclusions } from "~/js/global-vars/ingest";
+  import { globals } from '../../../global-vars/globals.svelte';
 
     
     // Add a new exclusion item

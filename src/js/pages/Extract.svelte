@@ -4,15 +4,13 @@
     import ExcludeModal from "../components/Form/ExclusionModal/ExcludeModal.svelte";
     import { setContext } from 'svelte';
     import type {Writable} from 'svelte/store';
-
+    import {globals} from '../global-vars/globals.svelte';
     type Globals = {
         sourceTrack: Writable<number>,
 
     }
-    import { sourceTrack, destination, exclusions, exclusionOptions, isExclusionModalOpen } from '../global-vars/extract';
-    import { trackTotal } from '../global-vars/shared';
+    const { sourceTrack, destination, exclusions, exclusionOptions, isExclusionModalOpen, trackTotal } = globals; 
     import { generateNumberedOptions } from '../helpers/helpers';
-  import { globals } from "../global-vars/globals.svelte";
 
     const debugMode = process.env.NODE_ENV != "production"
 

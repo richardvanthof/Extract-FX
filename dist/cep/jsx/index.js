@@ -1,6 +1,6 @@
 var version = "0.0.1";
 
-var signSecret = 'Engine2-Sleek-Magical';
+// import { signSecret } from "./secrets";
 
 var config = {
   version: version,
@@ -40,14 +40,14 @@ var config = {
     country: "NL",
     province: "ZH",
     org: "Richard Space",
-    password: signSecret,
+    password: "signSecret",
     tsa: "http://timestamp.digicert.com/",
     sourceMap: false,
     jsxBin: "off"
   },
   installModules: [],
   copyAssets: [],
-  copyZipAssets: ['src/static/installation-assets/*']
+  copyZipAssets: ["src/static/installation-assets/*"]
 };
 
 var ns = config.id;

@@ -1,8 +1,8 @@
 import {
     getUniqueKeys,
-    getJSON,
-    SourceData
-} from "./SelectFile.helpers"
+    getJSON
+} from "./SelectFile.helpers";
+import type { SourceData } from "./SelectFile.helpers";
 import { describe, expect, it } from 'vitest';
 
 

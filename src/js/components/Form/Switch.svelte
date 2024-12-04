@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { globals } from "~/js/global-vars/globals.svelte";
+  import { globals } from "../../global-vars/globals.svelte";
 
     type Props = {
         selected: string,

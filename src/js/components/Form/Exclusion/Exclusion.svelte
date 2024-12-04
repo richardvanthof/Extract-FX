@@ -12,8 +12,8 @@
     import Button from "../../Button.svelte";
     import {handleClick} from '../../../helpers/helpers';
     import type { Writable } from "svelte/store";
-    import type { Exclusion } from '~/js/global-vars/shared';
-  import { globals } from '~/js/global-vars/globals.svelte';
+    import type { Exclusion } from '@/js/global-vars/globals.svelte';
+  import { globals } from '@/js/global-vars/globals.svelte';
     
     const { exclusion }: { exclusion: Exclusion } = $props();
 
