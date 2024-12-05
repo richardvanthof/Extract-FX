@@ -1,13 +1,13 @@
 <script lang="ts">
     import Exclusion from "../Exclusion/Exclusion.svelte";
     import Button from "../../Button.svelte";
-    import { v4 as uuidv4 } from 'uuid';
+    import { v4 as uuid } from 'uuid';
 
     let { exclusions = $bindable(), options, open = $bindable() } = $props();
 
     // Add a new exclusion item
     const add = () => {
-        exclusions = [...exclusions, {effect: null, id: uuidv4()}];
+        exclusions = [...exclusions, {effect: null, id: uuid()}];
     };
     
     // Remove all exclusions
@@ -40,8 +40,8 @@
         </div>
         <div class="exclusions-container">
             {#if exclusions.length > 0}
-                {#each exclusions as exclusion}
-                    <Exclusion exclusions={exclusions} />
+                {#each exclusions as {id, effect}}
+                    <Exclusion bind:exclusions={exclusions} {effect} {id} />
                 {/each}
             {:else}
                 <div class="exclusions-placeholder">

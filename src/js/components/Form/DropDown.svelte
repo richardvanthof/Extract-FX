@@ -1,9 +1,9 @@
 <script lang="ts">
     
     type Props = {
-        options: [string|number, string|number][],
+        options: [string|number, string|number|null][],
         value: string|number,
-        callback?: (updatedValue: number|string) => void,
+        callback?: (newEffect: number|string) => void,
     }
     let { options, value = $bindable(), callback}:Props = $props();
 
@@ -12,7 +12,6 @@
         event.preventDefault();
         if(event.target && callback) {
             const target = event.target as HTMLSelectElement;
-            const updatedValue:any = target.value;
             callback(target.value);
         }
     };
@@ -25,7 +24,6 @@
             <option value={val}>{label}</option>
         {/each}
     </select>
-
 {:else}
     <select bind:value={value} id="sourceTrack">
         {#each options as [label, val]}

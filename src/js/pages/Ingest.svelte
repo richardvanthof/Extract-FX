@@ -12,7 +12,7 @@
 
     import {v4 as uuid} from 'uuid';
 
-    let {exclusionOptions, isExclusionModalOpen, trackTotal} = globals;
+    let {exclusionOptions, trackTotal} = globals;
     const {targetTrack, data, exclusions} = globals.ingest;
     
     
@@ -59,7 +59,7 @@
     <div class="grid-column">
         <ExcludeModal 
         bind:exclusions={globals.ingest.exclusions} options={exclusionOptions} 
-        bind:open={isExclusionModalOpen}
+        bind:open={globals.isExclusionModalOpen}
     />
     </div>
 </form>

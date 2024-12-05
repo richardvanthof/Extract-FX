@@ -1,11 +1,3 @@
-<style>
-.exclusion {
-	margin-bottom: 0.5em;
-	display: flex;
-	border-right: none;
-}
-</style>
-
 <script lang="ts">
     import { getContext } from 'svelte';
     import DropDown from "../DropDown.svelte";
@@ -15,22 +7,42 @@
     import type { Exclusion } from '@/js/global-vars/globals.svelte';
     import { globals } from '@/js/global-vars/globals.svelte';
     
-    let { exclusions = $bindable() }: { exclusion: Exclusion } = $props();
-    const optionsContext:[string,string][] = getContext('exclusionOptions');
-    const options = $derived([['Choose an effect', null], ...optionsContext].map((option) => [option, option]))
+    type Props = { exclusions: Exclusion[], id:string, effect: string }
 
-    const handleUpdate = (newEffect: string) => {
-        exclusion.effect = newEffect;
-    } 
+    let { exclusions = $bindable(), id, effect }:Props= $props();
+    const optionsContext:string[] = getContext('exclusionOptions');
+    const options:[string|number, string|number|null][] = [
+        ['Choose an effect', null], ...optionsContext.map((option):[string, string]=>[option, option])
+    ]
+
+
+    // Update an exclusion item
+    const update = (newEffect: string|number, targetId:string) => {
+        exclusions = exclusions.map(exclusion => { 
+            if(exclusion.id === targetId) {
+                return {...exclusion, effect: newEffect}
+            } else {
+                return exclusion
+            }
+        })
+    }
 
     const remove = (id: string) => {
         console.log(`remove ${id}`);
-        exclusions = globals.exclusions.filter(({ id: exclusionId }) => exclusionId !== id);
+        exclusions = exclusions.filter(({ id: exclusionId }) => exclusionId !== id);
     };
     
 </script>
 
 <div class='exclusion' data-testid="exclusion">
-    <DropDown effect={exclusion.effect} value={exclusion.effect} onchange={handleUpdate} {options}  class='select'/>
-    <Button data-id={exclusion.id} class='remove-btn' onclick={(e:Event) => handleClick(e, remove(exclusion.id))} name='x'/>
+    <DropDown value={effect} {options} callback={(newEffect) => update(newEffect, id)} />
+    <Button onclick={(e:Event) => handleClick(e, remove(id))} name='x' title="Delete exclusion"/>
 </div>
+
+<style>
+    .exclusion {
+        margin-bottom: 0.5em;
+        display: flex;
+        border-right: none;
+    }
+</style>
