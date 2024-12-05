@@ -1,0 +1,60 @@
+:root {
+    // Colors
+    --lightergray: #312f2f;
+    --lightgray: #262525;
+    --gray: rgb(36, 36, 36);
+    --gray-transparent: rgba(36, 36, 36, 0.601);
+    --darkgray: #1D1D1D;
+    --darkestgray: #141313;
+    --lightteal: rgb(59, 59, 68);
+    --teal: rgb(75, 75, 83);
+    --darkteal: #373740;
+    --blue: #8080ff;
+    --white: rgb(216, 205, 205);
+    --whitesnow: rgb(174, 174, 181);
+    --black: rgb(0,0,0);
+    --red: #d14242;
+    --lightred: #805151;
+
+    // Backgrounds
+    --bg-regular: var(--gray);
+    --bg-light: var(--lightgray);
+    --bg-dark: var(--darkgray);
+    --bg-selected: var(--darkteal);
+
+    --bg-btn-active: var(--lightteal);
+    --bg-btn-selected: var(--teal);
+    
+    --bg-loader: var(--gray-transparent);
+
+    // Border
+    --border-color: var(--lightergray);
+    --border-color-active: var(--teal);
+    --border-weight: 1px;
+    --border-radius: 3px;
+
+    --border-styling: solid var(--border-weight) var(--border-color);
+    --border-styling-active: solid var(--border-weight) var(--border-color-active);
+    --border-style-transparent: var(--border-weight) solid transparent;
+    --border-style-error: var(--border-weight) solid var(--lightred);
+    
+    --border-radius-outer: 5px;
+    --border-radius-inner: 3px;
+
+    // Buttons
+    --btn-border-radius: 3px;
+    --bg-btn-active: var(--lightergray);
+
+    // Typography
+    --text-color: var(--white);
+    --text-color-dark: var(--whitesnow);
+    --btn-text-color: var(--white);
+    --link-color: var(--blue);
+    --error-color: var(--red);
+    
+    --fonts: 'LucidaGrande', sans-serif;
+    --font-size: 12px;
+    --font-size-sm: .9em;
+
+    --inputs-padding: .5em;
+}

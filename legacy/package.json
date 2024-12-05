@@ -1,0 +1,20 @@
+{
+  "name": "ppropanel",
+  "version": "0.0.1",
+  "description": "Example CEP Panel for Premiere Pro.",
+  "main": "dom_html/dist/index.html",
+  "scripts": {
+    "dev-html": "tsc --watch -p dom_html/",
+    "dev-app": "tsc --watch -p dom_app/"
+  },
+  "keywords": [],
+  "author": "Adobe",
+  "license": "Custom",
+  "dependencies": {
+    "uglify-js": "^3.19.3"
+  },
+  "devDependencies": {
+    "@types/node": "^0.12.4",
+    "typescript": "^2.3.3"
+  }
+}

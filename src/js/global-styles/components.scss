@@ -1,0 +1,41 @@
+body, html {
+    background: var(--bg-regular);
+}
+
+* {
+    color: var(--text-color);
+    font-family: var(--fonts);
+    box-sizing: border-box;
+    font-size: var(--font-size);
+}
+
+body > * {
+    display: block;
+}
+
+.caption {
+    display: inline;
+    margin: 0.5em 0;
+    margin-bottom: 1em;
+    color: var(--whitesnow);
+    font-size: var(--font-size-sm);
+}
+
+.grid-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: stretch;
+    flex-direction: column;
+}
+
+.grid-column {
+    width: 100%;
+}
+
+label {
+    margin-bottom: 0.4em;
+}
+
+.group {
+    margin-bottom: 1.33em;
+}

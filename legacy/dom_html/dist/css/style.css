@@ -1,0 +1,296 @@
+/*************************************************************************
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+* Copyright 2014 Adobe
+* All Rights Reserved.
+*
+* NOTICE: Adobe permits you to use, modify, and distribute this file in
+* accordance with the terms of the Adobe license agreement accompanying
+* it. If you have received this file from a source other than Adobe,
+* then your use, modification, or distribution of it requires the prior
+* written permission of Adobe. 
+**************************************************************************/
+
+* {
+	font-family: "LucidaGrande", sans-serif;
+	font-size: 11px;
+	-webkit-user-select: none; /* Safari */
+	-ms-user-select: none; /* IE 10 and IE 11 */
+	user-select: none; /* Standard syntax */
+	box-sizing: border-box;
+}
+
+:root {
+	--text: rgb(216, 205, 205);
+	--nav-bg: #232323;
+	--bg-light: #262525;
+	--bg-dark: #1D1D1D;
+	--bg: #232323;
+	--border-color: #37373c;
+	--border-width: 1px;
+	--selected-bg: #2a2a31;
+	--selected-bg-light: #373740;
+	--border-radius: 3px;
+	--border-radius-outer: 5px;
+	--border: var(--border-color) var(--border-width) solid;
+}
+
+#header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 1em 0em;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	background: var(--bg);
+	border-top: 1px solid #303030;
+}
+
+#header > * {
+	margin: 0 1em;
+	display: block;
+}
+
+.caption {
+	display: inline;
+	margin: 0.5em 0;
+	color: rgb(174, 174, 181);
+	font-size: 0.8em;
+}
+
+
+main {
+	padding: 1.33em 1em 6em;
+	min-width: 175px;
+	
+}
+
+label, button, select, h1,h2, h3, h4, h5, h6, p, summary {
+	color: var(--text);
+
+}
+
+#help-btn {
+	padding: 0 .66em
+}
+
+label {
+	display: block;
+	margin: 0;
+	margin-bottom: .6em;
+}
+
+html, body {
+	
+	font-size: 12px;
+	background: var(--bg);
+	margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+}
+
+h6 {
+	font-size: 11px;
+	font-weight: normal;
+}
+
+p, h6 {
+	text-align:center;
+}
+
+a {
+        color: #8080ff;
+}
+
+button
+{
+	border:1px solid;
+	min-height:20px;
+}
+
+select, button, input
+{
+	background: var(--bg-dark);
+	border: 1px solid #37373c;
+	border-radius: 3px;
+	color: white;
+	padding: .3em;
+}
+
+select, input {
+	width: 100%;
+	margin-bottom: 1.33em;
+}
+
+input['number'] {
+	color: black;
+}
+
+#progress {
+	margin: auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	height: 75vh;
+}
+
+
+
+.selected, .selected > * {
+	background: rgb(108, 156, 208);
+	border: none;
+}
+
+.exclusion > select {
+	margin: 0;
+}
+
+.exclusions-controls {
+	background: #272626;
+	border-radius: var(--border-radius);
+	display: flex;
+	justify-content: space-between;
+	padding: 0.1em;
+}
+
+.exclusions-control {
+	min-width: .5em 2em;
+}
+
+.exclusion-toolbar-button {
+	padding: .66em 1.5em .66em 1em;
+	border: none;
+	background: none;
+	border-right: var(--border);
+	border-radius: 0;
+}
+
+.exclusions-container {
+	min-height: 10rem;
+	/* padding-bottom: 2em; */
+}
+
+.exclusions-placeholder {
+	margin: 0;
+	transform: translateY(3em);
+	text-align: center;
+}
+
+.caption {
+	font-size: 0.8em;
+}
+
+.remove-exclusion {
+	padding: 0 .66em;
+}
+
+#remove-all-exclusions-btn {
+	background: none;
+	border:none;
+	font-size: 0.85em;
+	margin: 0 0.5em;
+}
+
+summary {
+	margin-bottom: .3em;
+}
+
+.hide {
+	display: none !important;
+}
+
+.switch-input {
+	margin: 0;
+	padding: 0;
+	display: flex;
+	padding: 0.4em;
+	background: var(--bg-dark);
+	justify-content: space-evenly;
+	margin-bottom: 1em;
+	column-gap: .5em;
+	border-radius: var(--border-radius-outer)
+}
+
+.switch-option {
+	padding: .8em 1.5em;
+	background: var(--bg-light);
+	list-style:none;
+	width: 100%;
+	text-align: center;
+	justify-content: space-evenly; 
+  border: var(--border-width) solid transparent;
+	color: var(--text);
+	cursor: pointer;
+	border-radius: var(--border-radius)
+}
+
+.switch-option.active {
+	background: var(--selected-bg);
+	border: var(--border-width) solid var(--border-color);
+}
+
+.navbar {
+	display: flex;
+	justify-content: space-between;
+	background: var(--nav-bg);
+	margin: 0;
+	padding: .5em 1em .5em 1em;
+}
+
+.navlink, .navlink > a {
+	color: var(--text);
+	text-decoration: none;
+	margin-right: .1em;
+	padding: .5em;
+	cursor: pointer;
+	/* border-radius: var(--border-radius); */
+	border: var(--border-width) solid transparent;
+}
+
+.navlink:last-of-type {
+	border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+
+.navlink:first-of-type {
+	border-radius: var(--border-radius)  0 0 var(--border-radius);
+}
+
+.navlink.active, .navlink.active > a {
+	background: var(--selected-bg-light);
+	border-radius: var(--border-radius);
+	border: var(--border-width) solid var(--border-color);
+}
+
+.nav-links {
+	display: flex;
+	text-decoration: none;
+	list-style: none;
+	margin: 0;
+	padding:0;
+	background: var(--bg-dark);
+	
+}
+
+.grid-container {
+	display: flex;
+	justify-content: space-around;
+  align-items: stretch;
+	flex-direction: column;
+}
+
+@media only screen and (max-width: 800px) {
+	.grid-container {
+		flex-direction: column;
+	}
+}
+
+
+
+.grid-column {
+	width: 100%;
+}

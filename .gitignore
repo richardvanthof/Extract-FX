@@ -1,7 +1,10 @@
 node_modules
 .DS_Store
 payloads/.DS_Store
-dom_app/dist/*.jsx
-dom_app/dist/*.js
-dom_html/dist/*.js
-dom_html/dist/*.jsx
+.parcel-cache
+dist
+.env.*
+.env
+dist/**/*
+secrets.ts
+yarn.lock
