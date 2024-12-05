@@ -1,9 +1,7 @@
-import {
-    getUniqueKeys,
-    getJSON,
-    SourceData
-} from "./SelectFile.helpers"
 import { describe, expect, it } from 'vitest';
+import { getJSON, getUniqueKeys } from './helpers.svelte';
+
+import type { SourceData } from '@/js/global-vars/globals.svelte';
 
 
 describe("Get unique keys from object array()", () => {
@@ -44,7 +42,7 @@ describe("Get unique keys from object array()", () => {
             Stabilize: {},
             Limit: {}
             }
-        expect(getUniqueKeys(list)).toStrictEqual(
+        expect((list)).toStrictEqual(
             ['Transform', 'Stabilize', 'Displace', 'Motion', 'Color', 'Limit']
         );
     });

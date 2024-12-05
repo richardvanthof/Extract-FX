@@ -3,56 +3,61 @@
     import Switch from "../components/Form/Switch.svelte";
     import ExcludeModal from "../components/Form/ExclusionModal/ExcludeModal.svelte";
     import { setContext } from 'svelte';
-    import type {Writable} from 'svelte/store';
-
-    type Globals = {
-        sourceTrack: Writable<number>,
-
-    }
-    import { sourceTrack, destination, exclusions, exclusionOptions, isExclusionModalOpen } from '../global-vars/extract';
-    import { trackTotal } from '../global-vars/shared';
+    import { globals } from '../global-vars/globals.svelte';
     import { generateNumberedOptions } from '../helpers/helpers';
 
+    let {exclusionOptions, trackTotal, isExclusionModalOpen} = globals;
+    let {exclusions, destination, sourceTrack} = globals.extract; 
+
     const debugMode = process.env.NODE_ENV != "production"
+    const trackOptions = $derived(generateNumberedOptions(trackTotal, 'VIDEO'));
 
-    const setDestination = (type: 'file'| 'track') => globalThis.$destination = type; // Updates the destination store
-    const trackOptions = generateNumberedOptions(globalThis.$trackTotal, 'VIDEO');
-    const currentSource = $derived(globalThis.$sourceTrack);
+    setContext('exclusionOptions', exclusionOptions);
 
-    setContext('exclusionOptions', globalThis.$exclusionOptions);
+    const handleDestinationUpdate = (selection: "file"|"sequence") => globals.extract.destination = selection;
+    const handleTrackUpdate = (update: string) => globals.extract.sourceTrack = Number(update)
 </script>
 
 <form class="grid-container">
     <div class="grid-column">
         <div class="group">
             <label for="source-track">Source track</label>
-            <DropDown options={trackOptions} value={currentSource} store={sourceTrack}  />
+            <DropDown options={trackOptions} bind:value={globals.extract.sourceTrack}/>
         </div>
         <div class="group">
             <label for="destination">Destination</label>
             <Switch 
-                selected={globalThis.$destination} 
-                callback={setDestination} 
-                options={['file', 'track']} 
+                value={globals.extract.destination}
+                options={['File', 'Sequence']} 
+                callback={handleDestinationUpdate}
             />
         </div>
     </div>
     <div class="grid-column">
-        <ExcludeModal {exclusions} options={exclusionOptions} open={isExclusionModalOpen}/>
+        <ExcludeModal 
+            bind:exclusions={globals.extract.exclusions} 
+            options={globals.exclusionOptions} 
+            bind:open={globals.isExclusionModalOpen} 
+        />
     </div>
 </form>
 
 {#if debugMode}
-<details open>
-    <summary>Debug</summary>
-    <h3>Extract: global vars.</h3>
-    <ul>
-        <li>Source track: {globalThis.$sourceTrack}</li>
-        <li>Destination: {globalThis.$destination}</li>
-        <li>Exclusions: {JSON.stringify(globalThis.$exclusions)}</li>
-        <li>Exclusion options: {globalThis.$exclusionOptions}</li>
-        <li>Exclusion modal open: {globalThis.$isExclusionModalOpen}</li>
-    </ul>
-</details>
+  <h3>Global data</h3>
+  <ul>
+    {#each Object.keys(globals) as global}
 
+        {#if typeof globals[global] === 'object' && globals[global] !== null}
+          <!-- If the value is an object, we can print it nicely (e.g., using a details element) -->
+          <details>
+            <summary>{global}</summary>
+            <pre>{JSON.stringify(globals[global], null, 2)}</pre>
+          </details>
+        {:else}
+          <!-- Otherwise, just print the value -->
+          {global}: {globals[global]}<br/>
+        {/if}
+
+    {/each}
+  </ul>
 {/if}

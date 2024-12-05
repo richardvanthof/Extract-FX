@@ -1,3 +1,57 @@
+<script lang="ts">
+    import Exclusion from "../Exclusion/Exclusion.svelte";
+    import Button from "../../Button.svelte";
+    import { v4 as uuid } from 'uuid';
+
+    let { exclusions = $bindable(), options, open = $bindable() } = $props();
+
+    // Add a new exclusion item
+    const add = () => {
+        exclusions = [...exclusions, {effect: null, id: uuid()}];
+    };
+    
+    // Remove all exclusions
+    const removeAll = () => exclusions = [];
+</script>
+
+<details class="wrapper" bind:open={open}>
+    <summary class="exclusion-header" id='exclusion-header'>
+        Exclude effects { (exclusions.length > 0) ? `(${exclusions.length})` : '' }
+    </summary>
+    <div class="exclusions">
+        <div class='exclusions-controls'>
+            <button 
+                class='exclusion-toolbar-button exclusion-control' 
+                id='add-exclusion-btn' 
+                title="add"
+                onclick={(e) => {
+                    e.preventDefault();
+                    add()
+                }}>+ Add Exclusion
+            </button>
+            <button 
+                class='exclusion-control' 
+                title="clear"
+                id='remove-all-exclusions-btn' 
+                onclick={(e) => {
+                    e.preventDefault();
+                    removeAll()
+                }}>Clear all</button>
+        </div>
+        <div class="exclusions-container">
+            {#if exclusions.length > 0}
+                {#each exclusions as {id, effect}}
+                    <Exclusion bind:exclusions={exclusions} {effect} {id} />
+                {/each}
+            {:else}
+                <div class="exclusions-placeholder">
+                    <p class="caption">Press the +-button to add an exclusion.</p>
+                </div>
+            {/if}
+        </div>
+    </div>
+</details>
+
 <style lang="scss">
     .wrapper {
         margin-bottom: 1em;
@@ -62,83 +116,3 @@
         cursor: pointer;
     }
 </style>
-
-<script lang="ts">
-    import type {Exclusion as ExclusionType } from '../../../global-vars/shared';
-    import Exclusion from "../Exclusion/Exclusion.svelte";
-    import Button from "../../Button.svelte";
-    import { v4 as uuidv4 } from 'uuid';
-    import {handleClick} from '../../../helpers/helpers';
-    let { exclusions, open } = $props();
-    
-    const excl = $derived($exclusions);
-
-    // Add a new exclusion item
-    const add = () => {
-        exclusions.update(
-            (current: ExclusionType[]) => [
-                ...current,
-                {
-                    effect: null,  // You might want to set this dynamically
-                    id: uuidv4()
-                }
-            ]
-        );
-    };
-
-    // Update an exclusion item
-    const update = (newEffect: string, id: string) => {
-        exclusions.update( (currentItems: ExclusionType[]) => {
-            return currentItems.map(item => item.id === id ? {...item, effect: newEffect} : item)
-        })
-    }
-
-    const remove = (id: string) => {
-        console.log(`remove ${id}`);
-        exclusions.update((currentItems: ExclusionType[]) => {
-            return currentItems.filter(({ id: exclusionId }) => exclusionId !== id);
-        });
-    };
-
-    // Remove all exclusions
-    const removeAll = () => exclusions.set([]);
-</script>
-
-<details class="wrapper" bind:open={$open}>
-    <Button title="test" />
-    <summary class="exclusion-header" id='exclusion-header'>
-        Exclude effects { ($exclusions.length > 0) ? `(${$exclusions.length})` : '' }
-    </summary>
-    <div class="exclusions">
-        <div class='exclusions-controls'>
-            <button 
-                class='exclusion-toolbar-button exclusion-control' 
-                id='add-exclusion-btn' 
-                title="add"
-                onclick={(e:Event) => {
-                    e.preventDefault();
-                    add()
-                }}>+ Add Exclusion
-            </button>
-            <button 
-                class='exclusion-control' 
-                title="clear"
-                id='remove-all-exclusions-btn' 
-                onclick={(e:Event) => {
-                    e.preventDefault();
-                    removeAll()
-                }}>Clear all</button>
-        </div>
-        <div class="exclusions-container">
-            {#if $exclusions.length > 0}
-                {#each excl as {id}}
-                    <Exclusion {id} {exclusions} {remove}/>
-                {/each}
-            {:else}
-                <div class="exclusions-placeholder">
-                    <p class="caption">Press the +-button to add an exclusion.</p>
-                </div>
-            {/if}
-        </div>
-    </div>
-</details>

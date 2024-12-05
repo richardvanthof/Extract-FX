@@ -1,6 +1,6 @@
-import { CEP_Config } from "vite-cep-plugin";
+import type { CEP_Config } from "vite-cep-plugin";
 import { version } from "./package.json";
-import { signSecret } from './secrets';
+// import { signSecret } from "./secrets";
 
 const config: CEP_Config = {
   version,
@@ -12,9 +12,7 @@ const config: CEP_Config = {
   startingDebugPort: 8860,
   extensionManifestVersion: 6.0,
   requiredRuntimeVersion: 9.0,
-  hosts: [
-    { name: "PPRO", version: "[0.0,99.9]" }
-  ],
+  hosts: [{ name: "PPRO", version: "[0.0,99.9]" }],
   type: "Panel",
   iconDarkNormal: "./src/assets/light-icon.png",
   iconNormal: "./src/assets/dark-icon.png",
@@ -33,7 +31,6 @@ const config: CEP_Config = {
       width: 600,
       height: 650,
     },
-
   ],
   build: {
     jsxBin: "off",
@@ -43,13 +40,13 @@ const config: CEP_Config = {
     country: "NL",
     province: "ZH",
     org: "Richard Space",
-    password: signSecret,
+    password: "signSecret",
     tsa: "http://timestamp.digicert.com/",
     sourceMap: false,
     jsxBin: "off",
   },
   installModules: [],
   copyAssets: [],
-  copyZipAssets: ['src/static/installation-assets/*'],
+  copyZipAssets: ["src/static/installation-assets/*"],
 };
 export default config;

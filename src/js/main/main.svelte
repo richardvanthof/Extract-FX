@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import NavBar from '../components/NavBar.svelte';
     import Extract from '../pages/Extract.svelte';
     
@@ -9,7 +9,7 @@
     const loader = $state({isLoading: false, status: null});
     let mode = $state('extract');
     
-    const setMode = (name) => mode = name;
+    const setMode = (name:string) => mode = name;
 </script>
 
 <style>

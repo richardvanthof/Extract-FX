@@ -1,45 +1,13 @@
 <script lang="ts">
     // Importing the store
-    import { sourceData, exclusions, exclusionOptions } from '../../../global-vars/ingest';  // Assuming this store is used to store data globally
-    import { getUniqueKeys, getJSON, SourceData } from './SelectFile.helpers';  // Utility for extracting keys from the file if needed
-    import type {Writable} from 'svelte/store';
-    import {get} from 'svelte/store';
-    import {v4 as uuid} from 'uuid';
 
+    type Props = {
+        callback: (files: Event) => void,
+        error: Error|null
+    }
     // Declare a variable to hold the files
-    let files: FileList | null = null;
+    let {callback = $bindable(), error}:Props = $props();
 
-    // Handle file input change
-    const handleFile = async (event: Event) => {
-        const input = event.target as HTMLInputElement;
-        const files = input?.files;
-
-        try {
-            // Decode and parse the JSON file
-            if(!files) {throw new Error("File not found.")}
-            const decodedData: SourceData = await getJSON(files[0]);
-        
-            // Set the decoded data in the store
-            sourceData.set(decodedData);
-            
-            const uniqueKeys = getUniqueKeys(decodedData.clips);
-            
-            // Optionally: If you want to extract unique keys from the data, you can use the helper function
-            if(uniqueKeys) {exclusionOptions.set(uniqueKeys);}
-
-            // Add all the exclusions from the source file to the exclude panel.
-            if(decodedData && exclusions) {
-                exclusions.set(decodedData.exclusions.map((exclusion) => ({
-                    effect: exclusion,
-                    id: uuid()
-                })))
-            };
-
-        } catch (err) {
-            console.error(err);
-            alert(err)
-        }
-    };
 </script>
 
 
@@ -52,10 +20,21 @@
         padding: .3em;
         display: block;
         width: 100%;
-        margin-bottom: 1em;
+        margin-bottom: .5em;
         cursor: pointer;
+    }
+
+    .error {
+        border: var(--border-style-error)
+     }
+
+    .error-text {
+        color: var(--error-color);
     }
 </style>
 
 <!-- File input field that accepts only .json files -->
-<input bind:files={files} onchange={handleFile} accept="application/json" type="file">
+<input class:error={error != null} onchange={callback} accept="application/json" type="file">
+{#if error}
+<p class="error-text caption">{error}</p>
+{/if}

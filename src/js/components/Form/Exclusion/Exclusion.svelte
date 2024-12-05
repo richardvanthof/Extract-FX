@@ -1,40 +1,48 @@
-<style>
-.exclusion {
-	margin-bottom: 0.5em;
-	display: flex;
-	border-right: none;
-}
-</style>
-
 <script lang="ts">
     import { getContext } from 'svelte';
     import DropDown from "../DropDown.svelte";
     import Button from "../../Button.svelte";
     import {handleClick} from '../../../helpers/helpers';
     import type { Writable } from "svelte/store";
-    import type { Exclusion } from '~/js/global-vars/shared';
+    import type { Exclusion } from '@/js/global-vars/globals.svelte';
+    import { globals } from '@/js/global-vars/globals.svelte';
     
-    interface Props {
-		id: string,
-        exclusions: Writable<Exclusion[]>,
-        remove: (id: string) => void,
-		[key: string]: unknown;
-	}
-    
-    const {id, exclusions, remove}:Props = $props();
-    const {effect} = $derived(():Exclusion => $exclusions.find(id));
-    const optionsContext:[string,string][] = getContext('exclusionOptions');
-    const options = [['Choose an effect', null], ...optionsContext].map((option) => [option, option])
-    const handleUpdate = (newEffect: string) => {
-        exclusions.update((currentItems:Exclusion[]) => {
-            return currentItems.map((exclusion => {
-                return exclusion.id === id ? {...exclusion, effect:newEffect} : exclusion
-            }));
+    type Props = { exclusions: Exclusion[], id:string, effect: string }
+
+    let { exclusions = $bindable(), id, effect }:Props= $props();
+    const optionsContext:string[] = getContext('exclusionOptions');
+    const options:[string|number, string|number|null][] = [
+        ['Choose an effect', null], ...optionsContext.map((option):[string, string]=>[option, option])
+    ]
+
+
+    // Update an exclusion item
+    const update = (newEffect: string|number, targetId:string) => {
+        exclusions = exclusions.map(exclusion => { 
+            if(exclusion.id === targetId) {
+                return {...exclusion, effect: newEffect}
+            } else {
+                return exclusion
+            }
         })
-    } 
+    }
+
+    const remove = (id: string) => {
+        console.log(`remove ${id}`);
+        exclusions = exclusions.filter(({ id: exclusionId }) => exclusionId !== id);
+    };
+    
 </script>
 
 <div class='exclusion' data-testid="exclusion">
-    <DropDown {effect} value={effect} onchange={handleUpdate} {options}  class='select'/>
-    <Button data-id={id} class='remove-btn' onclick={(e:Event) => handleClick(e, remove(id))} name='x'/>
+    <DropDown value={effect} {options} callback={(newEffect) => update(newEffect, id)} />
+    <Button onclick={(e:Event) => handleClick(e, remove(id))} name='x' title="Delete exclusion"/>
 </div>
+
+<style>
+    .exclusion {
+        margin-bottom: 0.5em;
+        display: flex;
+        border-right: none;
+    }
+</style>

@@ -1,3 +1,38 @@
+<script lang="ts">
+    
+    type Props = {
+        options: [string|number, string|number|null][],
+        value: string|number,
+        callback?: (newEffect: number|string) => void,
+    }
+    let { options, value = $bindable(), callback}:Props = $props();
+
+    // Handle update when the value changes
+    let handleUpdate = (event:Event) => {
+        event.preventDefault();
+        if(event.target && callback) {
+            const target = event.target as HTMLSelectElement;
+            callback(target.value);
+        }
+    };
+
+</script>
+
+{#if callback}
+    <select {value} onchange={handleUpdate} id="sourceTrack">
+        {#each options as [label, val]}
+            <option value={val}>{label}</option>
+        {/each}
+    </select>
+{:else}
+    <select bind:value={value} id="sourceTrack">
+        {#each options as [label, val]}
+            <option value={val}>{label}</option>
+        {/each}
+    </select>
+{/if}
+
+
 <style>
     select {
         background: var(--bg-dark);
@@ -14,45 +49,3 @@
         color: var(--white);
     }
 </style>
-
-<script lang="ts">
-    
-    import type { Writable as Writable} from "svelte/store"
-    type Option = [string|number, string|number];
-    type Props = {
-        options: Option[],
-        store?: Writable<string|number>,
-        value: string|number,
-        onchange?: (updatedValue: string|null) => void,
-    }
-    let { options, store, value, onchange }:Props = $props();
-
-    // Handle update when the value changes
-    let handleUpdate = (event:Event) => {
-        if(event.target && onchange) {
-            const target = event.target as HTMLSelectElement;
-            const updatedValue = target.value;
-            onchange(updatedValue);
-        }
-        
-    };
-
-</script>
-
-<!-- Corrected binding for the value -->
-
-
-{#if onchange}
-    <select  {value} onchange={handleUpdate} id="sourceTrack">
-        {#each options as [label, val]}
-            <option value={val}>{label}</option>
-        {/each}
-    </select>
-
-{:else}
-    <select bind:value={$store} id="sourceTrack">
-        {#each options as [label, val]}
-            <option value={val}>{label}</option>
-        {/each}
-    </select>
-{/if}

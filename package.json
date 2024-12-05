@@ -68,7 +68,7 @@
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.16.0",
     "vite": "^6.0.1",
-    "vite-cep-plugin": "/Users/Richard/Applications/Git/vite-cep-plugin",
+    "vite-cep-plugin": "^1.1.12",
     "vite-plugin-version-mark": "^0.1.3",
     "vitest": "^2.1.6",
     "yarn": "^1.22.17"

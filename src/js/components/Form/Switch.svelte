@@ -1,12 +1,26 @@
 <script lang="ts">
+    import { globals } from "../../global-vars/globals.svelte";
+    import {handleClick} from "@/js/helpers/helpers";
     type Props = {
-        selected: string,
+        value: string,
         options: string[],
-        callback: (option: string) => void
+        callback: (selection: 'file'|'sequence') => void
     }
-    const {selected, callback, options} = $props();
+    let {options, value, callback}: Props = $props();
 
 </script>
+
+
+<ul class="switch-input">
+    {#each options as option}
+    <button 
+    class="switch-option {value.toLowerCase() === option.toLowerCase() ? 'active' : ''}"
+    onclick={(e:Event) => handleClick(e, callback(option.toLocaleLowerCase()))} >
+        {option}
+    </button>
+    {/each}
+</ul>
+
 
 <style lang="scss">
     ul {
@@ -22,7 +36,7 @@
         border-radius: var(--border-radius-outer);
     }
 
-    li {
+    button {
         padding: .8em 1.5em;
         background: var(--bg-light);
         list-style: none;
@@ -46,16 +60,3 @@
         }
     }
 </style>
-
-<ul class="switch-input">
-    {#each options as option}
-        <li 
-            
-            class="switch-option {selected === option ? 'active' : ''}">
-            <button onclick={() => callback(option)} >
-                {option}
-            </button>
-            
-        </li>
-    {/each}
-</ul>

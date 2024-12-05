@@ -1,46 +1,87 @@
-<script>
+<script lang="ts">
+    import {setContext} from 'svelte';
     import DropDown from '../components/Form/DropDown.svelte'
     import SelectFile from '../components/Form/SelectFIle/SelectFile.svelte'; 
+    import {handleIngestFile} from '@/js/components/Form/SelectFIle/helpers.svelte';
     import ExcludeModal from '../components/Form/ExclusionModal/ExcludeModal.svelte';
-    import {targetTrack, sourceData, exclusions, exclusionOptions, isExclusionModalOpen} from '../global-vars/ingest';
-    import {trackTotal} from '../global-vars/shared';
     import {generateNumberedOptions} from '../helpers/helpers';
-    import { setContext } from 'svelte';
+    import {globals} from '../global-vars/globals.svelte';
+    import type {FileData} from '@/js/components/Form/SelectFIle/helpers.svelte';
+    import type {Exclusion} from '../global-vars/globals.svelte';
     // Manually subscribe to the store
-    const trackOptions = generateNumberedOptions($trackTotal, 'VIDEO');
-    const targetTrackVal = $derived($targetTrack);
-    // const currentTarget = $derived();
-    setContext('exclusionOptions', $exclusionOptions);
 
+    import {v4 as uuid} from 'uuid';
+
+    let {exclusionOptions, trackTotal} = globals;
+    const {targetTrack, data, exclusions} = globals.ingest;
+    
+    
+    // const currentTarget = $derived();
+    setContext('exclusionOptions', exclusionOptions);
+    
+    const trackOptions = generateNumberedOptions(trackTotal, 'VIDEO');
     const debugMode = process.env.NODE_ENV != "production"
+
+    let fileError:Error|unknown = $state(null);
+
+    const handleFile = async (files: Event) => {
+        try {
+            fileError = null;
+            const {data, exclusionOptions}:FileData|unknown = await handleIngestFile(files).catch(err => fileError = err)
+            if(data) {
+                fileError = null
+                globals.ingest.data = data;
+                globals.ingest.exclusions = data.exclusions.map((effect: string):Exclusion => ({
+                    id: uuid(),
+                    effect: effect
+                }))
+            }
+        } catch (err) {
+            console.error(err);
+            alert(err)
+        }
+        
+    };
+
 </script>
 
 <form class="grid-container">
     <div class="grid-column">
         <div class="group">
             <label for="source-file">Source file</label>
-            <SelectFile />
+            <SelectFile error={fileError} callback={handleFile}/>
         </div>
         <div class="group">
             <label for="target-track">Target track</label>
-            <DropDown options={trackOptions} value={globalThis.$targetTrack} store={targetTrack} />
+            <DropDown options={trackOptions} bind:value={globals.ingest.targetTrack} />
         </div>
     </div>
     <div class="grid-column">
-        <ExcludeModal {exclusions} options={globalThis.$exclusionOptions} open={globalThis.$isExclusionModalOpen} />
+        <ExcludeModal 
+        bind:exclusions={globals.ingest.exclusions} options={exclusionOptions} 
+        bind:open={globals.isExclusionModalOpen}
+    />
     </div>
 </form>
 
 {#if debugMode}
-<details open>
-    <summary>Debug</summary>
-    <h3>Ingest: global vars</h3>
-<ul>
-    <li>Target track: {$targetTrack}</li>
-    <li>Source Data: {JSON.stringify($sourceData)}</li>
-    <li>Exclusions: {JSON.stringify($exclusions)}</li>
-    <li>Exclusion options: {$exclusionOptions}</li>
-    <li>Exclusion modal open: {$isExclusionModalOpen}</li>
-</ul>
-</details>
+  <h3>Global data</h3>
+  <ul>
+    {#each Object.keys(globals) as global}
+
+        {#if typeof globals[global] === 'object' && globals[global] !== null}
+          <!-- If the value is an object, we can print it nicely (e.g., using a details element) -->
+          <details>
+            <summary>{global}</summary>
+            <pre>{JSON.stringify(globals[global], null, 2)}</pre>
+          </details>
+        {:else}
+          <!-- Otherwise, just print the value -->
+          {global}: {globals[global]}<br/>
+        {/if}
+
+    {/each}
+  </ul>
 {/if}
+
+
