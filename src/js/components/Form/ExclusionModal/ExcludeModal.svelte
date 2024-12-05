@@ -2,29 +2,21 @@
     import Exclusion from "../Exclusion/Exclusion.svelte";
     import Button from "../../Button.svelte";
     import { v4 as uuidv4 } from 'uuid';
-  import { globals } from '../../../global-vars/globals.svelte';
 
-    
+    let { exclusions = $bindable(), options, open = $bindable() } = $props();
+
     // Add a new exclusion item
     const add = () => {
-        globals.exclusions = [...globals.exclusions, {effect: null, id: uuidv4()}];
+        exclusions = [...exclusions, {effect: null, id: uuidv4()}];
     };
-
-    // Update an exclusion item
-    const update = (newEffect: string, id: string) => {
-        const exclusion = globals.exclusions.find(({ id: exclusionId }) => exclusionId === id);
-        if (exclusion) exclusion.effect = newEffect;
-        
-
-    }
-
+    
     // Remove all exclusions
-    const removeAll = () => globals.exclusions = [];
+    const removeAll = () => exclusions = [];
 </script>
 
-<details class="wrapper" bind:open={globals.isExclusionModalOpen}>
+<details class="wrapper" bind:open={open}>
     <summary class="exclusion-header" id='exclusion-header'>
-        Exclude effects { (globals.exclusions.length > 0) ? `(${globals.exclusions.length})` : '' }
+        Exclude effects { (exclusions.length > 0) ? `(${exclusions.length})` : '' }
     </summary>
     <div class="exclusions">
         <div class='exclusions-controls'>
@@ -47,9 +39,9 @@
                 }}>Clear all</button>
         </div>
         <div class="exclusions-container">
-            {#if globals.exclusions.length > 0}
-                {#each globals.exclusions as exclusion}
-                    <Exclusion {exclusion}/>
+            {#if exclusions.length > 0}
+                {#each exclusions as exclusion}
+                    <Exclusion exclusions={exclusions} />
                 {/each}
             {:else}
                 <div class="exclusions-placeholder">

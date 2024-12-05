@@ -13,20 +13,21 @@
     import {handleClick} from '../../../helpers/helpers';
     import type { Writable } from "svelte/store";
     import type { Exclusion } from '@/js/global-vars/globals.svelte';
-  import { globals } from '@/js/global-vars/globals.svelte';
+    import { globals } from '@/js/global-vars/globals.svelte';
     
-    const { exclusion }: { exclusion: Exclusion } = $props();
-
+    let { exclusions = $bindable() }: { exclusion: Exclusion } = $props();
     const optionsContext:[string,string][] = getContext('exclusionOptions');
     const options = $derived([['Choose an effect', null], ...optionsContext].map((option) => [option, option]))
+
     const handleUpdate = (newEffect: string) => {
         exclusion.effect = newEffect;
     } 
 
     const remove = (id: string) => {
         console.log(`remove ${id}`);
-        globals.exclusions = globals.exclusions.filter(({ id: exclusionId }) => exclusionId !== id);
+        exclusions = globals.exclusions.filter(({ id: exclusionId }) => exclusionId !== id);
     };
+    
 </script>
 
 <div class='exclusion' data-testid="exclusion">

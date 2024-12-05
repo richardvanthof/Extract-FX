@@ -3,20 +3,42 @@ export type Exclusion = {
   effect: string | null;
 };
 
-interface Globals {
-  destination?: "file" | "track";
-  exclusions: Exclusion[]; // Adjust type as needed
-  exclusionOptions: string[];
-  sourceTrack: number;
-  trackTotal: number;
-  isExclusionModalOpen: boolean;
+export type SourceData = {
+  type: 'RS-FX-EXCHANGE';
+  track: number;
+  sequence: string;
+  exclusions: string[];
+  clips: object[];
+};
+
+type Globals = {
+  ingest: {
+    targetTrack: number,
+    data: SourceData | null,
+    exclusions: Exclusion[]
+  },
+  extract: {
+    exclusions: Exclusion[],
+    destination: "file" | "sequence",
+    sourceTrack: number,
+  },
+  exclusionOptions: [],
+  trackTotal: number,
+  isExclusionModalOpen: boolean,
 }
 
 export const globals: Globals = $state({
-  destination: "file",
-  exclusions: [],
+  ingest: {
+    targetTrack: 1,
+    data: null,
+    exclusions: []
+  },
+  extract: {
+    exclusions: [],
+    destination: "file",
+    sourceTrack: 1,
+  },
   exclusionOptions: [],
-  sourceTrack: 0,
-  trackTotal: 0,
-  isExclusionModalOpen: false,
+  trackTotal: 10,
+  isExclusionModalOpen: true,
 });

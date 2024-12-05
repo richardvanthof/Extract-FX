@@ -9,7 +9,7 @@
     const loader = $state({isLoading: false, status: null});
     let mode = $state('extract');
     
-    const setMode = (name) => mode = name;
+    const setMode = (name:string) => mode = name;
 </script>
 
 <style>

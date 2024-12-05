@@ -1,11 +1,9 @@
-// Define the type for the source data
-export type SourceData = {
-    type: 'RS-FX-EXCHANGE';
-    track: number;
-    sequence: string;
-    exclusions: string[];
-    clips: object[];
-};
+import type { SourceData } from "@/js/global-vars/globals.svelte";
+
+export type FileData = {
+    data?: SourceData,
+    exclusionOptions?: string[]
+}
 
 export const getUniqueKeys = (data:object[]|object):string[] => {
     let keys:string[];
@@ -72,4 +70,18 @@ export const getJSON = async (file: File): Promise<SourceData> => {
 
         reader.readAsText(file);
     });
+};
+
+export const handleIngestFile = async (event: Event):Promise<FileData> => {
+    const result:FileData = {}
+
+    const input = event.target as HTMLInputElement;
+    const files = input?.files;
+
+    // Decode and parse the JSON file
+    if(!files) {throw new Error("File not found.")}
+    result.data = await getJSON(files[0]);
+    result.exclusionOptions = getUniqueKeys(result.data.clips);
+
+    return result;
 };

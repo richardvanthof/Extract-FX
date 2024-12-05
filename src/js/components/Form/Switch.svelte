@@ -1,14 +1,26 @@
 <script lang="ts">
-  import { globals } from "../../global-vars/globals.svelte";
-
+    import { globals } from "../../global-vars/globals.svelte";
+    import {handleClick} from "@/js/helpers/helpers";
     type Props = {
-        selected: string,
+        value: string,
         options: string[],
-        callback: (option: typeof globals.destination) => void
+        callback: (selection: 'file'|'sequence') => void
     }
-    const {selected, callback, options}: Props = $props();
+    let {options, value, callback}: Props = $props();
 
 </script>
+
+
+<ul class="switch-input">
+    {#each options as option}
+    <button 
+    class="switch-option {value.toLowerCase() === option.toLowerCase() ? 'active' : ''}"
+    onclick={(e:Event) => handleClick(e, callback(option.toLocaleLowerCase()))} >
+        {option}
+    </button>
+    {/each}
+</ul>
+
 
 <style lang="scss">
     ul {
@@ -48,13 +60,3 @@
         }
     }
 </style>
-
-<ul class="switch-input">
-    {#each options as option}
-    <button 
-    class="switch-option {selected === option ? 'active' : ''}"
-    onclick={() => callback(option)} >
-        {option}
-    </button>
-    {/each}
-</ul>

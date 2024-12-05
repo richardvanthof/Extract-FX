@@ -1,41 +1,33 @@
-
-
 <script lang="ts">
     
-    import type { Writable as Writable} from "svelte/store"
-    type Option = [string|number, string|number];
     type Props = {
-        options: Option[],
-        store?: Writable<string|number>,
+        options: [string|number, string|number][],
         value: string|number,
-        onchange?: (updatedValue: string|null) => void,
+        callback?: (updatedValue: number|string) => void,
     }
-    let { options, store, value, onchange }:Props = $props();
+    let { options, value = $bindable(), callback}:Props = $props();
 
     // Handle update when the value changes
     let handleUpdate = (event:Event) => {
-        if(event.target && onchange) {
+        event.preventDefault();
+        if(event.target && callback) {
             const target = event.target as HTMLSelectElement;
-            const updatedValue = target.value;
-            onchange(updatedValue);
+            const updatedValue:any = target.value;
+            callback(target.value);
         }
-        
     };
 
 </script>
 
-<!-- Corrected binding for the value -->
-
-
-{#if onchange}
-    <select  {value} onchange={handleUpdate} id="sourceTrack">
+{#if callback}
+    <select {value} onchange={handleUpdate} id="sourceTrack">
         {#each options as [label, val]}
             <option value={val}>{label}</option>
         {/each}
     </select>
 
 {:else}
-    <select bind:value={$store} id="sourceTrack">
+    <select bind:value={value} id="sourceTrack">
         {#each options as [label, val]}
             <option value={val}>{label}</option>
         {/each}
