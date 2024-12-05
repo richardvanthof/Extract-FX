@@ -42,7 +42,7 @@ describe("Get unique keys from object array()", () => {
             Stabilize: {},
             Limit: {}
             }
-        expect((list)).toStrictEqual(
+        expect(getUniqueKeys(list)).toStrictEqual(
             ['Transform', 'Stabilize', 'Displace', 'Motion', 'Color', 'Limit']
         );
     });
