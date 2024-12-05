@@ -65,12 +65,23 @@
 </form>
 
 {#if debugMode}
-<details open>
-    <summary>Debug</summary>
-    <h3>Global data</h3>
-    <div>
-        {JSON.stringify(globals)}
-    </div>
-</details>
+  <h3>Global data</h3>
+  <ul>
+    {#each Object.keys(globals) as global}
+
+        {#if typeof globals[global] === 'object' && globals[global] !== null}
+          <!-- If the value is an object, we can print it nicely (e.g., using a details element) -->
+          <details>
+            <summary>{global}</summary>
+            <pre>{JSON.stringify(globals[global], null, 2)}</pre>
+          </details>
+        {:else}
+          <!-- Otherwise, just print the value -->
+          {global}: {globals[global]}<br/>
+        {/if}
+
+    {/each}
+  </ul>
 {/if}
+
 
