@@ -13,7 +13,8 @@
     "delsymlink": "cross-env ACTION=delsymlink vite",
     "test": "vitest",
     "lint": "eslint",
-    "lint:fix": "eslint --fix"
+    "lint:fix": "eslint --fix",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "cep-interface": "^0.6.0",
@@ -54,6 +55,7 @@
     "globals": "^15.13.0",
     "happy-dom": "^15.11.7",
     "jsdom": "^25.0.1",
+    "patch-package": "^8.0.0",
     "rimraf": "^6.0.1",
     "rollup": "^4.27.4",
     "rollup-plugin-multi-input": "^1.3.1",
