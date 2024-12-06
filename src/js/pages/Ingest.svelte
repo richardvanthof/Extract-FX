@@ -2,7 +2,7 @@
     import {setContext} from 'svelte';
     import DropDown from '../components/Form/DropDown.svelte'
     import SelectFile from '../components/Form/SelectFIle/SelectFile.svelte'; 
-    import {handleIngestFile} from '@/js/components/Form/SelectFIle/helpers.svelte';
+    import {handleIngestFile, createExclusions} from '@/js/components/Form/SelectFIle/helpers.svelte';
     import ExcludeModal from '../components/Form/ExclusionModal/ExcludeModal.svelte';
     import {generateNumberedOptions} from '../helpers/helpers';
     import {globals} from '../global-vars/globals.svelte';
@@ -10,7 +10,7 @@
     import type {Exclusion} from '../global-vars/globals.svelte';
     // Manually subscribe to the store
 
-    import {v4 as uuid} from 'uuid';
+
 
     let {exclusionOptions, trackTotal} = globals;
     const {targetTrack, data, exclusions} = globals.ingest;
@@ -31,10 +31,7 @@
             if(data) {
                 fileError = null
                 globals.ingest.data = data;
-                globals.ingest.exclusions = data.exclusions.map((effect: string):Exclusion => ({
-                    id: uuid(),
-                    effect: effect
-                }))
+                globals.ingest.exclusions = createExclusions(exclusionOptions)
             }
         } catch (err) {
             console.error(err);
@@ -58,7 +55,7 @@
     </div>
     <div class="grid-column">
         <ExcludeModal 
-        bind:exclusions={globals.ingest.exclusions} options={exclusionOptions} 
+        bind:exclusions={globals.ingest.exclusions}
         bind:open={globals.isExclusionModalOpen}
     />
     </div>
