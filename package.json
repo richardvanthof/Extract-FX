@@ -14,7 +14,8 @@
     "test": "vitest",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "snapshot": "vitest -u"
   },
   "dependencies": {
     "cep-interface": "^0.6.0",

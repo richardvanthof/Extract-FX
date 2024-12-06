@@ -36,7 +36,6 @@
     <div class="grid-column">
         <ExcludeModal 
             bind:exclusions={globals.extract.exclusions} 
-            options={globals.exclusionOptions} 
             bind:open={globals.isExclusionModalOpen} 
         />
     </div>

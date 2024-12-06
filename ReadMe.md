@@ -63,6 +63,10 @@ Learn more about using the plugin in the [manual](src/static/manual/manual.md)
 
 - Run all unit tests in watch mode 
 
+`yarn snapshots`
+
+- Update all component test snapshots.
+
 `yarn lint`
 
 - Check for code quality issues.

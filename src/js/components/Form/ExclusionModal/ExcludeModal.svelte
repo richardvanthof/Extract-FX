@@ -2,8 +2,14 @@
     import Exclusion from "../Exclusion/Exclusion.svelte";
     import Button from "../../Button.svelte";
     import { v4 as uuid } from 'uuid';
+    import type {Exclusion as ExclusionType} from '@/js/global-vars/globals.svelte.ts'
 
-    let { exclusions = $bindable(), options, open = $bindable() } = $props();
+    type Props = {
+        exclusions: ExclusionType[],
+        open: boolean
+    }
+
+    let { exclusions = $bindable(), open = $bindable() }:Props = $props();
 
     // Add a new exclusion item
     const add = () => {

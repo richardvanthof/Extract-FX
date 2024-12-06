@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getJSON, getUniqueKeys } from './helpers.svelte';
+import { getJSON, getUniqueKeys, handleIngestFile, createExclusions } from './helpers.svelte';
 
 import type { SourceData } from '@/js/global-vars/globals.svelte';
 
@@ -112,8 +112,28 @@ describe("getJSON", async () => {
         const file = new File([JSON.stringify(data)], 'invalid.json', {
             type: 'application/json',
         });
-
+        
         await expect(getJSON(file)).rejects.toThrowError("This file contains invalid data and cannot be opened.");
+    })
+})
+
+describe("Create exclusions", () => {
+    it("create exclusions list", ()=> {
+        const input = ["Warp Stabilizer", "Motion", "Displace"];
+
+        const result = createExclusions(input);
+        
+        // Check if the result is an array with the same length as input
+        expect(result).toHaveLength(input.length);
+
+        // Check each object in the array
+        result.forEach((item, index) => {
+            expect(item).toHaveProperty('effect', input[index]);
+            expect(item).toHaveProperty('id');
+            expect(item.id).toMatch(
+            /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+            );  // Validate UUID format
+        });
     })
 })
 

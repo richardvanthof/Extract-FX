@@ -1,16 +1,24 @@
 <script lang="ts">
-
     type Props = {
         name?: string,
         title: string,
-        onclick?: (event: Event) => void
+        onclick?: (event: Event) => void,
+        dataTestId?: string
+    };
+
+    const { name, title, onclick, dataTestId }: Props = $props();
+
+    // Conditional attributes as an object
+    let conditionals: Record<string, string> = {};
+    if (dataTestId) {
+        conditionals["data-testid"] = dataTestId;
     }
-    const {name, title, onclick}:Props = $props();
 </script>
 
-
-<button {title} name={name||title} {onclick}>{name}</button>
-
+<!-- Button with dynamic attributes spread -->
+<button {title} {...conditionals} name={name || title} {onclick}>
+    {name || title}
+</button>
 
 <style lang="scss">
     button {
