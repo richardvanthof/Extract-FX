@@ -1,5 +1,5 @@
 <script lang="ts">
-    import NavBar from '../components/NavBar.svelte';
+    import NavBar from '../components/NavBar/NavBar.svelte';
     import Extract from '../pages/Extract.svelte';
     
     import Ingest from '../pages/Ingest.svelte';
@@ -8,7 +8,7 @@
 
     const loader = $state({isLoading: false, status: null});
     let mode = $state('extract');
-    
+    const options = ['Extract','Ingest'];
     const setMode = (name:string) => mode = name;
 </script>
 
@@ -19,7 +19,7 @@
     }
 </style>
 
-<NavBar {mode} {setMode}/>
+<NavBar {mode} {options} {setMode}/>
 <main> 
     {#if mode === 'extract'}
         <Extract/>

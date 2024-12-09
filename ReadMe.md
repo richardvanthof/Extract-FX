@@ -1,7 +1,7 @@
 # RS Extract-fx
 ## What is it for?
 
-*RS Extract-fx* is a Premiere Pro plugin that automates mass moving video effects to 'adjustment layers' just above the clip. This is especially useful while prepping for color grading in programs like Davinci Resolve. Once reimported, the effects can be restored by placing the processed footage under the generated adjustment layers -- built using the [Bolt CEP starter](https://hyperbrew.co/resources/bolt-cep/). 
+*RS Extract-fx* is a Premiere Pro plugin that automates mass moving video effects to 'adjustment layers' just above the clip. This is especially useful while prepping for color grading in programs like Davinci Resolve. Once reimported, the effects can be restored by placing the processed footage under the generated adjustment layers - built using the [Bolt CEP starter](https://hyperbrew.co/resources/bolt-cep/). 
 
 ## What effects are supported?
 

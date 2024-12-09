@@ -1,0 +1,37 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`NavBar > Renders 1`] = `
+<div>
+  <nav
+    class="navbar svelte-4rlrae"
+  >
+    <ul
+      class="nav-links svelte-4rlrae"
+    >
+      <button
+        class="nav-link active svelte-4rlrae"
+        data-testid="navbar-option"
+      >
+        Extract
+      </button>
+      <button
+        class="nav-link false svelte-4rlrae"
+        data-testid="navbar-option"
+      >
+        Ingest
+      </button>
+      
+    </ul>
+     
+    <button
+      class="svelte-vc9cas"
+      name="?"
+      title="Help"
+    >
+      ?
+    </button>
+    <!---->
+  </nav>
+  
+</div>
+`;

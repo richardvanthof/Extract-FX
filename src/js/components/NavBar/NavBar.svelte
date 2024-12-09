@@ -1,14 +1,19 @@
 <script lang="ts">
-    import Button from './Button.svelte';
+    import Button from '../Button.svelte';
 
-    let {setMode, mode} = $props()
+    type Props = {
+        setMode: (mode: string) => void,
+        mode: string,
+        options: string[] 
+    }
+
+    let {setMode, mode, options=['Extract', 'Ingest']}: Props = $props()
 
     const openHelp = ():void => {
       console.log('there is no help muhahahahaha')
       //TODO
     }
 
-    const modes = ['extract', 'ingest']
 </script>
 
 <style lang='scss'>
@@ -54,13 +59,14 @@
 
 <nav class="navbar">
   <ul class="nav-links">
-    {#each modes as modeName}
-		 <!-- <li class="nav-link class:active={() => mode === 'extract'} onclick={() => setMode('extract')}>Extract</li> -->
-  
-      <button class="nav-link {mode === modeName && 'active'}" onclick={()=>setMode(modeName)}>{modeName}</button>
-
+    {#each options as option}  
+      <button 
+      data-testid="navbar-option" 
+      class="nav-link {mode.toLowerCase() === option.toLowerCase() && 'active'}" 
+      onclick={()=>setMode(option.toLowerCase())}>
+      {option}
+    </button>
     {/each}
-    
   </ul>
   <Button title="Help" onclick={openHelp} name="?" />
 </nav>
