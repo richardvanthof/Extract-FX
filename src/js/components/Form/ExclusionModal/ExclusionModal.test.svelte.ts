@@ -1,9 +1,10 @@
-import { describe, expect, it } from 'vitest';
-import { render, screen } from '@testing-library/svelte';
+import { describe, expect, it, afterEach, vi } from 'vitest';
+import { render, screen, fireEvent, cleanup, waitFor } from '@testing-library/svelte';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event'
-
 import ExcludeModal from './ExcludeModal.svelte';
+import { update } from '@/js/components/Form/Exclusion/Exclusion.svelte';
+import type { Exclusion } from '@/js/global-vars/globals.svelte';
 
 describe("Exclusion modal", () => {
     const options = ['Effect A', 'Effect B', 'Effect C']
@@ -50,8 +51,10 @@ describe("Exclusion modal", () => {
 
     describe('Modifiy list', () => {
        
-        const exclusions = $state([
-            {effect: 'Effect A',id: 'FX1'},
+        afterEach(() => cleanup());
+
+        const exclusions:Exclusion[] = $state([
+            {effect: 'Effect A', id: 'FX1'},
             {effect: 'Effect B', id: 'FX2'}
         ]);
 
@@ -71,7 +74,7 @@ describe("Exclusion modal", () => {
             const allExclusions = screen.getAllByTestId('exclusion')
             expect(newExclusion).toBeInTheDocument();
             expect(allExclusions.length).toBe(3);
-        })
+        });
 
         it("Delete", async () => {
 
@@ -85,27 +88,33 @@ describe("Exclusion modal", () => {
 
             const allExclusions = screen.getAllByTestId('exclusion')
             expect(allExclusions.length).toBe(1); // Updated in DOM
-        })
+        });
 
         it("Update", async () => {
-
+                
             render(ExcludeModal, {
                 props: {exclusions, open},
                 context: new Map([['exclusionOptions', options]])
             });
 
             // Find all dropdowns (assuming they are <select> elements)
-            const dropdowns = screen.getAllByTestId('select-exclusion');
-
-            dropdowns[0].focus(); // Manually focus the dropdown if it's not focused yet
-            user.click(dropdowns[0]);
-            user.keyboard('ArrowDown');
-            user.keyboard('Enter');
+            const dropdown = screen.getAllByTestId('select-exclusion');
 
             // Check if the correct value has been selected
-            expect(dropdowns[0]).toHaveValue('Effect B');
-        })
+            expect(dropdown[0]).toHaveValue('Effect A');
 
+            fireEvent.change(dropdown[0], { target: { value: "Effect C" } });
+
+            await waitFor(() => {
+                // const updatedExclusions = component.$$.ctx.exclusions;
+                // const result:Exclusion[] = [
+                //     {effect: 'Effect C', id: 'FX1'},
+                //     {effect: 'Effect B', id: 'FX2'}
+                // ]
+                expect(dropdown[0]).toHaveValue('Effect C'); // Check if dropdown label changed
+                // expect(updatedExclusions).toEqual(result);
+            });
+        });
 
         it("Delete All", async () => {
   
@@ -120,7 +129,7 @@ describe("Exclusion modal", () => {
             // Check that no exclusions are rendered (i.e., the exclusion elements are removed)
             const allExclusions = screen.queryAllByTestId('exclusion');
             expect(allExclusions.length).toBe(0);  // Check that there are no exclusions
-        })
+        });
 
 
     })

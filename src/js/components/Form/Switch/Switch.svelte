@@ -1,10 +1,9 @@
 <script lang="ts">
-    import { globals } from "../../global-vars/globals.svelte";
     import {handleClick} from "@/js/helpers/helpers";
     type Props = {
         value: string,
         options: string[],
-        callback: (selection: 'file'|'sequence') => void
+        callback: (selection: string) => void
     }
     let {options, value, callback}: Props = $props();
 

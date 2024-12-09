@@ -1,6 +1,6 @@
 <script lang='ts'>
     import DropDown from "../components/Form/DropDown.svelte";
-    import Switch from "../components/Form/Switch.svelte";
+    import Switch from "../components/Form/Switch/Switch.svelte";
     import ExcludeModal from "../components/Form/ExclusionModal/ExcludeModal.svelte";
     import { setContext } from 'svelte';
     import { globals } from '../global-vars/globals.svelte';

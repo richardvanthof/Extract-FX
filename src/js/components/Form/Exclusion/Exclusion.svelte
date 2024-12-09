@@ -17,7 +17,7 @@
 
 
     // Update an exclusion item
-    const update = (newEffect: string|number, targetId:string) => {
+    export const update = (newEffect: string|number, targetId:string) => {
         exclusions = exclusions.map(exclusion => { 
             if(exclusion.id === targetId) {
                 return {...exclusion, effect: newEffect}

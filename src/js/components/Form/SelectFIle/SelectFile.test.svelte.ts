@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getJSON, getUniqueKeys, handleIngestFile, createExclusions } from './helpers.svelte';
+import { getJSON, getUniqueKeys, createExclusions } from './helpers.svelte';
 
 import type { SourceData } from '@/js/global-vars/globals.svelte';
 

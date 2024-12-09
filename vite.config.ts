@@ -86,7 +86,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    include: ['**/*.test.ts', '**/*.test.svelte'],  // Glob for test files
+    include: ['**/*.test.ts', '**/*.test.svelte', '**/*.test.svelte.ts'],  // Glob for test files
     dir: 'src',
     outputFile: 'dist/test'
   },

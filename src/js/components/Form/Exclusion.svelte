@@ -6,7 +6,7 @@
 }
 </style>
 
-<script>
+<script lang="ts">
     import { getContext } from 'svelte';
     import DropDown from "./DropDown.svelte";
     import Button from "../Button.svelte";
