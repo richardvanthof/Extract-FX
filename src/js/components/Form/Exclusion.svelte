@@ -8,7 +8,7 @@
 
 <script lang="ts">
     import { getContext } from 'svelte';
-    import DropDown from "./DropDown.svelte";
+    import DropDown from "./DropDown/DropDown.svelte";
     import Button from "../Button.svelte";
     import { handleClick } from '../../lib/helpers';
 

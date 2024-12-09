@@ -1,6 +1,6 @@
 <script lang="ts">
     import {setContext} from 'svelte';
-    import DropDown from '../components/Form/DropDown.svelte'
+    import DropDown from '@/js/components/Form/DropDown/DropDown.svelte';
     import SelectFile from '../components/Form/SelectFIle/SelectFile.svelte'; 
     import {handleIngestFile, createExclusions} from '@/js/components/Form/SelectFIle/helpers.svelte';
     import ExcludeModal from '../components/Form/ExclusionModal/ExcludeModal.svelte';

@@ -98,7 +98,7 @@ describe("Exclusion modal", () => {
             });
 
             // Find all dropdowns (assuming they are <select> elements)
-            const dropdown = screen.getAllByTestId('select-exclusion');
+            const dropdown = screen.getAllByRole('combobox');
 
             // Check if the correct value has been selected
             expect(dropdown[0]).toHaveValue('Effect A');

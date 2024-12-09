@@ -3,10 +3,9 @@
     type Props = {
         options: [string|number, string|number|null][],
         value: string|number,
-        callback?: (newEffect: number|string) => void,
-        testId?: string
+        callback?: (update: number|string) => void
     }
-    let { options, value = $bindable(), callback, testId}:Props = $props();
+    let { options, value = $bindable(), callback}:Props = $props();
 
     // Handle update when the value changes
     let handleUpdate = (event:Event) => {
@@ -17,24 +16,19 @@
         }
     };
 
-    // Conditional attributes as an object
-    let conditionals: Record<string, string> = {};
-    if (testId) {
-        conditionals["data-testid"] = testId;
-    }
 
 </script>
 
 {#if callback}
-    <select {value} {...conditionals} onchange={handleUpdate} id="sourceTrack">
+    <select {value} data-testid="dropdown-callback" onchange={handleUpdate} id="sourceTrack">
         {#each options as [label, val]}
-            <option value={val}>{label}</option>
+            <option data-testid="dropdown-option" value={val}>{label}</option>
         {/each}
     </select>
 {:else}
-    <select {...conditionals} bind:value={value} id="sourceTrack">
+    <select bind:value={value} data-testid="dropdown-bind" id="sourceTrack">
         {#each options as [label, val]}
-            <option value={val}>{label}</option>
+            <option data-testid="dropdown-option" value={val}>{label}</option>
         {/each}
     </select>
 {/if}
