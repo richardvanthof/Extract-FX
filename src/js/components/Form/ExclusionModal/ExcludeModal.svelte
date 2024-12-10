@@ -1,6 +1,5 @@
 <script lang="ts">
     import Exclusion from "../Exclusion/Exclusion.svelte";
-    import Button from "../../Button.svelte";
     import { v4 as uuid } from 'uuid';
     import type {Exclusion as ExclusionType} from '@/js/global-vars/globals.svelte.ts'
 
