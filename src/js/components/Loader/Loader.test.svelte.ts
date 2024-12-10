@@ -27,7 +27,7 @@ describe('Loader Component', () => {
         };
         const {container} = render(Loader, {props})
 
-        const messageText = screen.getByText(props.message);
+        const messageText = screen.getByText('Extracting...');
 
         expect(messageText).toBeInTheDocument();
         expect(container).toMatchSnapshot();
