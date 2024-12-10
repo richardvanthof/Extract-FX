@@ -1,12 +1,12 @@
-import { render, fireEvent, waitFor } from '@testing-library/svelte';
+import { render } from '@testing-library/svelte';
 import { screen } from '@testing-library/svelte';
 import '@testing-library/jest-dom';
-import {it, describe, expect, vi} from 'vitest';
+import {it, describe, expect } from 'vitest';
 import Loader from './Loader.svelte';
 
 describe('Loader Component', () => {
     type Props = {
-        message: string,
+        message?: string,
         progress?: number
     }
 

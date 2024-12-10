@@ -1,6 +1,6 @@
 <script lang='ts'>
     type Props = {
-        message: string,
+        message?: string,
         progress?: number
     }
     const {message = 'loading...', progress}: Props = $props();
