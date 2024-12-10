@@ -1,5 +1,5 @@
 import fs from "fs";
-import { rollup, watch, RollupOptions, OutputOptions, RollupWatcher } from "rollup";
+import { rollup, watch, RollupOptions, OutputOptions } from "rollup";
 import nodeResolve from "@rollup/plugin-node-resolve";
 import babel from "@rollup/plugin-babel";
 import { jsxInclude, jsxBin, jsxPonyfill } from "vite-cep-plugin";
@@ -74,7 +74,8 @@ export const extendscriptConfig = (
   const watchRollup = async () => {
     const watcher = watch(config);
 
-    watcher.on("event", ({ result }: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    watcher.on("event", ({ result }:any) => {
       if (result) {
         console.log(result)
         triggerHMR();

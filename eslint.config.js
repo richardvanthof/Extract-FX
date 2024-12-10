@@ -25,6 +25,7 @@ export default [
     ignores: [
       '.test/*',
       '.config/*',
+      '*/.config/*',
       '.d/*',
       'src/js/lib/**/*',
       'src/jsx/lib/**/*',
