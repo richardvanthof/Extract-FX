@@ -1,0 +1,746 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`App > navigates to the extract page when the extract button is clicked 1`] = `
+<div>
+  <!---->
+  <nav
+    class="navbar svelte-4rlrae"
+  >
+    <ul
+      class="nav-links svelte-4rlrae"
+    >
+      <button
+        class="nav-link active svelte-4rlrae"
+        data-testid="navbar-option"
+      >
+        Extract
+      </button>
+      <button
+        class="nav-link false svelte-4rlrae"
+        data-testid="navbar-option"
+      >
+        Ingest
+      </button>
+      
+    </ul>
+     
+    <button
+      class="svelte-vc9cas"
+      name="?"
+      title="Help"
+    >
+      ?
+    </button>
+    <!---->
+  </nav>
+  <!---->
+   
+  <main
+    class="svelte-1ltjk0w"
+  >
+    <form
+      class="grid-container"
+      data-testid="extract-form"
+    >
+      <div
+        class="grid-column"
+      >
+        <div
+          class="group"
+        >
+          <label
+            for="source-track"
+          >
+            Source track
+          </label>
+           
+          <!---->
+          <select
+            class="svelte-14mby5s"
+            data-testid="dropdown-bind"
+            id="sourceTrack"
+          >
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="1"
+            >
+              VIDEO 1 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="2"
+            >
+              VIDEO 2 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="3"
+            >
+              VIDEO 3 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="4"
+            >
+              VIDEO 4 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="5"
+            >
+              VIDEO 5 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="6"
+            >
+              VIDEO 6 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="7"
+            >
+              VIDEO 7 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="8"
+            >
+              VIDEO 8 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="9"
+            >
+              VIDEO 9 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="10"
+            >
+              VIDEO 10 
+            </option>
+            
+          </select>
+          
+          <!---->
+        </div>
+         
+        <div
+          class="group"
+        >
+          <label
+            for="destination"
+          >
+            Destination
+          </label>
+           
+          <ul
+            class="switch-input svelte-2z4jz9"
+          >
+            <button
+              class="switch-option active svelte-2z4jz9"
+            >
+              File
+            </button>
+            <button
+              class="switch-option  svelte-2z4jz9"
+            >
+              Sequence
+            </button>
+            
+          </ul>
+          <!---->
+        </div>
+      </div>
+       
+      <div
+        class="grid-column"
+      >
+        <details
+          class="wrapper svelte-1ojv71p"
+          open=""
+        >
+          <summary
+            class="exclusion-header svelte-1ojv71p"
+            id="exclusion-header"
+          >
+            Exclude effects 
+          </summary>
+           
+          <div
+            class="exclusions svelte-1ojv71p"
+          >
+            <div
+              class="exclusions-controls svelte-1ojv71p"
+            >
+              <button
+                class="exclusion-toolbar-button exclusion-control svelte-1ojv71p"
+                id="add-exclusion-btn"
+                title="add"
+              >
+                + Add Exclusion
+              </button>
+               
+              <button
+                class="exclusion-control svelte-1ojv71p"
+                id="remove-all-exclusions-btn"
+                title="clear"
+              >
+                Clear all
+              </button>
+            </div>
+             
+            <div
+              class="exclusions-container svelte-1ojv71p"
+            >
+              <div
+                class="exclusions-placeholder svelte-1ojv71p"
+              >
+                <p
+                  class="caption"
+                >
+                  Press the +-button to add an exclusion.
+                </p>
+              </div>
+              <!---->
+            </div>
+          </div>
+        </details>
+        <!---->
+      </div>
+    </form>
+    <!---->
+     
+    <!---->
+  </main>
+   
+  <footer
+    class="svelte-4k8ehx"
+  >
+    <div>
+      <button
+        class="svelte-vc9cas"
+        name="Extract"
+      >
+        Extract
+      </button>
+      <!---->
+    </div>
+     
+    <div>
+      <p
+        class="info caption svelte-4k8ehx"
+      >
+        © Richard Space 2024 - version: 0.0.1
+      </p>
+    </div>
+  </footer>
+  <!---->
+  
+</div>
+`;
+
+exports[`App > navigates to the ingest page when the ingest button is clicked 1`] = `
+<div>
+  <!---->
+  <nav
+    class="navbar svelte-4rlrae"
+  >
+    <ul
+      class="nav-links svelte-4rlrae"
+    >
+      <button
+        class="nav-link false svelte-4rlrae"
+        data-testid="navbar-option"
+      >
+        Extract
+      </button>
+      <button
+        class="nav-link active svelte-4rlrae"
+        data-testid="navbar-option"
+      >
+        Ingest
+      </button>
+      
+    </ul>
+     
+    <button
+      class="svelte-vc9cas"
+      name="?"
+      title="Help"
+    >
+      ?
+    </button>
+    <!---->
+  </nav>
+  <!---->
+   
+  <main
+    class="svelte-1ltjk0w"
+  >
+    <form
+      class="grid-container"
+      data-testid="ingest-form"
+    >
+      <div
+        class="grid-column"
+      >
+        <div
+          class="group"
+        >
+          <label
+            for="source-file"
+          >
+            Source file
+          </label>
+           
+          <input
+            accept="application/json"
+            class="svelte-1p719ys"
+            type="file"
+          />
+           
+          <!---->
+          <!---->
+        </div>
+         
+        <div
+          class="group"
+        >
+          <label
+            for="target-track"
+          >
+            Target track
+          </label>
+           
+          <!---->
+          <select
+            class="svelte-14mby5s"
+            data-testid="dropdown-bind"
+            id="sourceTrack"
+          >
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="1"
+            >
+              VIDEO 1 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="2"
+            >
+              VIDEO 2 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="3"
+            >
+              VIDEO 3 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="4"
+            >
+              VIDEO 4 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="5"
+            >
+              VIDEO 5 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="6"
+            >
+              VIDEO 6 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="7"
+            >
+              VIDEO 7 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="8"
+            >
+              VIDEO 8 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="9"
+            >
+              VIDEO 9 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="10"
+            >
+              VIDEO 10 
+            </option>
+            
+          </select>
+          
+          <!---->
+        </div>
+      </div>
+       
+      <div
+        class="grid-column"
+      >
+        <details
+          class="wrapper svelte-1ojv71p"
+          open=""
+        >
+          <summary
+            class="exclusion-header svelte-1ojv71p"
+            id="exclusion-header"
+          >
+            Exclude effects 
+          </summary>
+           
+          <div
+            class="exclusions svelte-1ojv71p"
+          >
+            <div
+              class="exclusions-controls svelte-1ojv71p"
+            >
+              <button
+                class="exclusion-toolbar-button exclusion-control svelte-1ojv71p"
+                id="add-exclusion-btn"
+                title="add"
+              >
+                + Add Exclusion
+              </button>
+               
+              <button
+                class="exclusion-control svelte-1ojv71p"
+                id="remove-all-exclusions-btn"
+                title="clear"
+              >
+                Clear all
+              </button>
+            </div>
+             
+            <div
+              class="exclusions-container svelte-1ojv71p"
+            >
+              <div
+                class="exclusions-placeholder svelte-1ojv71p"
+              >
+                <p
+                  class="caption"
+                >
+                  Press the +-button to add an exclusion.
+                </p>
+              </div>
+              <!---->
+            </div>
+          </div>
+        </details>
+        <!---->
+      </div>
+    </form>
+    <!---->
+     
+    <!---->
+  </main>
+   
+  <footer
+    class="svelte-4k8ehx"
+  >
+    <div>
+      <button
+        class="svelte-vc9cas"
+        name="Ingest"
+      >
+        Ingest
+      </button>
+      <!---->
+    </div>
+     
+    <div>
+      <p
+        class="info caption svelte-4k8ehx"
+      >
+        © Richard Space 2024 - version: 0.0.1
+      </p>
+    </div>
+  </footer>
+  <!---->
+  
+</div>
+`;
+
+exports[`App > renders correctly 1`] = `
+<div>
+  <!---->
+  <nav
+    class="navbar svelte-4rlrae"
+  >
+    <ul
+      class="nav-links svelte-4rlrae"
+    >
+      <button
+        class="nav-link active svelte-4rlrae"
+        data-testid="navbar-option"
+      >
+        Extract
+      </button>
+      <button
+        class="nav-link false svelte-4rlrae"
+        data-testid="navbar-option"
+      >
+        Ingest
+      </button>
+      
+    </ul>
+     
+    <button
+      class="svelte-vc9cas"
+      name="?"
+      title="Help"
+    >
+      ?
+    </button>
+    <!---->
+  </nav>
+  <!---->
+   
+  <main
+    class="svelte-1ltjk0w"
+  >
+    <form
+      class="grid-container"
+      data-testid="extract-form"
+    >
+      <div
+        class="grid-column"
+      >
+        <div
+          class="group"
+        >
+          <label
+            for="source-track"
+          >
+            Source track
+          </label>
+           
+          <!---->
+          <select
+            class="svelte-14mby5s"
+            data-testid="dropdown-bind"
+            id="sourceTrack"
+          >
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="1"
+            >
+              VIDEO 1 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="2"
+            >
+              VIDEO 2 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="3"
+            >
+              VIDEO 3 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="4"
+            >
+              VIDEO 4 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="5"
+            >
+              VIDEO 5 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="6"
+            >
+              VIDEO 6 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="7"
+            >
+              VIDEO 7 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="8"
+            >
+              VIDEO 8 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="9"
+            >
+              VIDEO 9 
+            </option>
+            <option
+              class="svelte-14mby5s"
+              data-testid="dropdown-option"
+              value="10"
+            >
+              VIDEO 10 
+            </option>
+            
+          </select>
+          
+          <!---->
+        </div>
+         
+        <div
+          class="group"
+        >
+          <label
+            for="destination"
+          >
+            Destination
+          </label>
+           
+          <ul
+            class="switch-input svelte-2z4jz9"
+          >
+            <button
+              class="switch-option active svelte-2z4jz9"
+            >
+              File
+            </button>
+            <button
+              class="switch-option  svelte-2z4jz9"
+            >
+              Sequence
+            </button>
+            
+          </ul>
+          <!---->
+        </div>
+      </div>
+       
+      <div
+        class="grid-column"
+      >
+        <details
+          class="wrapper svelte-1ojv71p"
+          open=""
+        >
+          <summary
+            class="exclusion-header svelte-1ojv71p"
+            id="exclusion-header"
+          >
+            Exclude effects 
+          </summary>
+           
+          <div
+            class="exclusions svelte-1ojv71p"
+          >
+            <div
+              class="exclusions-controls svelte-1ojv71p"
+            >
+              <button
+                class="exclusion-toolbar-button exclusion-control svelte-1ojv71p"
+                id="add-exclusion-btn"
+                title="add"
+              >
+                + Add Exclusion
+              </button>
+               
+              <button
+                class="exclusion-control svelte-1ojv71p"
+                id="remove-all-exclusions-btn"
+                title="clear"
+              >
+                Clear all
+              </button>
+            </div>
+             
+            <div
+              class="exclusions-container svelte-1ojv71p"
+            >
+              <div
+                class="exclusions-placeholder svelte-1ojv71p"
+              >
+                <p
+                  class="caption"
+                >
+                  Press the +-button to add an exclusion.
+                </p>
+              </div>
+              <!---->
+            </div>
+          </div>
+        </details>
+        <!---->
+      </div>
+    </form>
+    <!---->
+     
+    <!---->
+  </main>
+   
+  <footer
+    class="svelte-4k8ehx"
+  >
+    <div>
+      <button
+        class="svelte-vc9cas"
+        name="Extract"
+      >
+        Extract
+      </button>
+      <!---->
+    </div>
+     
+    <div>
+      <p
+        class="info caption svelte-4k8ehx"
+      >
+        © Richard Space 2024 - version: 0.0.1
+      </p>
+    </div>
+  </footer>
+  <!---->
+  
+</div>
+`;

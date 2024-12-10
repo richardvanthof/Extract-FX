@@ -4,6 +4,7 @@ exports[`Ingest component > Renders 1`] = `
 <div>
   <form
     class="grid-container"
+    data-testid="ingest-form"
   >
     <div
       class="grid-column"
@@ -123,24 +124,24 @@ exports[`Ingest component > Renders 1`] = `
       class="grid-column"
     >
       <details
-        class="wrapper svelte-fh62sw"
+        class="wrapper svelte-1ojv71p"
         open=""
       >
         <summary
-          class="exclusion-header svelte-fh62sw"
+          class="exclusion-header svelte-1ojv71p"
           id="exclusion-header"
         >
           Exclude effects 
         </summary>
          
         <div
-          class="exclusions svelte-fh62sw"
+          class="exclusions svelte-1ojv71p"
         >
           <div
-            class="exclusions-controls svelte-fh62sw"
+            class="exclusions-controls svelte-1ojv71p"
           >
             <button
-              class="exclusion-toolbar-button exclusion-control svelte-fh62sw"
+              class="exclusion-toolbar-button exclusion-control svelte-1ojv71p"
               id="add-exclusion-btn"
               title="add"
             >
@@ -148,7 +149,7 @@ exports[`Ingest component > Renders 1`] = `
             </button>
              
             <button
-              class="exclusion-control svelte-fh62sw"
+              class="exclusion-control svelte-1ojv71p"
               id="remove-all-exclusions-btn"
               title="clear"
             >
@@ -157,10 +158,10 @@ exports[`Ingest component > Renders 1`] = `
           </div>
            
           <div
-            class="exclusions-container svelte-fh62sw"
+            class="exclusions-container svelte-1ojv71p"
           >
             <div
-              class="exclusions-placeholder svelte-fh62sw"
+              class="exclusions-placeholder svelte-1ojv71p"
             >
               <p
                 class="caption"
@@ -175,4 +176,6 @@ exports[`Ingest component > Renders 1`] = `
       <!---->
     </div>
   </form>
+  
+</div>
 `;
