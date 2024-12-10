@@ -1,7 +1,7 @@
-import { render, fireEvent, waitFor } from '@testing-library/svelte';
+import { render, fireEvent } from '@testing-library/svelte';
 import { screen } from '@testing-library/svelte';
 import '@testing-library/jest-dom';
-import {it, describe, expect, vi} from 'vitest';
+import {it, describe, expect} from 'vitest';
 import DropDown from './DropDown.svelte';
 
 
@@ -48,7 +48,7 @@ describe('DropDown', () => {
 
         // TODO: create better way to verify the bound variables.
          const testDropDown = async (config:Props, useCallback: boolean) => {
-            let props = config;
+            const props = config;
             const targetEffect = "Effect C";
 
             if(useCallback) { props['callback'] = (update) => props.value = update}

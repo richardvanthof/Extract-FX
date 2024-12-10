@@ -1,9 +1,8 @@
-import { describe, expect, it, afterEach, vi } from 'vitest';
+import { describe, expect, it, afterEach} from 'vitest';
 import { render, screen, fireEvent, cleanup, waitFor } from '@testing-library/svelte';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event'
 import ExcludeModal from './ExcludeModal.svelte';
-import { update } from '@/js/components/Form/Exclusion/Exclusion.svelte';
 import type { Exclusion } from '@/js/global-vars/globals.svelte';
 
 describe("Exclusion modal", () => {
