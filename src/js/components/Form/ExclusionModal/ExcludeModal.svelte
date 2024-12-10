@@ -100,12 +100,14 @@
         background: none;
         border: none;
         font-size: 0.85em;
-        margin: 0 0.5em;
+        padding: 0 1em;
+        border-radius: var(--border-radius-inner);
         &:active {
             background: var(--bg-btn-active);
         }
     }
 
+    
     .exclusion-toolbar-button {
         padding: .66em 1.5em .66em 1em;
         border: none;
