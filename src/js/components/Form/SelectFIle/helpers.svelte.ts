@@ -1,4 +1,5 @@
-import type { SourceData } from "@/js/global-vars/globals.svelte";
+import {v4 as uuid} from 'uuid';
+import type { SourceData, Exclusion } from "@/js/global-vars/globals.svelte";
 
 export type FileData = {
     data?: SourceData,
@@ -85,3 +86,7 @@ export const handleIngestFile = async (event: Event):Promise<FileData> => {
 
     return result;
 };
+
+export const createExclusions = (effects: string[]):Exclusion[] => {
+    return effects.map(effect => ({id: uuid(), effect: effect}))
+}

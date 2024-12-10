@@ -1,8 +1,8 @@
 <script lang="ts">
     import { getContext } from 'svelte';
-    import DropDown from "../DropDown.svelte";
+    import DropDown from "../DropDown/DropDown.svelte";
     import Button from "../../Button.svelte";
-    import {handleClick} from '../../../helpers/helpers';
+    import {handleClick} from '@/js/helpers/helpers.svelte';
     import type { Writable } from "svelte/store";
     import type { Exclusion } from '@/js/global-vars/globals.svelte';
     import { globals } from '@/js/global-vars/globals.svelte';
@@ -17,7 +17,7 @@
 
 
     // Update an exclusion item
-    const update = (newEffect: string|number, targetId:string) => {
+    export const update = (newEffect: string|number, targetId:string) => {
         exclusions = exclusions.map(exclusion => { 
             if(exclusion.id === targetId) {
                 return {...exclusion, effect: newEffect}
@@ -35,8 +35,11 @@
 </script>
 
 <div class='exclusion' data-testid="exclusion">
-    <DropDown value={effect} {options} callback={(newEffect) => update(newEffect, id)} />
-    <Button onclick={(e:Event) => handleClick(e, remove(id))} name='x' title="Delete exclusion"/>
+    <DropDown testId="select-exclusion" value={effect} {options} callback={(newEffect) => update(newEffect, id)} />
+    <Button 
+    onclick={(e:Event) => handleClick(e, remove(id))} 
+    name='x' dataTestId="delete-exclusion" title="Delete exclusion"
+    />
 </div>
 
 <style>

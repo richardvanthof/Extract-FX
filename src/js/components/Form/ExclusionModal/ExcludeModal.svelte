@@ -2,8 +2,14 @@
     import Exclusion from "../Exclusion/Exclusion.svelte";
     import Button from "../../Button.svelte";
     import { v4 as uuid } from 'uuid';
+    import type {Exclusion as ExclusionType} from '@/js/global-vars/globals.svelte.ts'
 
-    let { exclusions = $bindable(), options, open = $bindable() } = $props();
+    type Props = {
+        exclusions: ExclusionType[],
+        open: boolean
+    }
+
+    let { exclusions = $bindable(), open = $bindable() }:Props = $props();
 
     // Add a new exclusion item
     const add = () => {
@@ -94,12 +100,14 @@
         background: none;
         border: none;
         font-size: 0.85em;
-        margin: 0 0.5em;
+        padding: 0 1em;
+        border-radius: var(--border-radius-inner);
         &:active {
             background: var(--bg-btn-active);
         }
     }
 
+    
     .exclusion-toolbar-button {
         padding: .66em 1.5em .66em 1em;
         border: none;

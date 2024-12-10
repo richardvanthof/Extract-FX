@@ -1,0 +1,64 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Switch > Check if switch works 1`] = `
+<div>
+  <ul
+    class="switch-input svelte-2z4jz9"
+  >
+    <button
+      class="switch-option active svelte-2z4jz9"
+    >
+      File
+    </button>
+    <button
+      class="switch-option  svelte-2z4jz9"
+    >
+      Sequence
+    </button>
+    
+  </ul>
+  
+</div>
+`;
+
+exports[`Switch > Check if switch works 2`] = `
+<div>
+  <ul
+    class="switch-input svelte-2z4jz9"
+  >
+    <button
+      class="switch-option  svelte-2z4jz9"
+    >
+      File
+    </button>
+    <button
+      class="switch-option active svelte-2z4jz9"
+    >
+      Sequence
+    </button>
+    
+  </ul>
+  
+</div>
+`;
+
+exports[`Switch > Renders 1`] = `
+<div>
+  <ul
+    class="switch-input svelte-2z4jz9"
+  >
+    <button
+      class="switch-option active svelte-2z4jz9"
+    >
+      File
+    </button>
+    <button
+      class="switch-option  svelte-2z4jz9"
+    >
+      Sequence
+    </button>
+    
+  </ul>
+  
+</div>
+`;

@@ -1,0 +1,35 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Loader Component > Renders 1`] = `
+<div>
+  <div
+    class="svelte-85y53y"
+  >
+    <progress />
+     
+    <p
+      class="caption"
+    >
+      loading...
+    </p>
+  </div>
+  
+</div>
+`;
+
+exports[`Loader Component > Shows status message 1`] = `
+<div>
+  <div
+    class="svelte-85y53y"
+  >
+    <progress />
+     
+    <p
+      class="caption"
+    >
+      Extracting...
+    </p>
+  </div>
+  
+</div>
+`;

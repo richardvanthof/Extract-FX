@@ -1,0 +1,181 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Ingest component > Renders 1`] = `
+<div>
+  <form
+    class="grid-container"
+    data-testid="ingest-form"
+  >
+    <div
+      class="grid-column"
+    >
+      <div
+        class="group"
+      >
+        <label
+          for="source-file"
+        >
+          Source file
+        </label>
+         
+        <input
+          accept="application/json"
+          class="svelte-1p719ys"
+          type="file"
+        />
+         
+        <!---->
+        <!---->
+      </div>
+       
+      <div
+        class="group"
+      >
+        <label
+          for="target-track"
+        >
+          Target track
+        </label>
+         
+        <!---->
+        <select
+          class="svelte-14mby5s"
+          data-testid="dropdown-bind"
+          id="sourceTrack"
+        >
+          <option
+            class="svelte-14mby5s"
+            data-testid="dropdown-option"
+            value="1"
+          >
+            VIDEO 1 
+          </option>
+          <option
+            class="svelte-14mby5s"
+            data-testid="dropdown-option"
+            value="2"
+          >
+            VIDEO 2 
+          </option>
+          <option
+            class="svelte-14mby5s"
+            data-testid="dropdown-option"
+            value="3"
+          >
+            VIDEO 3 
+          </option>
+          <option
+            class="svelte-14mby5s"
+            data-testid="dropdown-option"
+            value="4"
+          >
+            VIDEO 4 
+          </option>
+          <option
+            class="svelte-14mby5s"
+            data-testid="dropdown-option"
+            value="5"
+          >
+            VIDEO 5 
+          </option>
+          <option
+            class="svelte-14mby5s"
+            data-testid="dropdown-option"
+            value="6"
+          >
+            VIDEO 6 
+          </option>
+          <option
+            class="svelte-14mby5s"
+            data-testid="dropdown-option"
+            value="7"
+          >
+            VIDEO 7 
+          </option>
+          <option
+            class="svelte-14mby5s"
+            data-testid="dropdown-option"
+            value="8"
+          >
+            VIDEO 8 
+          </option>
+          <option
+            class="svelte-14mby5s"
+            data-testid="dropdown-option"
+            value="9"
+          >
+            VIDEO 9 
+          </option>
+          <option
+            class="svelte-14mby5s"
+            data-testid="dropdown-option"
+            value="10"
+          >
+            VIDEO 10 
+          </option>
+          
+        </select>
+        
+        <!---->
+      </div>
+    </div>
+     
+    <div
+      class="grid-column"
+    >
+      <details
+        class="wrapper svelte-1ojv71p"
+        open=""
+      >
+        <summary
+          class="exclusion-header svelte-1ojv71p"
+          id="exclusion-header"
+        >
+          Exclude effects 
+        </summary>
+         
+        <div
+          class="exclusions svelte-1ojv71p"
+        >
+          <div
+            class="exclusions-controls svelte-1ojv71p"
+          >
+            <button
+              class="exclusion-toolbar-button exclusion-control svelte-1ojv71p"
+              id="add-exclusion-btn"
+              title="add"
+            >
+              + Add Exclusion
+            </button>
+             
+            <button
+              class="exclusion-control svelte-1ojv71p"
+              id="remove-all-exclusions-btn"
+              title="clear"
+            >
+              Clear all
+            </button>
+          </div>
+           
+          <div
+            class="exclusions-container svelte-1ojv71p"
+          >
+            <div
+              class="exclusions-placeholder svelte-1ojv71p"
+            >
+              <p
+                class="caption"
+              >
+                Press the +-button to add an exclusion.
+              </p>
+            </div>
+            <!---->
+          </div>
+        </div>
+      </details>
+      <!---->
+    </div>
+  </form>
+  
+</div>
+`;

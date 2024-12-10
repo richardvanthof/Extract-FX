@@ -41,7 +41,7 @@ export const globals: Globals = $state({
     destination: "file",
     sourceTrack: 1,
   },
-  exclusionOptions: defaultEffects,
+  exclusionOptions: defaultEffects.sort(),
   trackTotal: 10,
   isExclusionModalOpen: true,
 });

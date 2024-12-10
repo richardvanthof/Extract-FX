@@ -1,4 +1,4 @@
-const handleClick = (e:Event, callback: any) => {
+const handleClick = (e:Event, callback: unknown) => {
     e.preventDefault()
     return callback;
 }

@@ -1,5 +1,9 @@
 <script lang='ts'>
-
+    type Props = {
+        message?: string,
+        progress?: number
+    }
+    const {message = 'loading...', progress}: Props = $props();
 </script>
 
 <style>
@@ -22,6 +26,6 @@
 </style>
 
 <div>
-    <progress></progress>
-	<p class="caption">Loading...</p>
+    <progress value={progress} ></progress>
+	<p class="caption">{message}</p>
 </div>

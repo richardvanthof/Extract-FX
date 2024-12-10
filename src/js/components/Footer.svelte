@@ -1,6 +1,6 @@
 <script lang='ts'>
     import Button from "./Button.svelte";
-    import {handleClick} from '../helpers/helpers';
+    import {handleClick} from '@/js/helpers/helpers.svelte';
     import config from '../../../cep.config';
 
     type Action = {
