@@ -106,11 +106,7 @@ describe("Exclusion modal", () => {
             fireEvent.change(dropdown[0], { target: { value: "Effect C" } });
 
             await waitFor(() => {
-                // const updatedExclusions = component.$$.ctx.exclusions;
-                // const result:Exclusion[] = [
-                //     {effect: 'Effect C', id: 'FX1'},
-                //     {effect: 'Effect B', id: 'FX2'}
-                // ]
+
                 expect(dropdown[0]).toHaveValue('Effect C'); // Check if dropdown label changed
                 // expect(updatedExclusions).toEqual(result);
             });

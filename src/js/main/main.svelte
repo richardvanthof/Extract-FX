@@ -3,7 +3,7 @@
     import Extract from '../pages/Extract.svelte';
     
     import Ingest from '../pages/Ingest.svelte';
-    import Loader from '../components/Loader.svelte';
+    import Loader from '@/js/components/Loader/Loader.svelte';
     import Footer from '../components/Footer.svelte';
 
     const loader = $state({isLoading: false, status: null});
