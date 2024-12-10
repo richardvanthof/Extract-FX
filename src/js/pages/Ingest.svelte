@@ -4,9 +4,9 @@
     import SelectFile from '../components/Form/SelectFIle/SelectFile.svelte'; 
     import {handleIngestFile, createExclusions} from '@/js/components/Form/SelectFIle/helpers.svelte';
     import ExcludeModal from '../components/Form/ExclusionModal/ExcludeModal.svelte';
-    import {generateNumberedOptions} from '../helpers/helpers';
+    import {generateNumberedOptions} from '@/js/helpers/helpers.svelte';
     import {globals} from '../global-vars/globals.svelte';
-    import type {FileData} from '@/js/components/Form/SelectFIle/helpers.svelte';
+    import type {FileData} from '@/js/components/Form/SelectFile/helpers.svelte';
     import type {Exclusion} from '../global-vars/globals.svelte';
     // Manually subscribe to the store
 

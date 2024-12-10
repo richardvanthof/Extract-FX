@@ -4,7 +4,7 @@
     import ExcludeModal from "../components/Form/ExclusionModal/ExcludeModal.svelte";
     import { setContext } from 'svelte';
     import { globals } from '../global-vars/globals.svelte';
-    import { generateNumberedOptions } from '../helpers/helpers';
+    import {generateNumberedOptions} from '@/js/helpers/helpers.svelte';
 
     let {exclusionOptions, trackTotal, isExclusionModalOpen} = globals;
     let {exclusions, destination, sourceTrack} = globals.extract; 

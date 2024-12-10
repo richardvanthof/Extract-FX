@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {handleClick} from "@/js/helpers/helpers";
+    import {handleClick} from '@/js/helpers/helpers.svelte';
     type Props = {
         value: string,
         options: string[],
