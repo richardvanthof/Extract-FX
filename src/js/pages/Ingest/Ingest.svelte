@@ -1,13 +1,13 @@
 <script lang="ts">
     import {setContext} from 'svelte';
     import DropDown from '@/js/components/Form/DropDown/DropDown.svelte';
-    import SelectFile from '../components/Form/SelectFIle/SelectFile.svelte'; 
+    import SelectFile from '../../components/Form/SelectFIle/SelectFile.svelte'; 
     import {handleIngestFile, createExclusions} from '@/js/components/Form/SelectFIle/helpers.svelte';
-    import ExcludeModal from '../components/Form/ExclusionModal/ExcludeModal.svelte';
+    import ExcludeModal from '../../components/Form/ExclusionModal/ExcludeModal.svelte';
     import {generateNumberedOptions} from '@/js/helpers/helpers.svelte';
-    import {globals} from '../global-vars/globals.svelte';
+    import {globals} from '../../global-vars/globals.svelte';
     import type {FileData} from '@/js/components/Form/SelectFile/helpers.svelte';
-    import type {Exclusion} from '../global-vars/globals.svelte';
+    import type {Exclusion} from '../../global-vars/globals.svelte';
     // Manually subscribe to the store
 
 
@@ -42,7 +42,7 @@
 
 </script>
 
-<form class="grid-container">
+<form data-testid="ingest-form" class="grid-container">
     <div class="grid-column">
         <div class="group">
             <label for="source-file">Source file</label>
@@ -60,25 +60,5 @@
     />
     </div>
 </form>
-
-{#if debugMode}
-  <h3>Global data</h3>
-  <ul>
-    {#each Object.keys(globals) as global}
-
-        {#if typeof globals[global] === 'object' && globals[global] !== null}
-          <!-- If the value is an object, we can print it nicely (e.g., using a details element) -->
-          <details>
-            <summary>{global}</summary>
-            <pre>{JSON.stringify(globals[global], null, 2)}</pre>
-          </details>
-        {:else}
-          <!-- Otherwise, just print the value -->
-          {global}: {globals[global]}<br/>
-        {/if}
-
-    {/each}
-  </ul>
-{/if}
 
 

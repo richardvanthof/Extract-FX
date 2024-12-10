@@ -1,8 +1,8 @@
 <script lang="ts">
     import NavBar from '../components/NavBar/NavBar.svelte';
-    import Extract from '../pages/Extract.svelte';
+    import Extract from '../pages/Extract/Extract.svelte';
     
-    import Ingest from '../pages/Ingest.svelte';
+    import Ingest from '../pages/Ingest/Ingest.svelte';
     import Loader from '@/js/components/Loader/Loader.svelte';
     import Footer from '../components/Footer.svelte';
 
