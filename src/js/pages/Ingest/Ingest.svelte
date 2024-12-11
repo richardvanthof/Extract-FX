@@ -5,8 +5,9 @@
     import ExcludeModal from '../../components/Form/ExclusionModal/ExcludeModal.svelte';
     import {generateNumberedOptions} from '@/js/helpers/helpers.svelte';
     import {globals} from '../../global-vars/globals.svelte';
-    import {handleIngestFile, createExclusions} from '@/js/components/Form/SelectFile/SelectFile.helpers.svelte';
-    import type {FileData} from '@/js/components/Form/SelectFile/SelectFile.helpers.svelte';
+    
+    import {handleIngestFile, createExclusions} from '@/js/components/Form/SelectFIle/SelectFile.helpers.svelte';
+    import type {FileData} from '@/js/components/Form/SelectFIle/SelectFile.helpers.svelte';
 
     let {exclusionOptions, trackTotal} = globals;    
     
