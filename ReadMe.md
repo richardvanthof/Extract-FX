@@ -40,6 +40,17 @@ Learn more about using the plugin in the [manual](src/static/manual/manual.md)
 
 > It is of course also possible to use another package manager than yarn :)
 
+---
+
+## 🚨 Merge requirements
+For a commit to be eledgible for merging it needs pass the ci/cd pipeline. To do that it must comply with the following:
+- The code needs to work.
+- All functions must contain `types`.
+- Make sure `yarn test` passes. 
+- All functions need to have a unit test.
+- No linting errors allowed. Run `yarn lint:fix` to check.
+---
+
 ## Commands
 
 `yarn`
@@ -89,15 +100,6 @@ Learn more about using the plugin in the [manual](src/static/manual/manual.md)
 
 - Bundles your zxp and specified assets to a zip archive in the `dist/zip` folder
 
----
-
-## Pull request requirements
-For a commit to be eledgible for merging it needs pass the ci/cd pipeline. To do that it must comply with the following:
-- The code needs to work.
-- All functions must contain `types`.
-- Make sure `yarn test` passes. 
-- All functions need to have a unit test.
-- No linting errors allowed. Run `yarn lint:fix` to check.
 ---
 
 ## Config
