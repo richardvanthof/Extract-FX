@@ -44,7 +44,7 @@ Learn more about using the plugin in the [manual](src/static/manual/manual.md)
 
 ## 🚨 Merge requirements
 For a commit to be eledgible for merging it needs pass the ci/cd pipeline. To do that it must comply with the following:
-- The code needs to work.
+- The code needs to work (aka. `yarn build` has to work).
 - All functions must contain `types`.
 - Make sure `yarn test` passes. 
 - All functions need to have a unit test.
