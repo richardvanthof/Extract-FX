@@ -16,12 +16,10 @@
     const trackOptions = generateNumberedOptions(trackTotal, 'VIDEO');
     
     let fileError:Error|null = $state(null);
-    let fileMetadata:string|null = $state(null);
 
     const handleFile = async (files: Event) => {
         try {
             fileError = null;
-            fileMetadata = null;
             const {data, exclusionOptions}:FileData = await handleIngestFile(files).catch(err => {
                 fileError = err;
                 throw new Error(err);

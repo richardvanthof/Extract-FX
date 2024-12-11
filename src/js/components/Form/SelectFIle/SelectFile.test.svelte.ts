@@ -136,20 +136,16 @@ describe("handleIngestFile", async () => {
         const file = new File([JSON.stringify(data)], 'effectsList.json', {
             type: 'application/json',
         });
-
-        let filesList:FileData|null = $state(null);
         
         const props = {
             error: null,
             label: 'source',
-            callback: vi.fn().mockImplementation(async (files) => {
-                filesList = files
-            })
+            callback: vi.fn()
         }
         
         const user = userEvent.setup()
 
-        const {getByLabelText, rerender, container} = render(SelectFile, {props})
+        const {getByLabelText, rerender} = render(SelectFile, {props})
         const input = getByLabelText(props.label);
 
 

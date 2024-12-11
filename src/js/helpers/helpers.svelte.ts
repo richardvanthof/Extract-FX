@@ -14,5 +14,15 @@ const generateNumberedOptions = (amount: number, prefix?: string, suffix?: strin
 
     return options;
 }
+const getUniqueKeys = (data:object[]|object):string[] => {
+    let keys:string[];
+    if(Array.isArray(data)) { keys = data.map((val) => Object.keys(val)).flat();} 
+    else { keys = Object.keys(data);};
 
-export {handleClick, generateNumberedOptions}
+    return keys.filter((value, index, array) => {
+        const normalizedArray = array.map((val) => val.toLocaleLowerCase()) 
+        return normalizedArray.indexOf(value.toLocaleLowerCase()) === index;
+    }); 
+};
+
+export {handleClick, getUniqueKeys, generateNumberedOptions}
