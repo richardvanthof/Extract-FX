@@ -1,21 +1,12 @@
 import {v4 as uuid} from 'uuid';
 import type { SourceData, Exclusion } from "@/js/global-vars/globals.svelte";
-
+import { getUniqueKeys } from '@/js/helpers/helpers.svelte';
 export type FileData = {
     data?: SourceData,
     exclusionOptions?: string[]
 }
 
-export const getUniqueKeys = (data:object[]|object):string[] => {
-    let keys:string[];
-    if(Array.isArray(data)) { keys = data.map((val) => Object.keys(val)).flat();} 
-    else { keys = Object.keys(data);};
 
-    return keys.filter((value, index, array) => {
-        const normalizedArray = array.map((val) => val.toLocaleLowerCase()) 
-        return normalizedArray.indexOf(value.toLocaleLowerCase()) === index;
-    }); 
-};
 
 // Type guard to check if the parsed content is of type SourceData
 const isSourceData = (data: unknown, type: string = "RS-FX-EXCHANGE"): data is SourceData => {
@@ -27,6 +18,7 @@ const isSourceData = (data: unknown, type: string = "RS-FX-EXCHANGE"): data is S
         'sequence' in data &&
         'exclusions' in data &&
         'clips' in data &&
+        'timestamp' in data &&
         Array.isArray(data.exclusions) &&
         Array.isArray(data.clips) &&
         data.type === type
@@ -74,6 +66,7 @@ export const getJSON = async (file: File): Promise<SourceData> => {
 };
 
 export const handleIngestFile = async (event: Event):Promise<FileData> => {
+
     const result:FileData = {}
 
     const input = event.target as HTMLInputElement;
@@ -85,6 +78,8 @@ export const handleIngestFile = async (event: Event):Promise<FileData> => {
     result.exclusionOptions = getUniqueKeys(result.data.clips);
 
     return result;
+
+
 };
 
 export const createExclusions = (effects: string[]):Exclusion[] => {

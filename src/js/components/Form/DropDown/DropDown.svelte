@@ -1,11 +1,13 @@
 <script lang="ts">
     
     type Props = {
+        label: string,
+        hideLabel?: boolean,
         options: [string|number, string|number|null][],
         value: string|number,
         callback?: (update: number|string) => void
     }
-    let { options, value = $bindable(), callback}:Props = $props();
+    let { label, options, value = $bindable(), callback, hideLabel=false}:Props = $props();
 
     // Handle update when the value changes
     let handleUpdate = (event:Event) => {
@@ -16,17 +18,22 @@
         }
     };
 
-
+    const id = 'select-elem-' + label.replace(' ', '-').toLowerCase();
 </script>
 
+
 {#if callback}
-    <select {value} data-testid="dropdown-callback" onchange={handleUpdate} id="sourceTrack">
+    {#if !hideLabel}
+    <label for={id}>{label}</label>
+    {/if}
+    <select {value} {id} data-testid="dropdown-callback" onchange={handleUpdate}>
         {#each options as [label, val]}
             <option data-testid="dropdown-option" value={val}>{label}</option>
         {/each}
     </select>
 {:else}
-    <select bind:value={value} data-testid="dropdown-bind" id="sourceTrack">
+    <label for={id}>{label}</label>
+    <select bind:value={value} {id} data-testid="dropdown-bind">
         {#each options as [label, val]}
             <option data-testid="dropdown-option" value={val}>{label}</option>
         {/each}

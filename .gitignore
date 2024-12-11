@@ -8,3 +8,4 @@ dist
 dist/**/*
 secrets.ts
 yarn.lock
+package-lock.json

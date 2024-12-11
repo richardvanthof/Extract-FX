@@ -33,7 +33,7 @@
 </script>
 
 <div class='exclusion' data-testid="exclusion">
-    <DropDown testId="select-exclusion" value={effect} {options} callback={(newEffect) => update(newEffect, id)} />
+    <DropDown hideLabel label={id} testId="select-exclusion" value={effect} {options} callback={(newEffect) => update(newEffect, id)} />
     <Button 
     onclick={(e:Event) => handleClick(e, remove(id))} 
     name='x' dataTestId="delete-exclusion" title="Delete exclusion"

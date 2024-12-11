@@ -13,7 +13,7 @@ exports[`Ingest component > Renders 1`] = `
         class="group"
       >
         <label
-          for="source-file"
+          for="selectFile-source-file"
         >
           Source file
         </label>
@@ -21,6 +21,7 @@ exports[`Ingest component > Renders 1`] = `
         <input
           accept="application/json"
           class="svelte-1p719ys"
+          id="selectFile-source-file"
           type="file"
         />
          
@@ -31,17 +32,17 @@ exports[`Ingest component > Renders 1`] = `
       <div
         class="group"
       >
+        <!---->
         <label
-          for="target-track"
+          for="select-elem-target-track"
         >
           Target track
         </label>
          
-        <!---->
         <select
           class="svelte-14mby5s"
           data-testid="dropdown-bind"
-          id="sourceTrack"
+          id="select-elem-target-track"
         >
           <option
             class="svelte-14mby5s"
@@ -176,6 +177,8 @@ exports[`Ingest component > Renders 1`] = `
       <!---->
     </div>
   </form>
+   
+  <!---->
   
 </div>
 `;

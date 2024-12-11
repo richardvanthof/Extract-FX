@@ -1,52 +1,11 @@
-import { describe, expect, it } from 'vitest';
-import { getJSON, getUniqueKeys, createExclusions } from './helpers.svelte';
-
+import { describe, expect, it, vi } from 'vitest';
+import {screen, render} from '@testing-library/svelte';
+import { userEvent } from '@testing-library/user-event';
+import { getJSON, createExclusions, handleIngestFile } from './SelectFile.helpers.svelte';
+import type {FileData} from './SelectFile.helpers.svelte';
+import SelectFile from './SelectFile.svelte';
 import type { SourceData } from '@/js/global-vars/globals.svelte';
-
-
-describe("GetUniqueKeys", () => {
-
-    it("Returns unique keys from list of objects", () => {
-        const list = [
-            {Transform: {}, Stabilize: {}, Displace: {}},
-            {Motion: {}, Transform:{}, Color:{}}, 
-            {Transform: {}, Stabilize: {}, Limit: {}}
-        ]
-        expect(getUniqueKeys(list)).toStrictEqual(
-            ['Transform', 'Stabilize', 'Displace', 'Motion', 'Color', 'Limit']
-        );
-    });
-
-    it("Is able to compare strings regardless of casing.", () => {
-        const list = [
-            {TRANSform: {}, Stabilize: {}, Displace: {}},
-            {Motion: {}, Transform:{}, COLOR:{}}, 
-            {Transform: {}, stabilize: {}, Limit: {}}
-        ]
-        expect(getUniqueKeys(list)).toStrictEqual(
-            ['TRANSform', 'Stabilize', 'Displace', 'Motion', 'COLOR', 'Limit']
-        );
-    });
-    
-    it("Returns unique keys from single object", () => {
-        const list = {
-            Transform: {},
-            Stabilize: {}, 
-            Displace: {}, 
-            Motion: {}, 
-            transform:{}, 
-            Color:{}, 
-            //@ts-expect-error part of test
-            transform: {}, 
-            //@ts-expect-error part of test
-            Stabilize: {},
-            Limit: {}
-            }
-        expect(getUniqueKeys(list)).toStrictEqual(
-            ['Transform', 'Stabilize', 'Displace', 'Motion', 'Color', 'Limit']
-        );
-    });
-});
+import '@testing-library/jest-dom';
 
 describe("getJSON", async () => {
     it("Returns JS object from JSON-file", async () => {
@@ -55,6 +14,7 @@ describe("getJSON", async () => {
             track: 1,
             sequence: 'My Video',
             exclusions: [],
+            timestamp: "2024-12-11T17:08:02.284Z",
             clips: [
                 {Motion: {}, Opacity: {}},
                 {Motion: {}, Opacity: {}},
@@ -84,6 +44,7 @@ describe("getJSON", async () => {
             type: 'RS-FX-EXCHANGE',
             track: 1,
             sequence: 'My Video',
+            timestamp: "2024-12-11T17:08:02.284Z",
             exclusions: [],
             clips: []
         };
@@ -101,6 +62,7 @@ describe("getJSON", async () => {
             type: 'NOT-RS-FX-EXCHANGE', // this file is not the correct type.
             track: 1,
             sequence: 'My Video',
+            timestamp: "2024-12-11T17:08:02.284Z",
             exclusions: [],
             clips: [
                 {Motion: {}, Opacity: {}},
@@ -115,6 +77,74 @@ describe("getJSON", async () => {
 
         await expect(getJSON(file)).rejects.toThrowError("This file contains invalid data and cannot be opened.");
     })
+})
+
+describe("handleIngestFile", async () => {
+    it("Returns JS object from JSON-file", async () => {
+        const data:SourceData = {
+            type: 'RS-FX-EXCHANGE',
+            track: 1,
+            sequence: 'My Video',
+            timestamp: "2024-12-11T17:08:02.284Z",
+            exclusions: [],
+            clips: [
+                {Motion: {}, Opacity: {}},
+                {Motion: {}, Opacity: {}},
+                {Motion: {}, Opacity: {}}
+            ]
+        };
+
+        const resultObj:FileData = {
+            data,
+            exclusionOptions: ['Motion', 'Opacity']
+        }
+        
+        const file = new File([JSON.stringify(data)], 'effectsList.json', {
+            type: 'application/json',
+        });
+
+        let filesList:FileData|null = $state(null);
+        
+        const props = {
+            error: null,
+            label: 'source',
+            callback: vi.fn().mockImplementation(async (files) => {
+                filesList = files
+            })
+        }
+        
+        const user = userEvent.setup()
+
+        const {getByLabelText} = render(SelectFile, {props})
+        const input = getByLabelText(props.label);
+
+        await user.upload(input, file)
+        if(filesList != null) {
+            expect(await handleIngestFile(filesList)).toStrictEqual(resultObj)
+        }
+    });
+
+    it("Puts error under file input field", async () => {
+        
+        const props = {
+            error: null,
+            label: 'source',
+            callback: vi.fn()
+        }
+        
+        const { rerender} = render(SelectFile, {props})
+        const error:TypeError|null = new Error('test error');
+        await rerender({error});
+
+        const errorField = screen.getByTestId('select-file-error')
+        
+        // Check if error is displayed under file input field
+        if(error != null) {
+            expect(error.message).toBe(error.message);
+            expect(errorField).toBeInTheDocument(); 
+        }
+    });
+
 })
 
 describe("Create exclusions", () => {

@@ -7,7 +7,7 @@ describe('Switch',() => {
         const props = {
             value: 'file',
             options: ['File', 'Sequence'],
-            callback: vi.fn()
+            callback: vi.fn(),
         }
         
         const { container } = render(Switch, { props })

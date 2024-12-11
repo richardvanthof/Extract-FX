@@ -48,17 +48,17 @@ exports[`App > navigates to the extract page when the extract button is clicked 
         <div
           class="group"
         >
+          <!---->
           <label
-            for="source-track"
+            for="select-elem-source-track"
           >
             Source track
           </label>
            
-          <!---->
           <select
             class="svelte-14mby5s"
             data-testid="dropdown-bind"
-            id="sourceTrack"
+            id="select-elem-source-track"
           >
             <option
               class="svelte-14mby5s"
@@ -139,14 +139,17 @@ exports[`App > navigates to the extract page when the extract button is clicked 
         <div
           class="group"
         >
+          <!---->
           <label
-            for="destination"
+            for="switch-destination"
           >
             Destination
           </label>
+          <!---->
            
           <ul
             class="switch-input svelte-2z4jz9"
+            id="switch-destination"
           >
             <button
               class="switch-option active svelte-2z4jz9"
@@ -300,7 +303,7 @@ exports[`App > navigates to the ingest page when the ingest button is clicked 1`
           class="group"
         >
           <label
-            for="source-file"
+            for="selectFile-source-file"
           >
             Source file
           </label>
@@ -308,6 +311,7 @@ exports[`App > navigates to the ingest page when the ingest button is clicked 1`
           <input
             accept="application/json"
             class="svelte-1p719ys"
+            id="selectFile-source-file"
             type="file"
           />
            
@@ -318,17 +322,17 @@ exports[`App > navigates to the ingest page when the ingest button is clicked 1`
         <div
           class="group"
         >
+          <!---->
           <label
-            for="target-track"
+            for="select-elem-target-track"
           >
             Target track
           </label>
            
-          <!---->
           <select
             class="svelte-14mby5s"
             data-testid="dropdown-bind"
-            id="sourceTrack"
+            id="select-elem-target-track"
           >
             <option
               class="svelte-14mby5s"
@@ -463,6 +467,8 @@ exports[`App > navigates to the ingest page when the ingest button is clicked 1`
         <!---->
       </div>
     </form>
+     
+    <!---->
     <!---->
      
     <!---->
@@ -542,17 +548,17 @@ exports[`App > renders correctly 1`] = `
         <div
           class="group"
         >
+          <!---->
           <label
-            for="source-track"
+            for="select-elem-source-track"
           >
             Source track
           </label>
            
-          <!---->
           <select
             class="svelte-14mby5s"
             data-testid="dropdown-bind"
-            id="sourceTrack"
+            id="select-elem-source-track"
           >
             <option
               class="svelte-14mby5s"
@@ -633,14 +639,17 @@ exports[`App > renders correctly 1`] = `
         <div
           class="group"
         >
+          <!---->
           <label
-            for="destination"
+            for="switch-destination"
           >
             Destination
           </label>
+          <!---->
            
           <ul
             class="switch-input svelte-2z4jz9"
+            id="switch-destination"
           >
             <button
               class="switch-option active svelte-2z4jz9"

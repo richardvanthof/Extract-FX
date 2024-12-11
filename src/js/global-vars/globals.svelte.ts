@@ -12,6 +12,7 @@ export type SourceData = {
   sequence: string;
   exclusions: string[];
   clips: object[];
+  timestamp: string|Date;
 };
 
 type Globals = {

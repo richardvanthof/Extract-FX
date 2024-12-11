@@ -4,7 +4,9 @@
     "noImplicitAny": false,
     "paths": {
       "@esTypes/*": ["./src/js/lib/cep/es-types"],
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@js/*": ["./src/js/*"],
+      "@jsx/*": ["./src/jsx/*"]
     }
   }
 }

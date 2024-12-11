@@ -8,7 +8,8 @@ import DropDown from './DropDown.svelte';
 type Props = {
     options: [string|number, string|number|null][],
     value: string|number,
-    callback?: (update: number|string) => void
+    callback?: (update: number|string) => void,
+    label: string
 }
 
 
@@ -16,7 +17,8 @@ describe('DropDown', () => {
     
     const config:Props = {
         value: 'Effect A',
-        options: ['Effect A', 'Effect B', 'Effect C'].map(option => [option, option])
+        options: ['Effect A', 'Effect B', 'Effect C'].map(option => [option, option]),
+        label: 'test'
     }
 
     describe('Render', () => {
