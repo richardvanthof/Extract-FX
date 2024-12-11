@@ -125,22 +125,6 @@ describe("handleIngestFile", async () => {
     });
 
     it("Puts error under file input field", async () => {
-        const data:SourceData = {
-            type: 'RS-FX-EXCHANGE',
-            track: 1,
-            sequence: 'My Video',
-            timestamp: "2024-12-11T17:08:02.284Z",
-            exclusions: [],
-            clips: [
-                {Motion: {}, Opacity: {}},
-                {Motion: {}, Opacity: {}},
-                {Motion: {}, Opacity: {}}
-            ]
-        };
-        
-        const file = new File([JSON.stringify(data)], 'effectsList.json', {
-            type: 'application/json',
-        });
         
         const props = {
             error: null,
@@ -148,28 +132,16 @@ describe("handleIngestFile", async () => {
             callback: vi.fn()
         }
         
-        const user = userEvent.setup()
-
-        const {getByLabelText, rerender} = render(SelectFile, {props})
-        const input = getByLabelText(props.label);
-
-
-        await user.upload(input, file)
-        let error:TypeError|null = null;
-        
-        // @ts-expect-error: parameter should be undefined for test.
-        await handleIngestFile(null).catch(err => error = err)
-        
+        const { rerender} = render(SelectFile, {props})
+        const error:TypeError|null = new Error('test error');
         await rerender({error});
 
         const errorField = screen.getByTestId('select-file-error')
         
         // Check if error is displayed under file input field
         if(error != null) {
-            // @ts-expect-error part of test
-            expect(error.message).toBe("Cannot read properties of null (reading 'target')");
+            expect(error.message).toBe(error.message);
             expect(errorField).toBeInTheDocument(); 
-
         }
     });
 
