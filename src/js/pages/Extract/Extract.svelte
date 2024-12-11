@@ -5,7 +5,7 @@
     import { setContext } from 'svelte';
     import { globals } from '../../global-vars/globals.svelte';
     import {generateNumberedOptions} from '@/js/helpers/helpers.svelte';
-
+    
     let {exclusionOptions, trackTotal } = globals;
 
     const trackOptions = $derived(generateNumberedOptions(trackTotal, 'VIDEO'));
@@ -41,3 +41,4 @@
         />
     </div>
 </form>
+

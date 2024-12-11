@@ -1,5 +1,6 @@
 :root {
     // Colors
+    --lightestgray: #5b5b5e;
     --lightergray: #312f2f;
     --lightgray: #262525;
     --gray: rgb(36, 36, 36);
@@ -48,6 +49,7 @@
     // Typography
     --text-color: var(--white);
     --text-color-dark: var(--whitesnow);
+    --text-color-darkest: var(--lightestgray);
     --btn-text-color: var(--white);
     --link-color: var(--blue);
     --error-color: var(--red);
