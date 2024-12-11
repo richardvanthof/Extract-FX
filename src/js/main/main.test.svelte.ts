@@ -1,4 +1,4 @@
-import { render, fireEvent, waitFor, screen } from '@testing-library/svelte';
+import { render, fireEvent, screen } from '@testing-library/svelte';
 import '@testing-library/jest-dom';
 import { describe, expect, it } from 'vitest';
 import App from './main.svelte';

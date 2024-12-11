@@ -7,7 +7,6 @@ import path from "path";
 import { extendscriptConfig } from "./vite.es.config";
 import { sveltePreprocess } from "svelte-preprocess";
 import {svelteTesting} from '@testing-library/svelte/vite';
-import {vitePluginVersionMark} from 'vite-plugin-version-mark';
 
 const extensions = [".js", ".ts", ".tsx"];
 
@@ -52,20 +51,6 @@ if (action) {
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    vitePluginVersionMark({
-      name: 'Extract FX',
-      // version: '0.0.1',
-      command: 'git describe --tags',
-      outputFile: (version) => ({
-        path: 'version.json',
-        content: `{"version": "${version}"}`
-      }),
-      // ifGitSHA: true,
-      ifShortSHA: false,
-      ifMeta: true,
-      ifLog: false,
-      ifGlobal: true
-    }),
     svelte({ 
       preprocess: sveltePreprocess({
         sourceMap: !config.isProduction,

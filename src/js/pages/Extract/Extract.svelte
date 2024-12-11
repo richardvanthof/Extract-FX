@@ -6,10 +6,8 @@
     import { globals } from '../../global-vars/globals.svelte';
     import {generateNumberedOptions} from '@/js/helpers/helpers.svelte';
 
-    let {exclusionOptions, trackTotal, isExclusionModalOpen} = globals;
-    let {exclusions, destination, sourceTrack} = globals.extract; 
+    let {exclusionOptions, trackTotal } = globals;
 
-    const debugMode = process.env.NODE_ENV != "production"
     const trackOptions = $derived(generateNumberedOptions(trackTotal, 'VIDEO'));
 
     setContext('exclusionOptions', exclusionOptions);

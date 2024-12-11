@@ -3,9 +3,7 @@
     import DropDown from "../DropDown/DropDown.svelte";
     import Button from "../../Button.svelte";
     import {handleClick} from '@/js/helpers/helpers.svelte';
-    import type { Writable } from "svelte/store";
     import type { Exclusion } from '@/js/global-vars/globals.svelte';
-    import { globals } from '@/js/global-vars/globals.svelte';
     
     type Props = { exclusions: Exclusion[], id:string, effect: string }
 

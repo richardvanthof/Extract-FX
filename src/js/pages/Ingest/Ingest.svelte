@@ -7,32 +7,23 @@
     import {generateNumberedOptions} from '@/js/helpers/helpers.svelte';
     import {globals} from '../../global-vars/globals.svelte';
     import type {FileData} from '@/js/components/Form/SelectFile/helpers.svelte';
-    import type {Exclusion} from '../../global-vars/globals.svelte';
-    // Manually subscribe to the store
 
 
-
-    let {exclusionOptions, trackTotal} = globals;
-    const {targetTrack, data, exclusions} = globals.ingest;
-    
+    let {exclusionOptions, trackTotal} = globals;    
     
     // const currentTarget = $derived();
     setContext('exclusionOptions', exclusionOptions);
     
     const trackOptions = generateNumberedOptions(trackTotal, 'VIDEO');
-    const debugMode = process.env.NODE_ENV != "production"
-
-    let fileError:Error|unknown = $state(null);
+    
+    let fileError:Error|null = $state(null);
 
     const handleFile = async (files: Event) => {
         try {
             fileError = null;
-            const {data, exclusionOptions}:FileData|unknown = await handleIngestFile(files).catch(err => fileError = err)
-            if(data) {
-                fileError = null
-                globals.ingest.data = data;
-                globals.ingest.exclusions = createExclusions(exclusionOptions)
-            }
+            const {data, exclusionOptions}:FileData = await handleIngestFile(files).catch(err => fileError = err)
+            if(data) { globals.ingest.data = data; }
+            if(exclusionOptions){ globals.ingest.exclusions = createExclusions(exclusionOptions)}
         } catch (err) {
             console.error(err);
             alert(err)

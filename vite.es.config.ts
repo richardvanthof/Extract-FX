@@ -73,8 +73,11 @@ export const extendscriptConfig = (
 
   const watchRollup = async () => {
     const watcher = watch(config);
-    watcher.on("event", ({ result }: any) => {
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    watcher.on("event", ({ result }:any) => {
       if (result) {
+        console.log(result)
         triggerHMR();
         result.close();
       }
