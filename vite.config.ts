@@ -64,7 +64,9 @@ export default defineConfig({
   resolve: {
     alias: [
       { find: "@esTypes", replacement: path.resolve(__dirname, "src") },
-      { find: "@", replacement: path.resolve(__dirname, "src") }
+      { find: "@", replacement: path.resolve(__dirname, "src") },
+      { find: "@js", replacement: path.resolve(__dirname, "src/js") },
+      { find: "@jsx", replacement: path.resolve(__dirname, "src/jsx") }
     ],
   },
   root,
