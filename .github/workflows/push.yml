@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is checking pushed code
 on: [push]
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
