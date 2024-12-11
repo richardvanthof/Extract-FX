@@ -18,6 +18,7 @@ const isSourceData = (data: unknown, type: string = "RS-FX-EXCHANGE"): data is S
         'sequence' in data &&
         'exclusions' in data &&
         'clips' in data &&
+        'timestamp' in data &&
         Array.isArray(data.exclusions) &&
         Array.isArray(data.clips) &&
         data.type === type

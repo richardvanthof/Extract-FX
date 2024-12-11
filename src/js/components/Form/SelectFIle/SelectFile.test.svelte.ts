@@ -14,6 +14,7 @@ describe("getJSON", async () => {
             track: 1,
             sequence: 'My Video',
             exclusions: [],
+            timestamp: "2024-12-11T17:08:02.284Z",
             clips: [
                 {Motion: {}, Opacity: {}},
                 {Motion: {}, Opacity: {}},
@@ -43,6 +44,7 @@ describe("getJSON", async () => {
             type: 'RS-FX-EXCHANGE',
             track: 1,
             sequence: 'My Video',
+            timestamp: "2024-12-11T17:08:02.284Z",
             exclusions: [],
             clips: []
         };
@@ -60,6 +62,7 @@ describe("getJSON", async () => {
             type: 'NOT-RS-FX-EXCHANGE', // this file is not the correct type.
             track: 1,
             sequence: 'My Video',
+            timestamp: "2024-12-11T17:08:02.284Z",
             exclusions: [],
             clips: [
                 {Motion: {}, Opacity: {}},
@@ -82,6 +85,7 @@ describe("handleIngestFile", async () => {
             type: 'RS-FX-EXCHANGE',
             track: 1,
             sequence: 'My Video',
+            timestamp: "2024-12-11T17:08:02.284Z",
             exclusions: [],
             clips: [
                 {Motion: {}, Opacity: {}},

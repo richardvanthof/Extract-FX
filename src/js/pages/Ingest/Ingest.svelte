@@ -30,12 +30,14 @@
                 globals.ingest.data = data; 
             }
             if(exclusionOptions){ globals.ingest.exclusions = createExclusions(exclusionOptions)}
+            console.info(globals)
         } catch (err) {
             console.error(err);
         }
         
     };
 
+    
     const getObjectArrayKeys = (data: object[]) => data.map((val) => Object.keys(val)).flat();
 
     
@@ -75,7 +77,7 @@
         </li>
         <li>
             <p class="label caption">Created</p>
-            <h6 class="value">TODO</h6>
+            <h6 class="value">{Date(globals.ingest.data.timestamp)}</h6>
         </li>
     </ul>
 </div>
