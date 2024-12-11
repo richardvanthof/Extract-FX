@@ -13,7 +13,7 @@ exports[`Ingest component > Renders 1`] = `
         class="group"
       >
         <label
-          for="Source file"
+          for="selectFile-source-file"
         >
           Source file
         </label>
@@ -21,7 +21,7 @@ exports[`Ingest component > Renders 1`] = `
         <input
           accept="application/json"
           class="svelte-1p719ys"
-          id="Source file"
+          id="selectFile-source-file"
           type="file"
         />
          

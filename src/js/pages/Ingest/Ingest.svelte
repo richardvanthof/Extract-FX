@@ -20,6 +20,8 @@
     const handleFile = async (files: Event) => {
         try {
             fileError = null;
+            globals.ingest.exclusions = [];
+            globals.ingest.data = null;
             const {data, exclusionOptions}:FileData = await handleIngestFile(files).catch(err => {
                 fileError = err;
                 throw new Error(err);
@@ -34,6 +36,9 @@
         
     };
 
+    const getObjectArrayKeys = (data: object[]) => data.map((val) => Object.keys(val)).flat();
+
+    
 </script>
 
 <form data-testid="ingest-form" class="grid-container">
@@ -61,16 +66,16 @@
             <h6 class="value">{globals.ingest.data.sequence}</h6>
         </li>
         <li>
-            <p class="label caption">Clips amount</p>
+            <p class="label caption">Clips</p>
             <h6 class="value">{globals.ingest.data.clips.length}</h6>
         </li>
         <li>
-            <p class="label caption">Effects amount</p>
-            <h6 class="value">{globals.ingest.data.sequence}</h6>
+            <p class="label caption">Effects</p>
+            <h6 class="value">{getObjectArrayKeys(globals.ingest.data.clips).length}</h6>
         </li>
         <li>
             <p class="label caption">Created</p>
-            <h6 class="value">{globals.ingest.data.sequence}</h6>
+            <h6 class="value">TODO</h6>
         </li>
     </ul>
 </div>
@@ -97,9 +102,11 @@
                 display: block;
                 border-right: var(--border-styling);
                 margin-right: 1.33em;
+                width: 25%;
                 &:last-child {
                     border: none
                 }
+
             }
         }
     }

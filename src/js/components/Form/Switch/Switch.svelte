@@ -3,14 +3,18 @@
     type Props = {
         value: string,
         options: string[],
-        callback: (selection: string) => void
+        callback: (selection: string) => void,
+        label?: string,
     }
-    let {options, value, callback}: Props = $props();
+    let {options, value, callback, label}: Props = $props();
+    const id = label && 'switch-' + label.replace(' ', '-').toLowerCase();
 
 </script>
 
-
-<ul class="switch-input">
+{#if label}
+<label for={id}>{label}</label>
+{/if}
+<ul class="switch-input" {id}>
     {#each options as option}
     <button 
     class="switch-option {value.toLowerCase() === option.toLowerCase() ? 'active' : ''}"

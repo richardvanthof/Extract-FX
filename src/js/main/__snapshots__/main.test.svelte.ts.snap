@@ -139,14 +139,17 @@ exports[`App > navigates to the extract page when the extract button is clicked 
         <div
           class="group"
         >
+          <!---->
           <label
-            for="destination"
+            for="switch-destination"
           >
             Destination
           </label>
+          <!---->
            
           <ul
             class="switch-input svelte-2z4jz9"
+            id="switch-destination"
           >
             <button
               class="switch-option active svelte-2z4jz9"
@@ -300,7 +303,7 @@ exports[`App > navigates to the ingest page when the ingest button is clicked 1`
           class="group"
         >
           <label
-            for="Source file"
+            for="selectFile-source-file"
           >
             Source file
           </label>
@@ -308,7 +311,7 @@ exports[`App > navigates to the ingest page when the ingest button is clicked 1`
           <input
             accept="application/json"
             class="svelte-1p719ys"
-            id="Source file"
+            id="selectFile-source-file"
             type="file"
           />
            
@@ -636,14 +639,17 @@ exports[`App > renders correctly 1`] = `
         <div
           class="group"
         >
+          <!---->
           <label
-            for="destination"
+            for="switch-destination"
           >
             Destination
           </label>
+          <!---->
            
           <ul
             class="switch-input svelte-2z4jz9"
+            id="switch-destination"
           >
             <button
               class="switch-option active svelte-2z4jz9"

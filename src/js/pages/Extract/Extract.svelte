@@ -25,11 +25,11 @@
             <DropDown label="Source track" options={trackOptions} bind:value={globals.extract.sourceTrack}/>
         </div>
         <div class="group">
-            <label for="destination">Destination</label>
             <Switch 
                 value={globals.extract.destination}
                 options={['File', 'Sequence']} 
                 callback={handleDestinationUpdate}
+                label="Destination"
             />
         </div>
     </div>

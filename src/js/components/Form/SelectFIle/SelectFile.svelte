@@ -8,7 +8,7 @@
     }
     // Declare a variable to hold the files
     let {label, callback = $bindable(), error}:Props = $props();
-    const id = label
+    const id = 'selectFile-' + label.replace(' ', '-').toLowerCase();
 </script>
 
 
