@@ -21,7 +21,8 @@ export default [
         ...globals.browser, // Recognizes browser-specific globals like console, alert, etc.
         ...globals.node,    // Also include Node.js globals if needed
         ...globals.typescript, // TypeScript-specific globals
-        ...globals.jest,      // Jest globals (if you're using Jest for testing)      
+        ...globals.jest,      // Jest globals (if you're using Jest for testing) 
+        __EXTRACT_FX_VERSION__: true,     
       },  // Define globals for browser, node, jest, etc.
     },
     plugins: {
@@ -42,7 +43,8 @@ export default [
         ...globals.browser, // Recognizes browser-specific globals like console, alert, etc.
         ...globals.node,    // Also include Node.js globals if needed
         ...globals.typescript, // TypeScript-specific globals
-        ...globals.jest,      // Jest globals (if you're using Jest for testing)      
+        ...globals.jest,      // Jest globals (if you're using Jest for testing)   
+        __EXTRACT_FX_VERSION__: true,
       },  // Define globals for browser, node, jest, etc.
       parserOptions: {
         parser: tsParser,  // Use TypeScript parser for .svelte files
