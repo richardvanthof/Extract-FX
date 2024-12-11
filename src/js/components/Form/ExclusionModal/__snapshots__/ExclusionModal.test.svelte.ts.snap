@@ -101,10 +101,13 @@ exports[`Exclusion modal > Rendering > Loads currect exclusion items state 1`] =
           data-testid="exclusion"
         >
           <!---->
+          <!---->
+          <!---->
+           
           <select
             class="svelte-14mby5s"
             data-testid="dropdown-callback"
-            id="sourceTrack"
+            id="select-elem-FX1"
           >
             <option
               class="svelte-14mby5s"
@@ -154,10 +157,13 @@ exports[`Exclusion modal > Rendering > Loads currect exclusion items state 1`] =
           data-testid="exclusion"
         >
           <!---->
+          <!---->
+          <!---->
+           
           <select
             class="svelte-14mby5s"
             data-testid="dropdown-callback"
-            id="sourceTrack"
+            id="select-elem-FX2"
           >
             <option
               class="svelte-14mby5s"

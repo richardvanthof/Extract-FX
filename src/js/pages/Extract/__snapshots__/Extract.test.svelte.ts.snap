@@ -12,17 +12,17 @@ exports[`Extract.svelte > Renders correct layout 1`] = `
       <div
         class="group"
       >
+        <!---->
         <label
-          for="source-track"
+          for="select-elem-Source"
         >
           Source track
         </label>
          
-        <!---->
         <select
           class="svelte-14mby5s"
           data-testid="dropdown-bind"
-          id="sourceTrack"
+          id="select-elem-Source"
         >
           <option
             class="svelte-14mby5s"

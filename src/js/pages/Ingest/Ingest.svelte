@@ -2,11 +2,11 @@
     import {setContext} from 'svelte';
     import DropDown from '@/js/components/Form/DropDown/DropDown.svelte';
     import SelectFile from '../../components/Form/SelectFIle/SelectFile.svelte'; 
-    import {handleIngestFile, createExclusions} from '@/js/components/Form/SelectFIle/helpers.svelte';
     import ExcludeModal from '../../components/Form/ExclusionModal/ExcludeModal.svelte';
     import {generateNumberedOptions} from '@/js/helpers/helpers.svelte';
     import {globals} from '../../global-vars/globals.svelte';
-    import type {FileData} from '@/js/components/Form/SelectFile/helpers.svelte';
+    import {handleIngestFile, createExclusions} from '@/js/components/Form/SelectFile/SelectFile.helpers.svelte';
+    import type {FileData} from '@/js/components/Form/SelectFile/SelectFile.helpers.svelte';
 
     let {exclusionOptions, trackTotal} = globals;    
     
@@ -22,14 +22,16 @@
         try {
             fileError = null;
             fileMetadata = null;
-            const {data, exclusionOptions}:FileData = await handleIngestFile(files).catch(err => fileError = err)
+            const {data, exclusionOptions}:FileData = await handleIngestFile(files).catch(err => {
+                fileError = err;
+                throw new Error(err);
+            })
             if(data) { 
                 globals.ingest.data = data; 
             }
             if(exclusionOptions){ globals.ingest.exclusions = createExclusions(exclusionOptions)}
         } catch (err) {
             console.error(err);
-            alert(err)
         }
         
     };
@@ -39,12 +41,10 @@
 <form data-testid="ingest-form" class="grid-container">
     <div class="grid-column">
         <div class="group">
-            <label for="source-file">Source file</label>
-            <SelectFile error={fileError} callback={handleFile}/>
+            <SelectFile label="Source file" error={fileError} callback={handleFile}/>
         </div>
         <div class="group">
-            <label for="target-track">Target track</label>
-            <DropDown options={trackOptions} bind:value={globals.ingest.targetTrack} />
+            <DropDown label="Target track" options={trackOptions} bind:value={globals.ingest.targetTrack} />
         </div>
     </div>
     <div class="grid-column">

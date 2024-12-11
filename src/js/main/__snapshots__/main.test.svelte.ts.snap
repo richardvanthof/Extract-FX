@@ -48,17 +48,17 @@ exports[`App > navigates to the extract page when the extract button is clicked 
         <div
           class="group"
         >
+          <!---->
           <label
-            for="source-track"
+            for="select-elem-Source"
           >
             Source track
           </label>
            
-          <!---->
           <select
             class="svelte-14mby5s"
             data-testid="dropdown-bind"
-            id="sourceTrack"
+            id="select-elem-Source"
           >
             <option
               class="svelte-14mby5s"
@@ -300,7 +300,7 @@ exports[`App > navigates to the ingest page when the ingest button is clicked 1`
           class="group"
         >
           <label
-            for="source-file"
+            for="input-elem-Source"
           >
             Source file
           </label>
@@ -308,6 +308,7 @@ exports[`App > navigates to the ingest page when the ingest button is clicked 1`
           <input
             accept="application/json"
             class="svelte-1p719ys"
+            id="input-elem-Source"
             type="file"
           />
            
@@ -318,17 +319,17 @@ exports[`App > navigates to the ingest page when the ingest button is clicked 1`
         <div
           class="group"
         >
+          <!---->
           <label
-            for="target-track"
+            for="select-elem-Target"
           >
             Target track
           </label>
            
-          <!---->
           <select
             class="svelte-14mby5s"
             data-testid="dropdown-bind"
-            id="sourceTrack"
+            id="select-elem-Target"
           >
             <option
               class="svelte-14mby5s"
@@ -463,6 +464,8 @@ exports[`App > navigates to the ingest page when the ingest button is clicked 1`
         <!---->
       </div>
     </form>
+     
+    <!---->
     <!---->
      
     <!---->
@@ -542,17 +545,17 @@ exports[`App > renders correctly 1`] = `
         <div
           class="group"
         >
+          <!---->
           <label
-            for="source-track"
+            for="select-elem-Source"
           >
             Source track
           </label>
            
-          <!---->
           <select
             class="svelte-14mby5s"
             data-testid="dropdown-bind"
-            id="sourceTrack"
+            id="select-elem-Source"
           >
             <option
               class="svelte-14mby5s"

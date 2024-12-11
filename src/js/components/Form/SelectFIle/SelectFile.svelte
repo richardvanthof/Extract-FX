@@ -3,10 +3,11 @@
 
     type Props = {
         callback: (files: Event) => void,
-        error: Error|null
+        error: Error|null,
+        label: string
     }
     // Declare a variable to hold the files
-    let {callback = $bindable(), error}:Props = $props();
+    let {label, callback = $bindable(), error}:Props = $props();
 
 </script>
 
@@ -34,7 +35,8 @@
 </style>
 
 <!-- File input field that accepts only .json files -->
-<input class:error={error != null} onchange={callback} accept="application/json" type="file">
+<label for={`input-elem-${label.split(' ')[0]}`}>{label}</label>
+<input id={`input-elem-${label.split(' ')[0]}`} class:error={error != null} onchange={callback} accept="application/json" type="file">
 {#if error}
 <p class="error-text caption">{error}</p>
 {/if}
