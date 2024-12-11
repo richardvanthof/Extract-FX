@@ -14,7 +14,7 @@ exports[`Extract.svelte > Renders correct layout 1`] = `
       >
         <!---->
         <label
-          for="select-elem-Source"
+          for="select-elem-source-track"
         >
           Source track
         </label>
@@ -22,7 +22,7 @@ exports[`Extract.svelte > Renders correct layout 1`] = `
         <select
           class="svelte-14mby5s"
           data-testid="dropdown-bind"
-          id="select-elem-Source"
+          id="select-elem-source-track"
         >
           <option
             class="svelte-14mby5s"

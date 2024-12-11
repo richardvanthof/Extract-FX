@@ -18,7 +18,7 @@
         }
     };
 
-    const id = `select-elem-${label.split(' ')[0]}`
+    const id = 'select-elem-' + label.replace(' ', '-').toLowerCase();
 </script>
 
 

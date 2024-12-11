@@ -50,7 +50,7 @@ exports[`App > navigates to the extract page when the extract button is clicked 
         >
           <!---->
           <label
-            for="select-elem-Source"
+            for="select-elem-source-track"
           >
             Source track
           </label>
@@ -58,7 +58,7 @@ exports[`App > navigates to the extract page when the extract button is clicked 
           <select
             class="svelte-14mby5s"
             data-testid="dropdown-bind"
-            id="select-elem-Source"
+            id="select-elem-source-track"
           >
             <option
               class="svelte-14mby5s"
@@ -300,7 +300,7 @@ exports[`App > navigates to the ingest page when the ingest button is clicked 1`
           class="group"
         >
           <label
-            for="input-elem-Source"
+            for="Source file"
           >
             Source file
           </label>
@@ -308,7 +308,7 @@ exports[`App > navigates to the ingest page when the ingest button is clicked 1`
           <input
             accept="application/json"
             class="svelte-1p719ys"
-            id="input-elem-Source"
+            id="Source file"
             type="file"
           />
            
@@ -321,7 +321,7 @@ exports[`App > navigates to the ingest page when the ingest button is clicked 1`
         >
           <!---->
           <label
-            for="select-elem-Target"
+            for="select-elem-target-track"
           >
             Target track
           </label>
@@ -329,7 +329,7 @@ exports[`App > navigates to the ingest page when the ingest button is clicked 1`
           <select
             class="svelte-14mby5s"
             data-testid="dropdown-bind"
-            id="select-elem-Target"
+            id="select-elem-target-track"
           >
             <option
               class="svelte-14mby5s"
@@ -547,7 +547,7 @@ exports[`App > renders correctly 1`] = `
         >
           <!---->
           <label
-            for="select-elem-Source"
+            for="select-elem-source-track"
           >
             Source track
           </label>
@@ -555,7 +555,7 @@ exports[`App > renders correctly 1`] = `
           <select
             class="svelte-14mby5s"
             data-testid="dropdown-bind"
-            id="select-elem-Source"
+            id="select-elem-source-track"
           >
             <option
               class="svelte-14mby5s"

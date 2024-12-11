@@ -8,7 +8,7 @@
     }
     // Declare a variable to hold the files
     let {label, callback = $bindable(), error}:Props = $props();
-
+    const id = label
 </script>
 
 
@@ -35,8 +35,8 @@
 </style>
 
 <!-- File input field that accepts only .json files -->
-<label for={`input-elem-${label.split(' ')[0]}`}>{label}</label>
-<input id={`input-elem-${label.split(' ')[0]}`} class:error={error != null} onchange={callback} accept="application/json" type="file">
+<label for={id}>{label}</label>
+<input {id} class:error={error != null} onchange={callback} accept="application/json" type="file">
 {#if error}
-<p class="error-text caption">{error}</p>
+<p data-testid="select-file-error" class="error-text caption">{error}</p>
 {/if}
