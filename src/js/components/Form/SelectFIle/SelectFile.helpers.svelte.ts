@@ -65,22 +65,19 @@ export const getJSON = async (file: File): Promise<SourceData> => {
 };
 
 export const handleIngestFile = async (event: Event):Promise<FileData> => {
-    try {
-        const result:FileData = {}
-    
-        const input = event.target as HTMLInputElement;
-        const files = input?.files;
-    
-        // Decode and parse the JSON file
-        if(!files) {throw new Error("File not found.")}
-        result.data = await getJSON(files[0]);
-        result.exclusionOptions = getUniqueKeys(result.data.clips);
-    
-        return result;
-    } catch(error) {
-        console.error(error);
-        throw error
-    }
+
+    const result:FileData = {}
+
+    const input = event.target as HTMLInputElement;
+    const files = input?.files;
+
+    // Decode and parse the JSON file
+    if(!files) {throw new Error("File not found.")}
+    result.data = await getJSON(files[0]);
+    result.exclusionOptions = getUniqueKeys(result.data.clips);
+
+    return result;
+
 
 };
 
