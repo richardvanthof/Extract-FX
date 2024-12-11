@@ -129,6 +129,7 @@ describe("handleIngestFile", async () => {
             type: 'RS-FX-EXCHANGE',
             track: 1,
             sequence: 'My Video',
+            timestamp: "2024-12-11T17:08:02.284Z",
             exclusions: [],
             clips: [
                 {Motion: {}, Opacity: {}},
