@@ -1,7 +1,7 @@
 # RS Extract-fx
 ## What is it for?
 
-*RS Extract-fx* is a Premiere Pro plugin that automates backing up and restoring video effects to a separate file or adjustment layers. This is especially useful when an effect data is misinterpreted when sending your data to another program like Davinci Resolve. - built using the [Bolt CEP starter](https://hyperbrew.co/resources/bolt-cep/). 
+*RS Extract-fx* is a Premiere Pro plugin that automates backing up and restoring video effects to a separate file or adjustment layers. This is especially useful when effect data is misinterpreted while doing a roundtrip to another program like Davinci Resolve. - built using the [Bolt CEP starter](https://hyperbrew.co/resources/bolt-cep/). 
 
 ## What effects are supported?
 
